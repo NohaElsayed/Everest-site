@@ -36,6 +36,16 @@ Route::group(['namespace' => 'api\v2', 'prefix' => 'v2', 'middleware' => ['api_l
             Route::delete('delete/{id}', 'ProductController@delete');
             Route::get('barcode/generate', 'ProductController@barcode_generate');
         });
+        Route::group(['prefix' => 'service'], function () {
+            Route::post('upload-images', 'ServiceController@upload_images');
+            Route::post('add', 'ServiceController@add_new');
+            Route::get('list', 'ServiceController@list');
+            Route::get('status-update','ServiceController@status_update');
+            Route::get('service-seller-order/{id}','ServiceController@service_order_seller');
+            Route::get('edit/{id}', 'ServiceController@edit');
+            Route::put('update/{id}', 'ServiceController@update');
+            Route::delete('delete/{id}', 'ServiceController@delete');
+        });
 
         Route::group(['prefix' => 'orders'], function () {
             Route::get('list', 'OrderController@list');
@@ -68,6 +78,7 @@ Route::group(['namespace' => 'api\v2', 'prefix' => 'v2', 'middleware' => ['api_l
             Route::put('update/{id}', 'ShippingMethodController@update');
             Route::delete('delete/{id}', 'ShippingMethodController@delete');
         });
+        Route::get('service-seller-order', 'ServiceController@service_order_seller')->name('service-seller-order');
 
         Route::group(['prefix' => 'messages'], function () {
             Route::get('list', 'ChatController@messages');

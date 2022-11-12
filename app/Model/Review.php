@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Service;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -30,6 +31,10 @@ class Review extends Model
         return $this->belongsTo(Product::class, 'product_id');
     }
 
+    public function service()
+    {
+        return $this->belongsTo(Service::class, 'service_id');
+    }
     public function customer()
     {
         return $this->belongsTo(User::class, 'customer_id');
@@ -46,7 +51,7 @@ class Review extends Model
             }else{
                 $builder->where('status',1);
             }
-            
+
         });
     }
 }

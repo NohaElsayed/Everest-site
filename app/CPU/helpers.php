@@ -41,7 +41,7 @@ class Helpers
         return $x;
     }
 
-    
+
     public static function format_coordiantes($coordinates)
     {
         $data = [];
@@ -553,14 +553,14 @@ class Helpers
         $data = '';
         $success = 0;
 
-        $token = explode(' ', $request->header('authorization'));
-        if (count($token) > 1 && strlen($token[1]) > 30) {
-            $seller = Seller::where(['auth_token' => $token['1']])->first();
+//        $token = explode(' ', $request->header('authorization'));
+//        if (count($token) > 1 && strlen($token[1]) > 30) {
+            $seller = Seller::get()->first();
             if (isset($seller)) {
                 $data = $seller;
                 $success = 1;
             }
-        }
+//        }
 
         return [
             'success' => $success,

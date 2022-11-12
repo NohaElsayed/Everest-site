@@ -5,12 +5,12 @@
         display: none;
         padding-bottom: 8px;
     }
-    
+
     .quick-view , .single-product-details{
         background: #ffffff;
     }
     .product-single-hover:hover > .single-product-details {
-        
+
         margin-top:-39px;
     }
     .product-single-hover:hover >  .quick-view{
@@ -19,7 +19,7 @@
 </style>
 
 <div class="product-single-hover" style="">
-    <div class=" inline_product clickable d-flex justify-content-center" 
+    <div class=" inline_product clickable d-flex justify-content-center"
             style="cursor: pointer;background:{{$web_config['primary_color']}}10;border-radius: 5px 5px 0px 0px;">
         @if($product->discount > 0)
             <div class="d-flex" style="left:8px;top:8px;position: absolute">
@@ -77,7 +77,7 @@
                 </span>
             </div>
         </div>
-        
+
     </div>
     <div class="text-center quick-view" style="border-radius:0px 0px 5px 5px;">
         @if(Request::is('product/*'))
@@ -95,4 +95,3 @@
         @endif
     </div>
 </div>
-    

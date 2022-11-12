@@ -61,10 +61,10 @@
                             <thead class="thead-light">
                             <tr>
                                 <th>{{\App\CPU\translate('SL#')}}</th>
-                                <th>{{\App\CPU\translate('Product Name')}}</th>
-                                <th>{{\App\CPU\translate('purchase_price')}}</th>
+                                <th>{{\App\CPU\translate('Service Name')}}</th>
+{{--                                <th>{{\App\CPU\translate('purchase_price')}}</th>--}}
                                 <th>{{\App\CPU\translate('selling_price')}}</th>
-                                <th>{{\App\CPU\translate('featured')}}</th>
+{{--                                <th>{{\App\CPU\translate('featured')}}</th>--}}
                                 <th>{{\App\CPU\translate('Active')}} {{\App\CPU\translate('status')}}</th>
                                 <th style="width: 5px" class="text-center">{{\App\CPU\translate('Action')}}</th>
                             </tr>
@@ -74,23 +74,23 @@
                                 <tr>
                                     <th scope="row">{{$pro->firstItem()+$k}}</th>
                                     <td>
-                                        <a href="{{route('admin.product.view',[$p['id']])}}">
+                                        <a href="{{route('admin.service.view',[$p['id']])}}">
                                             {{\Illuminate\Support\Str::limit($p['name'],20)}}
                                         </a>
                                     </td>
+{{--                                    <td>--}}
+{{--                                        {{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency( $p['purchase_price']))}}--}}
+{{--                                    </td>--}}
                                     <td>
-                                        {{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency( $p['purchase_price']))}}
+                                        {{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($p['price']))}}
                                     </td>
-                                    <td>
-                                        {{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($p['unit_price']))}}
-                                    </td>
-                                    <td>
-                                        <label class="switch">
-                                            <input type="checkbox"
-                                                   onclick="featured_status('{{$p['id']}}')" {{$p->featured == 1?'checked':''}}>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </td>
+{{--                                    <td>--}}
+{{--                                        <label class="switch">--}}
+{{--                                            <input type="checkbox"--}}
+{{--                                                   onclick="featured_status('{{$p['id']}}')" {{$p->featured == 1?'checked':''}}>--}}
+{{--                                            <span class="slider round"></span>--}}
+{{--                                        </label>--}}
+{{--                                    </td>--}}
                                     <td>
                                         <label class="switch switch-status">
                                             <input type="checkbox" class="status"
@@ -99,16 +99,16 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <a class="btn btn-warning btn-sm" title="{{ \App\CPU\translate('barcode') }}"
-                                                    href="{{ route('admin.product.barcode', [$p['id']]) }}">
-                                                    <i class="tio-barcode"></i>
-                                                </a>
+{{--                                        <a class="btn btn-warning btn-sm" title="{{ \App\CPU\translate('barcode') }}"--}}
+{{--                                                    href="{{ route('admin.service.barcode', [$p['id']]) }}">--}}
+{{--                                                    <i class="tio-barcode"></i>--}}
+{{--                                                </a>--}}
 
-                                        <a class="btn btn-info btn-sm"
-                                            title="{{\App\CPU\translate('view')}}"
-                                           href="{{route('admin.services.view',[$p['id']])}}">
-                                            <i class="tio-visible"></i>
-                                        </a>
+{{--                                        <a class="btn btn-info btn-sm"--}}
+{{--                                            title="{{\App\CPU\translate('view')}}"--}}
+{{--                                           href="{{route('admin.services.view',[$p['id']])}}">--}}
+{{--                                            <i class="tio-visible"></i>--}}
+{{--                                        </a>--}}
                                         <a class="btn btn-primary btn-sm"
                                             title="{{\App\CPU\translate('Edit')}}"
                                             href="{{route('admin.services.edit',[$p['id']])}}">
@@ -169,7 +169,7 @@
                 }
             });
             $.ajax({
-                url: "{{route('admin.product.status-update')}}",
+                url: "{{route('admin.service.status-update')}}",
                 method: 'POST',
                 data: {
                     id: id,

@@ -30,6 +30,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Titillium+Web:wght@400;600;700&display=swap"
         rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
     {{-- light box --}}
     <link rel="stylesheet" href="{{asset('public/css/lightbox.css')}}">
     <link rel="stylesheet" href="{{asset('public/assets/back-end')}}/vendor/icon-set/style.css">
@@ -1252,7 +1254,7 @@
         })
     }
 </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
 @stack('script')
 
 </body>

@@ -9,6 +9,8 @@ use App\Model\BusinessSetting;
 use App\Model\PhoneOrEmailVerification;
 use App\Model\Wishlist;
 use App\User;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
+use App\Model\Zone;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -32,8 +34,8 @@ class RegisterController extends Controller
 
     public function submit(Request $request)
     {
-       // return $request;
-        $request->validate([
+      // return $request;
+      $validator = Validator::make($request->all(), [
             'f_name' => 'required',
             'email' => 'required|email|unique:users',
             'phone' => 'unique:users',
@@ -47,19 +49,46 @@ class RegisterController extends Controller
             'f_name.required' => 'First name is required',
         ]);
 
-        $user = User::create([
-            'f_name' => $request['f_name'],
-            'l_name' => $request['l_name'],
-            'email' => $request['email'],
-            'phone' => $request['phone'],
-            'type' => $request['type'],
-            'age' => $request['age'],
-            'is_active' => 1,
-            'latitude' => $request['latitude'],
-            'longitude'=> $request['longitude'],
-            'zone_id' => $request['zone_id'],
-            'password' => bcrypt($request['password'])
-        ]);
+        if($request->zone_id)
+        {
+            $point = new Point($request->latitude, $request->longitude);
+            $zone = Zone::contains('coordinates', $point)->where('id', $request->zone_id)->first();
+            if(!$zone){
+                $validator->getMessageBag()->add('latitude', trans('messages.coordinates_out_of_zone'));
+                return back()->withErrors($validator)
+                        ->withInput();
+            }
+        }
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $user = new User();
+        $user->f_name = $request->f_name;
+        $user->l_name = $request->l_name;
+        $user->phone = $request->phone;
+        $user ->email = $request->email;
+        $user ->type = $request->type;
+        $user->age = $request->age;
+        $user->latitude = $request->latitude;
+        $user ->longitude = $request->longitude;
+        $user ->zone_id = $request->zone_id;
+        $user ->password = bcrypt($request['password']);
+        $user->save();
+        // $user = User::create([
+        //     'f_name' => $request['f_name'],
+        //     'l_name' => $request['l_name'],
+        //     'email' => $request['email'],
+        //     'phone' => $request['phone'],
+        //     'type' => $request['type'],
+        //     'age' => $request['age'],
+        //     'is_active' => 1,
+        //     'latitude'=> $request['latitude'],
+        //     'longitude'=> $request['longitude'],
+        //     'zone_id' => $request['zone_id'],
+        //     'password' => bcrypt($request['password'])
+        // ]);
 
         $phone_verification = Helpers::get_business_settings('phone_verification');
         $email_verification = Helpers::get_business_settings('email_verification');

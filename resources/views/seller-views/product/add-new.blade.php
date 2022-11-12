@@ -23,7 +23,7 @@
             <div class="col-md-12">
 
                 <form class="product-form" action="{{ route('seller.product.add-new') }}" method="post"
-                    enctype="multipart/form-data" 
+                    enctype="multipart/form-data"
                     style="text-align: {{ Session::get('direction') === 'rtl' ? 'right' : 'left' }};"
                       id="product_form"
                       onsubmit="check()">>
@@ -374,7 +374,7 @@
 @endsection
 
 @push('script')
-    <script src="{{ asset('public/assets/back-end') }}/js/tags-input.min.js"></script>
+    <script src="{{ asset('public/assets/back-end/js/tags-input.min.js') }}"></script>
     <script src="{{ asset('public/assets/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('public/assets/back-end/js/spartan-multi-image-picker.js') }}"></script>
     <script>

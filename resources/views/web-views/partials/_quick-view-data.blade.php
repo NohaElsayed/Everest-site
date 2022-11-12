@@ -351,3 +351,24 @@
         });
     });
 </script>
+<script>
+    function quickView(product_id) {
+        $.get({
+            url: '{{route('quick-view')}}',
+            dataType: 'json',
+            data: {
+                product_id: product_id
+            },
+            beforeSend: function () {
+                $('#loading').show();
+            },
+            success: function (data) {
+                console.log("success...")
+                $('#quick-view').modal('show');
+                $('#quick-view-modal').empty().html(data.view);
+            },
+            complete: function () {
+                $('#loading').hide();
+            },
+        });
+    }

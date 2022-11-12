@@ -3,6 +3,8 @@
 namespace App\Model;
 
 use App\CPU\Helpers;
+use App\Service;
+use App\ServiceOrder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;

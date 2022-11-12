@@ -284,6 +284,12 @@
                             </ul>
                         </li>
 
+                        <li class="nav-item {{Request::is('seller/product/list')?'active':''}}">
+                            <a class="nav-link " href="{{route('seller.service.list')}}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{\App\CPU\translate('services')}}</span>
+                            </a>
+                        </li>
                         <li class="navbar-vertical-aside-has-menu {{Request::is('seller/reviews/list*')?'active':''}}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link"
                                href="{{route('seller.reviews.list')}}">

@@ -107,7 +107,7 @@
                                                 class="form-control" value="{{ old('code') }}"
                                                 placeholder="{{ \App\CPU\translate('code') }}" required>
                                         </div>
-                                    </div> 
+                                    </div>
                                     {{-- <div class="col-md-4">
                                         <label for="name">{{ \App\CPU\translate('Sub Category') }}</label>
                                         <select class="js-example-basic-multiple form-control" name="sub_category_id"
@@ -127,7 +127,7 @@
 
                             {{-- <div class="form-group">
                                 <div class="row"> --}}
-                                   
+
                                     {{-- <div class="col-md-4">
                                         <label for="name">{{ \App\CPU\translate('Unit') }}</label>
                                         <select class="js-example-basic-multiple form-control" name="unit">
@@ -142,14 +142,14 @@
                         </div>
                     </div>
 
-                    <div class="card mt-2 rest-part">
-                        <div class="card-header">
-                            <h4>{{ \App\CPU\translate('Variations') }}</h4>
-                        </div>
-                        <div class="card-body">
+{{--                    <div class="card mt-2 rest-part">--}}
+{{--                        <div class="card-header">--}}
+{{--                            <h4>{{ \App\CPU\translate('Variations') }}</h4>--}}
+{{--                        </div>--}}
+{{--                        <div class="card-body">--}}
 
-                            <div class="form-group">
-                                <div class="row">
+{{--                            <div class="form-group">--}}
+{{--                                <div class="row">--}}
                                     {{-- <div class="col-md-6"> --}}
                                         {{-- <label for="colors">
                                             {{ \App\CPU\translate('Colors') }} :
@@ -170,28 +170,28 @@
                                         </select> --}}
                                     {{-- </div> --}}
 
-                                    <div class="col-md-6">
-                                        <label for="attributes" style="padding-bottom: 3px">
-                                            {{ \App\CPU\translate('Attributes') }} :
-                                        </label>
-                                        <select
-                                            class="js-example-basic-multiple js-states js-example-responsive form-control"
-                                            name="choice_attributes[]" id="choice_attributes" multiple="multiple">
-                                            @foreach (\App\Model\Attribute::orderBy('name', 'asc')->get() as $key => $a)
-                                                <option value="{{ $a['id'] }}">
-                                                    {{ $a['name'] }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+{{--                                    <div class="col-md-6">--}}
+{{--                                        <label for="attributes" style="padding-bottom: 3px">--}}
+{{--                                            {{ \App\CPU\translate('Attributes') }} :--}}
+{{--                                        </label>--}}
+{{--                                        <select--}}
+{{--                                            class="js-example-basic-multiple js-states js-example-responsive form-control"--}}
+{{--                                            name="choice_attributes[]" id="choice_attributes" multiple="multiple">--}}
+{{--                                            @foreach (\App\Model\Attribute::orderBy('name', 'asc')->get() as $key => $a)--}}
+{{--                                                <option value="{{ $a['id'] }}">--}}
+{{--                                                    {{ $a['name'] }}--}}
+{{--                                                </option>--}}
+{{--                                            @endforeach--}}
+{{--                                        </select>--}}
+{{--                                    </div>--}}
 
-                                    <div class="col-md-12 mt-2 mb-2">
-                                        <div class="customer_choice_options" id="customer_choice_options"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+{{--                                    <div class="col-md-12 mt-2 mb-2">--}}
+{{--                                        <div class="customer_choice_options" id="customer_choice_options"></div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
                     <div class="card mt-2 rest-part">
                         <div class="card-header">
@@ -205,7 +205,6 @@
                                         <input type="number" min="0" step="0.01"
                                             placeholder="{{ \App\CPU\translate('price') }}" name="unit_price"
                                             value="{{ old('unit_price') }}" class="form-control" required>
-                                    </div>
                                     </div>
                                     {{-- <div class="col-md-6">
                                         <label class="control-label">{{ \App\CPU\translate('Purchase price') }}</label>
@@ -224,20 +223,21 @@
                                             value="{{ old('tax') }}" class="form-control">
                                         <input name="tax_type" value="percent" style="display: none">
                                     </div> --}}
-                               <div class="row">
-                                    <div class="col-md-4">
-                                        <label class="control-label">{{ \App\CPU\translate('Discount') }}</label>
-                                        <input type="number" min="0" value="{{ old('discount') }}"
-                                            step="0.01" placeholder="{{ \App\CPU\translate('Discount') }}"
-                                            name="discount" class="form-control">
-                                    </div>
-                                     <div class="col-md-4">
+{{--                               <div class="row">--}}
+{{--                                    <div class="col-md-4">--}}
+{{--                                        <label class="control-label">{{ \App\CPU\translate('Discount') }}</label>--}}
+{{--                                        <input type="number" min="0" value="{{ old('discount') }}"--}}
+{{--                                            step="0.01" placeholder="{{ \App\CPU\translate('Discount') }}"--}}
+{{--                                            name="discount" class="form-control">--}}
+{{--                                    </div>--}}
+                                     <div class="col-md-6">
                                         <label class="control-label">{{ \App\CPU\translate('Number Phone') }}</label>
                                         <input type="number" value="{{ old('phone') }}"
                                             step="0.01" placeholder="{{ \App\CPU\translate('Number Phone') }}"
                                             name="phone" class="form-control">
                                     </div>
-                                     </div>
+{{--                                     </div>--}}
+                    </div>
                                     {{-- <div class="col-md-4" style="padding-top: 30px;">
                                         <select style="width: 100%"
                                             class="js-example-basic-multiple js-states js-example-responsive demo-select2"
@@ -620,7 +620,7 @@
                     }
                 });
                 $.post({
-                    url: '{{ route('admin.product.store') }}',
+                    url: '{{ route('admin.service.store') }}',
                     data: formData,
                     contentType: false,
                     processData: false,
@@ -636,7 +636,7 @@
                             }
                         } else {
                             toastr.success(
-                            '{{ \App\CPU\translate('product added successfully') }}!', {
+                            '{{ \App\CPU\translate('Service added successfully') }}!', {
                                 CloseButton: true,
                                 ProgressBar: true
                             });

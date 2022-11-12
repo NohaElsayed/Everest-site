@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Service;
+use App\ServiceOrder;
 use Illuminate\Http\Request;
 use App\Model\Category;
 use App\Model\Review;
@@ -25,51 +27,25 @@ class ServiceController extends Controller
     public function add_new()
     {
         $cat = Category::where(['parent_id' => 0])->get();
-        return view('admin-views.services.add-new', compact('cat',));
+        return view('admin-views.services.add-new', compact('cat'));
     }
 
 
     public function store(Request $request)
     {
-        // return $request;
         $validator = Validator::make($request->all(), [
             'name'              => 'required',
             'category_id'       => 'required',
-            // 'brand_id'          => 'required',
             'images'            => 'required',
             'image'             => 'required',
-            // 'tax'               => 'required|min:0',
-            'unit_price'        => 'required|numeric|min:1',
-            // 'purchase_price'    => 'required|numeric|min:1',
-            'discount'          => 'required|gt:-1',
-            // 'shipping_cost'     => 'required|gt:-1',
             'code'              => 'required|numeric|min:1|digits_between:6,20|unique:products',
-            // 'minimum_order_qty' => 'required|numeric|min:1',
         ], [
             'images.required'       => 'services images is required!',
             'image.required'        => 'services thumbnail is required!',
             'category_id.required'  => 'category  is required!',
-            // 'brand_id.required'     => 'brand  is required!',
-            // 'unit.required'         => 'Unit  is required!',
             'code.min'              => 'The code must be positive!',
             'code.digits_between'   => 'The code must be minimum 6 digits!',
-            // 'minimum_order_qty.required' => 'The minimum order quantity is required!',
-            // 'minimum_order_qty.min' => 'The minimum order quantity must be positive!',
         ]);
-
-        if ($request['discount_type'] == 'percent') {
-            $dis = ($request['unit_price'] / 100) * $request['discount'];
-        } else {
-            $dis = $request['discount'];
-        }
-
-        if ($request['unit_price'] <= $dis) {
-            $validator->after(function ($validator) {
-                $validator->errors()->add(
-                    'unit_price', 'Discount can not be more or equal to the price!'
-                );
-            });
-        }
         if (is_null($request->name[array_search('en', $request->lang)])) {
             $validator->after(function ($validator) {
                 $validator->errors()->add(
@@ -77,12 +53,9 @@ class ServiceController extends Controller
                 );
             });
         }
-
-
-        $p = new Product();
+        $p = new Service();
         $p->user_id = auth('admin')->id();
         $p->added_by = "admin";
-        $p->service = "service";
         $p->name = $request->name[array_search('en', $request->lang)];
         $p->code = $request->code;
         $p->phone = $request->phone;
@@ -96,131 +69,33 @@ class ServiceController extends Controller
                 'position' => 1,
             ]);
         }
-        // if ($request->sub_category_id != null) {
-        //     array_push($category, [
-        //         'id' => $request->sub_category_id,
-        //         'position' => 2,
-        //     ]);
-        // }
-        // if ($request->sub_sub_category_id != null) {
-        //     array_push($category, [
-        //         'id' => $request->sub_sub_category_id,
-        //         'position' => 3,
-        //     ]);
-        // }
-
         $p->category_ids = json_encode($category);
-        // $p->brand_id = $request->brand_id;
-        $p->unit = $request->unit;
         $p->details = $request->description[array_search('en', $request->lang)];
-
-        // if ($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0) {
-        //     $p->colors = json_encode($request->colors);
-        // } else {
-        //     $colors = [];
-        //     $p->colors = json_encode($colors);
-        // }
-        $choice_options = [];
-        if ($request->has('choice')) {
-            foreach ($request->choice_no as $key => $no) {
-                $str = 'choice_options_' . $no;
-                $item['name'] = 'choice_' . $no;
-                $item['title'] = $request->choice[$key];
-                $item['options'] = explode(',', implode('|', $request[$str]));
-                array_push($choice_options, $item);
-            }
-        }
-        $p->choice_options = json_encode($choice_options);
-        //combinations start
-        $options = [];
-        if ($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0) {
-            $colors_active = 1;
-            array_push($options, $request->colors);
-        }
-        if ($request->has('choice_no')) {
-            foreach ($request->choice_no as $key => $no) {
-                $name = 'choice_options_' . $no;
-                $my_str = implode('|', $request[$name]);
-                array_push($options, explode(',', $my_str));
-            }
-        }
-        //Generates the combinations of customer choice options
-
-        $combinations = Helpers::combinations($options);
-
-        $variations = [];
-        $stock_count = 0;
-        if (count($combinations[0]) > 0) {
-            foreach ($combinations as $key => $combination) {
-                $str = '';
-                foreach ($combination as $k => $item) {
-                    if ($k > 0) {
-                        $str .= '-' . str_replace(' ', '', $item);
-                    } else {
-                        // if ($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0) {
-                        //     $color_name = Color::where('code', $item)->first()->name;
-                        //     $str .= $color_name;
-                        // } else {
-                        //     $str .= str_replace(' ', '', $item);
-                        // }
-                    }
-                }
-                $item = [];
-                $item['type'] = $str;
-                $item['price'] = BackEndHelper::currency_to_usd(abs($request['price_' . str_replace('.', '_', $str)]));
-                $item['sku'] = $request['sku_' . str_replace('.', '_', $str)];
-                $item['qty'] = abs($request['qty_' . str_replace('.', '_', $str)]);
-                array_push($variations, $item);
-                $stock_count += $item['qty'];
-            }
-        } else {
-            $stock_count = (integer)$request['current_stock'];
-        }
-
         if ($validator->errors()->count() > 0) {
             return response()->json(['errors' => Helpers::error_processor($validator)]);
         }
-
-        //combinations end
-        $p->variation = json_encode($variations);
-        $p->unit_price = BackEndHelper::currency_to_usd($request->unit_price);
-         // $p->purchase_price = BackEndHelper::currency_to_usd($request->purchase_price);
-        // $p->tax = $request->tax_type == 'flat' ? BackEndHelper::currency_to_usd($request->tax) : $request->tax;
-        // $p->tax_type = $request->tax_type;
-        $p->discount = $request->discount_type == 'flat' ? BackEndHelper::currency_to_usd($request->discount) : $request->discount;
-        $p->discount_type = $request->discount_type;
-        $p->attributes = json_encode($request->choice_attributes);
-        $p->current_stock = abs($stock_count);
-        // $p->minimum_order_qty = $request->minimum_order_qty;
-
-        $p->video_provider = 'youtube';
-        $p->video_url = $request->video_link;
-        $p->request_status = 1;
-        // $p->shipping_cost = BackEndHelper::currency_to_usd($request->shipping_cost);
-        // $p->multiply_qty = $request->multiplyQTY=='on'?1:0;
-
         if ($request->ajax()) {
             return response()->json([], 200);
         } else {
             if ($request->file('images')) {
                 foreach ($request->file('images') as $img) {
-                    $product_images[] = ImageManager::upload('Product/', 'png', $img);
+                    $product_images[] = ImageManager::upload('service/', 'png', $img);
                 }
                 $p->images = json_encode($product_images);
             }
-            $p->thumbnail = ImageManager::upload('Product/thumbnail/', 'png', $request->image);
+            $p->thumbnail = ImageManager::upload('service/thumbnail/', 'png', $request->image);
 
             $p->meta_title = $request->meta_title;
             $p->meta_description = $request->meta_description;
-            $p->meta_image = ImageManager::upload('Product/meta/', 'png', $request->meta_image);
-
+            $p->meta_image = ImageManager::upload('service/meta/', 'png', $request->meta_image);
+            $p->request_status = 1;
             $p->save();
 
             $data = [];
             foreach ($request->lang as $index => $key) {
                 if ($request->name[$index] && $key != 'en') {
                     array_push($data, array(
-                        'translationable_type' => 'App\Model\Product',
+                        'translationable_type' => 'App\Model\Service',
                         'translationable_id' => $p->id,
                         'locale' => $key,
                         'key' => 'name',
@@ -229,7 +104,7 @@ class ServiceController extends Controller
                 }
                 if ($request->description[$index] && $key != 'en') {
                     array_push($data, array(
-                        'translationable_type' => 'App\Model\Product',
+                        'translationable_type' => 'App\Model\Service',
                         'translationable_id' => $p->id,
                         'locale' => $key,
                         'key' => 'description',
@@ -239,15 +114,39 @@ class ServiceController extends Controller
             }
             Translation::insert($data);
 
-            Toastr::success(translate('Service added successfully!'));
-            return redirect()->route('admin.services.list', ['in_house']);
+            return response()->json($data, 200);
         }
     }
     public function view($id)
     {
-        $product = Product::with(['reviews'])->where(['id' => $id])->first();
-        $reviews = Review::where(['product_id' => $id])->paginate(Helpers::pagination_limit());
+        $product = Service::with(['reviews'])->where(['id' => $id])->first();
+        $reviews = Review::where(['service_id' => $id])->paginate(Helpers::pagination_limit());
         return view('admin-views.services.view', compact('product', 'reviews'));
+    }
+
+    public function orders(Request $request)
+    {
+        $services= ServiceOrder::all();
+      //  $services->paginate(Helpers::pagination_limit());
+        if ($request->has('search')) {
+            $key = explode(' ', $request['search']);
+            $pro = $services->where(function ($q) use ($key) {
+                foreach ($key as $value) {
+                    $q->Where('name', 'like', "%{$value}%");
+                }
+            });
+            $query_param = ['search' => $request['search']];
+        }
+        return view('admin-views.services.service-order', compact('services'));
+    }
+
+    public function approve_status(Request $request)
+    {
+        $product = Service::find($request->id);
+        $product->request_status = ($product['request_status'] == 0) ? 1 : 0;
+        $product->save();
+
+        return redirect()->route('admin.services.list', ['seller', 'status' => $product['request_status']]);
     }
 
     function list(Request $request, $type)
@@ -255,9 +154,9 @@ class ServiceController extends Controller
         $query_param = [];
         $search = $request['search'];
         if ($type == 'in_house') {
-            $pro = Product::where(['added_by' => 'admin','service' => 'service']);
+            $pro = Service::active()->where(['added_by' => 'admin']);
         } else {
-            $pro = Product::where(['added_by' => 'seller','service' => 'service'])->where('request_status', $request->status);
+            $pro = Service::active()->where(['added_by' => 'seller'])->where('request_status', $request->status);
         }
 
         if ($request->has('search')) {
@@ -297,82 +196,10 @@ class ServiceController extends Controller
         return view('admin-views.services.updated-product-list', compact('pro', 'search'));
     }
 
-    public function stock_limit_list(Request $request, $type)
-    {
-        $stock_limit = Helpers::get_business_settings('stock_limit');
-        $sort_oqrderQty = $request['sort_oqrderQty'];
-        $query_param = $request->all();
-        $search = $request['search'];
-        if ($type == 'in_house') {
-            $pro = Product::where(['added_by' => 'admin']);
-        } else {
-            $pro = Product::where(['added_by' => 'seller'])->where('request_status', $request->status);
-        }
-
-        if ($request->has('search')) {
-            $key = explode(' ', $request['search']);
-            $pro = $pro->where(function ($q) use ($key) {
-                foreach ($key as $value) {
-                    $q->Where('name', 'like', "%{$value}%");
-                }
-            });
-            $query_param = ['search' => $request['search']];
-        }
-
-        $request_status = $request['status'];
-
-        $pro = $pro->withCount('order_details')->when($request->sort_oqrderQty == 'quantity_asc', function ($q) use ($request) {
-            return $q->orderBy('current_stock', 'asc');
-        })
-            ->when($request->sort_oqrderQty == 'quantity_desc', function ($q) use ($request) {
-                return $q->orderBy('current_stock', 'desc');
-            })
-            ->when($request->sort_oqrderQty == 'order_asc', function ($q) use ($request) {
-                return $q->orderBy('order_details_count', 'asc');
-            })
-            ->when($request->sort_oqrderQty == 'order_desc', function ($q) use ($request) {
-                return $q->orderBy('order_details_count', 'desc');
-            })
-            ->when($request->sort_oqrderQty == 'default', function ($q) use ($request) {
-                return $q->orderBy('id');
-            })->where('current_stock', '<', $stock_limit);
-
-        $pro = $pro->orderBy('id', 'DESC')->paginate(Helpers::pagination_limit())->appends(['status' => $request['status']])->appends($query_param);
-        return view('admin-views.services.stock-limit-list', compact('pro', 'search', 'request_status', 'sort_oqrderQty'));
-    }
-
-    public function update_quantity(Request $request)
-    {
-        $variations = [];
-        $stock_count = $request['current_stock'];
-        if ($request->has('type')) {
-            foreach ($request['type'] as $key => $str) {
-                $item = [];
-                $item['type'] = $str;
-                $item['price'] = BackEndHelper::currency_to_usd(abs($request['price_' . str_replace('.', '_', $str)]));
-                $item['sku'] = $request['sku_' . str_replace('.', '_', $str)];
-                $item['qty'] = abs($request['qty_' . str_replace('.', '_', $str)]);
-                array_push($variations, $item);
-            }
-        }
-
-        $product = Product::find($request['product_id']);
-        if ($stock_count >= 0) {
-            $product->current_stock = $stock_count;
-            $product->variation = json_encode($variations);
-            $product->save();
-            Toastr::success(\App\CPU\translate('product_quantity_updated_successfully!'));
-            return back();
-        } else {
-            Toastr::warning(\App\CPU\translate('product_quantity_can_not_be_less_than_0_!'));
-            return back();
-        }
-    }
-
     public function status_update(Request $request)
     {
 
-        $product = Product::where(['id' => $request['id']])->first();
+        $product = Service::where(['id' => $request['id']])->first();
         $success = 1;
 
         if ($request['status'] == 1) {
@@ -387,23 +214,6 @@ class ServiceController extends Controller
         $product->save();
         return response()->json([
             'success' => $success,
-        ], 200);
-    }
-    public function updated_shipping(Request $request)
-    {
-
-        $product = Product::where(['id' => $request['product_id']])->first();
-        if($request->status == 1)
-        {
-            $product->shipping_cost = $product->temp_shipping_cost;
-            $product->is_shipping_cost_updated = $request->status;
-        }else{
-            $product->is_shipping_cost_updated = $request->status;
-        }
-
-        $product->save();
-        return response()->json([
-
         ], 200);
     }
 
@@ -423,44 +233,11 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function sku_combination(Request $request)
-    {
-        $options = [];
-        if ($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0) {
-            $colors_active = 1;
-            array_push($options, $request->colors);
-        } else {
-            $colors_active = 0;
-        }
 
-        $unit_price = $request->unit_price;
-        $product_name = $request->name[array_search('en', $request->lang)];
-
-        if ($request->has('choice_no')) {
-            foreach ($request->choice_no as $key => $no) {
-                $name = 'choice_options_' . $no;
-                $my_str = implode('', $request[$name]);
-                array_push($options, explode(',', $my_str));
-            }
-        }
-
-        $combinations = Helpers::combinations($options);
-        return response()->json([
-            'view' => view('admin-views.services.partials._sku_combinations', compact('combinations', 'unit_price', 'colors_active', 'product_name'))->render(),
-        ]);
-    }
-
-    public function get_variations(Request $request)
-    {
-        $product = Product::find($request['id']);
-        return response()->json([
-            'view' => view('admin-views.services.partials._update_stock', compact('product'))->render()
-        ]);
-    }
 
     public function edit($id)
     {
-        $product = Product::withoutGlobalScopes()->with('translations')->find($id);
+        $product = Service::withoutGlobalScopes()->with('translations')->find($id);
         $product_category = json_decode($product->category_ids);
         $product->colors = json_decode($product->colors);
         $categories = Category::where(['parent_id' => 0])->get();
@@ -472,41 +249,18 @@ class ServiceController extends Controller
     public function update(Request $request, $id)
     {
 
-        $product = Product::find($id);
+        $product = Service::find($id);
         $validator = Validator::make($request->all(), [
             'name'              => 'required',
             'category_id'       => 'required',
-            // 'brand_id'          => 'required',
-            'unit'              => 'required',
-            // 'tax'               => 'required|min:0',
-            'unit_price'        => 'required|numeric|min:1',
-            // 'purchase_price'    => 'required|numeric|min:1',
-            'discount'          =>'required|gt:-1',
-            // 'shipping_cost'     => 'required|gt:-1',
-            'code'              => 'required|numeric|min:1|digits_between:6,20|unique:products,code,'.$product->id,
-            // 'minimum_order_qty' => 'required|numeric|min:1',
+//            'unit_price'        => 'required|numeric|min:1',
+            'code'              => 'required|numeric|min:1|digits_between:6,20|unique:services,code,'.$product->id,
         ], [
             'name.required'         => 'Product name is required!',
             'category_id.required'  => 'category  is required!',
-            // 'brand_id.required'     => 'brand  is required!',
-            'unit.required'         => 'Unit  is required!',
             'code.min'              => 'The code must be positive!',
             'code.digits_between'   => 'The code must be minimum 6 digits!',
-            // 'minimum_order_qty.required' => 'The minimum order quantity is required!',
-            // 'minimum_order_qty.min' => 'The minimum order quantity must be positive!',
         ]);
-
-        if ($request['discount_type'] == 'percent') {
-            $dis = ($request['unit_price'] / 100) * $request['discount'];
-        } else {
-            $dis = $request['discount'];
-        }
-
-        if ($request['unit_price'] <= $dis) {
-            $validator->after(function ($validator) {
-                $validator->errors()->add('unit_price', 'Discount can not be more or equal to the price!');
-            });
-        }
 
         if (is_null($request->name[array_search('en', $request->lang)])) {
             $validator->after(function ($validator) {
@@ -515,15 +269,13 @@ class ServiceController extends Controller
                 );
             });
         }
-        // if (is_null($request->description[array_search('en', $request->lang)])) {
-        //     $validator->after(function ($validator) {
-        //         $validator->errors()->add(
-        //             'description', 'Description field is required!'
-        //         );
-        //     });
-        // }
-
-
+         if (is_null($request->description[array_search('en', $request->lang)])) {
+             $validator->after(function ($validator) {
+                 $validator->errors()->add(
+                     'description', 'Description field is required!'
+                 );
+             });
+         }
         $product->name = $request->name[array_search('en', $request->lang)];
 
         $category = [];
@@ -533,134 +285,37 @@ class ServiceController extends Controller
                 'position' => 1,
             ]);
         }
-        if ($request->sub_category_id != null) {
-            array_push($category, [
-                'id' => $request->sub_category_id,
-                'position' => 2,
-            ]);
-        }
-        if ($request->sub_sub_category_id != null) {
-            array_push($category, [
-                'id' => $request->sub_sub_category_id,
-                'position' => 3,
-            ]);
-        }
         $product->category_ids = json_encode($category);
-        // $product->brand_id = $request->brand_id;
-        $product->unit = $request->unit;
         $product->phone = $request->phone;
         $product->code = $request->code;
-        // $product->minimum_order_qty = $request->minimum_order_qty;
         $product->details = $request->description[array_search('en', $request->lang)];
         $product_images = json_decode($product->images);
-
-        if ($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0) {
-            $product->colors = json_encode($request->colors);
-        } else {
-            $colors = [];
-            $product->colors = json_encode($colors);
-        }
-        $choice_options = [];
-        if ($request->has('choice')) {
-            foreach ($request->choice_no as $key => $no) {
-                $str = 'choice_options_' . $no;
-                $item['name'] = 'choice_' . $no;
-                $item['title'] = $request->choice[$key];
-                $item['options'] = explode(',', implode('|', $request[$str]));
-                array_push($choice_options, $item);
-            }
-        }
-        $product->choice_options = json_encode($choice_options);
-        $variations = [];
-        //combinations start
-        $options = [];
-        if ($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0) {
-            $colors_active = 1;
-            array_push($options, $request->colors);
-        }
-        if ($request->has('choice_no')) {
-            foreach ($request->choice_no as $key => $no) {
-                $name = 'choice_options_' . $no;
-                $my_str = implode('|', $request[$name]);
-                array_push($options, explode(',', $my_str));
-            }
-        }
-        //Generates the combinations of customer choice options
-        $combinations = Helpers::combinations($options);
-        $variations = [];
-        $stock_count = 0;
-        if (count($combinations[0]) > 0) {
-            foreach ($combinations as $key => $combination) {
-                $str = '';
-                foreach ($combination as $k => $item) {
-                    // if ($k > 0) {
-                    //     $str .= '-' . str_replace(' ', '', $item);
-                    // } else {
-                    //     if ($request->has('colors_active') && $request->has('colors') && count($request->colors) > 0) {
-                    //         $color_name = Color::where('code', $item)->first()->name;
-                    //         $str .= $color_name;
-                    //     } else {
-                    //         $str .= str_replace(' ', '', $item);
-                    //     }
-                    // }
-                }
-                $item = [];
-                $item['type'] = $str;
-                $item['price'] = BackEndHelper::currency_to_usd(abs($request['price_' . str_replace('.', '_', $str)]));
-                $item['sku'] = $request['sku_' . str_replace('.', '_', $str)];
-                $item['qty'] = abs($request['qty_' . str_replace('.', '_', $str)]);
-                array_push($variations, $item);
-                $stock_count += $item['qty'];
-            }
-        } else {
-            $stock_count = (integer)$request['current_stock'];
-        }
 
         if ($validator->errors()->count() > 0) {
             return response()->json(['errors' => Helpers::error_processor($validator)]);
         }
-
-        // if ($validator->fails()) {
-        //     return back()->withErrors($validator)
-        //         ->withInput();
-        // }
-
-        //combinations end
-        $product->variation = json_encode($variations);
-        $product->unit_price = BackEndHelper::currency_to_usd($request->unit_price);
-        // $product->purchase_price = BackEndHelper::currency_to_usd($request->purchase_price);
-        // $product->tax = $request->tax == 'flat' ? BackEndHelper::currency_to_usd($request->tax) : $request->tax;
-        // $product->tax_type = $request->tax_type;
-        $product->discount = $request->discount_type == 'flat' ? BackEndHelper::currency_to_usd($request->discount) : $request->discount;
-        $product->attributes = json_encode($request->choice_attributes);
-        $product->discount_type = $request->discount_type;
-        $product->current_stock = abs($stock_count);
-
-        $product->video_provider = 'youtube';
-        $product->video_url = $request->video_link;
+        $product->price = BackEndHelper::currency_to_usd($request->unit_price);
         if ($product->added_by == 'seller' && $product->request_status == 2) {
             $product->request_status = 1;
         }
-        // $product->shipping_cost = BackEndHelper::currency_to_usd($request->shipping_cost);
-        // $product->multiply_qty = $request->multiplyQTY=='on'?1:0;
         if ($request->ajax()) {
             return response()->json([], 200);
         } else {
             if ($request->file('images')) {
                 foreach ($request->file('images') as $img) {
-                    $product_images[] = ImageManager::upload('product/', 'png', $img);
+                    $product_images[] = ImageManager::upload('service/', 'png', $img);
                 }
                 $product->images = json_encode($product_images);
             }
 
             if ($request->file('image')) {
-                $product->thumbnail = ImageManager::update('product/thumbnail/', $product->thumbnail, 'png', $request->file('image'));
+                $product->thumbnail = ImageManager::update('service/thumbnail/', $product->thumbnail, 'png', $request->file('image'));
             }
 
             $product->meta_title = $request->meta_title;
             $product->meta_description = $request->meta_description;
             if ($request->file('meta_image')) {
-                $product->meta_image = ImageManager::update('product/meta/', $product->meta_image, 'png', $request->file('meta_image'));
+                $product->meta_image = ImageManager::update('service/meta/', $product->meta_image, 'png', $request->file('meta_image'));
             }
 
             $product->save();
@@ -668,7 +323,7 @@ class ServiceController extends Controller
             foreach ($request->lang as $index => $key) {
                 if ($request->name[$index] && $key != 'en') {
                     Translation::updateOrInsert(
-                        ['translationable_type' => 'App\Model\Product',
+                        ['translationable_type' => 'App\Model\Service',
                             'translationable_id' => $product->id,
                             'locale' => $key,
                             'key' => 'name'],
@@ -677,7 +332,7 @@ class ServiceController extends Controller
                 }
                 if ($request->description[$index] && $key != 'en') {
                     Translation::updateOrInsert(
-                        ['translationable_type' => 'App\Model\Product',
+                        ['translationable_type' => 'App\Model\Service',
                             'translationable_id' => $product->id,
                             'locale' => $key,
                             'key' => 'description'],
@@ -685,15 +340,15 @@ class ServiceController extends Controller
                     );
                 }
             }
-            Toastr::success('Product updated successfully.');
+            Toastr::success('Service updated successfully.');
             return back();
         }
     }
 
     public function remove_image(Request $request)
     {
-        ImageManager::delete('/product/' . $request['image']);
-        $product = Product::find($request['id']);
+        ImageManager::delete('/service/' . $request['image']);
+        $product = Service::find($request['id']);
         $array = [];
         if (count(json_decode($product['images'])) < 2) {
             Toastr::warning('You cannot delete all images!');
@@ -704,34 +359,34 @@ class ServiceController extends Controller
                 array_push($array, $image);
             }
         }
-        Product::where('id', $request['id'])->update([
+        Service::where('id', $request['id'])->update([
             'images' => json_encode($array),
         ]);
-        Toastr::success('Product image removed successfully!');
+        Toastr::success('Service image removed successfully!');
         return back();
     }
 
     public function delete($id)
     {
-        $product = Product::find($id);
+        $product = Service::find($id);
 
-        $translation = Translation::where('translationable_type', 'App\Model\Product')
+        $translation = Translation::where('translationable_type', 'App\Model\Service')
             ->where('translationable_id', $id);
         $translation->delete();
 
-        Cart::where('product_id', $product->id)->delete();
-        Wishlist::where('product_id', $product->id)->delete();
+//        Cart::where('product_id', $product->id)->delete();
+//        Wishlist::where('product_id', $product->id)->delete();
 
         foreach (json_decode($product['images'], true) as $image) {
-            ImageManager::delete('/product/' . $image);
+            ImageManager::delete('/service/' . $image);
         }
-        ImageManager::delete('/product/thumbnail/' . $product['thumbnail']);
+        ImageManager::delete('/service/thumbnail/' . $product['thumbnail']);
         $product->delete();
 
-        FlashDealProduct::where(['product_id' => $id])->delete();
-        DealOfTheDay::where(['product_id' => $id])->delete();
+//        FlashDealProduct::where(['service_id' => $id])->delete();
+//        DealOfTheDay::where(['service_id' => $id])->delete();
 
-        Toastr::success('Product removed successfully!');
+        Toastr::success('Service removed successfully!');
         return back();
     }
 
@@ -739,20 +394,5 @@ class ServiceController extends Controller
     // {
     //     return view('admin-views.product.bulk-import');
     // }
-
-  
-
-    public function barcode(Request $request, $id)
-    {
-
-        if ($request->limit > 270) {
-            Toastr::warning(translate('You can not generate more than 270 barcode'));
-             return back();
-        }
-        $product = Product::findOrFail($id);
-        $limit =  $request->limit ?? 4;
-        return view('admin-views.services.barcode', compact('product', 'limit'));
-    }
-
 }
 

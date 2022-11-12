@@ -25,6 +25,7 @@ class CustomerController extends Controller
 {
     public function info(Request $request)
     {
+      //  dd(auth()->id());
         return response()->json($request->user(), 200);
     }
 
@@ -66,7 +67,7 @@ class CustomerController extends Controller
 
             $user->delete();
            return response()->json(['message' => translate('Your_account_deleted_successfully!!')],200);
-            
+
         }else{
             return response()->json(['message' =>'access_denied!!'],403);
         }
@@ -137,6 +138,7 @@ class CustomerController extends Controller
 
     public function wish_list(Request $request)
     {
+//        return $request;
         $wishlist =Wishlist::
         whereHas('wishlistProduct',function($query){
             $query->whereHas('brand',function($q){
@@ -208,11 +210,11 @@ class CustomerController extends Controller
     public function get_order_list(Request $request)
     {
         $orders = Order::with('delivery_man')->where(['customer_id' => $request->user()->id])->get();
-        $orders->map(function ($data) {
+        $orders = function ($data) {
             $data['shipping_address_data'] = json_decode($data['shipping_address_data']);
             $data['billing_address_data'] = json_decode($data['billing_address_data']);
             return $data;
-        });
+        };
         return response()->json($orders, 200);
     }
 

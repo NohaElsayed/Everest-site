@@ -73,6 +73,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+//        return $request;
         $validator = Validator::make($request->all(), [
             'name'              => 'required',
             'category_id'       => 'required',
@@ -309,7 +310,7 @@ class ProductController extends Controller
         $sort_oqrderQty = $request['sort_oqrderQty'];
         $query_param = $request->all();
         $search = $request['search'];
-        $pro = Product::where(['added_by' => 'seller', 'user_id' => auth('seller')->id()])
+        $pro = Product::where(['added_by' => 'seller', 'user_id' => auth('seller')->id(), 'service' => null])
             ->where('request_status',1)
             ->when($request->has('status') && $request->status != null, function ($query) use ($request) {
                 $query->where('request_status', $request->status);

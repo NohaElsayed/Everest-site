@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^7.4| 8.1.10",
         "ext-curl": "*",
         "ext-json": "*",
         "ext-openssl": "*",
@@ -66,9 +66,7 @@
             "app/CPU/customer-manager.php",
             "app/CPU/back-end-helper.php",
             "app/CPU/convert.php",
-            "app/CentralLogics/CentraLs.php",
-            "app/CPU/sms_module.php",
-            "app/Http/Helpers.php"
+            "app/CPU/sms_module.php"
         ],
         "psr-4": {
             "App\\": "app/",

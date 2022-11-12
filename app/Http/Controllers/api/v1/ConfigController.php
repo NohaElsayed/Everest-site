@@ -66,6 +66,7 @@ class ConfigController extends Controller
             'currency_list' => $currency,
             'currency_symbol_position' => Helpers::get_business_settings('currency_symbol_position') ?? 'right',
             'business_mode'=> Helpers::get_business_settings('business_mode'),
+//            'maintenance_mode' => false,
             'maintenance_mode' => (boolean)Helpers::get_business_settings('maintenance_mode') ?? 0,
             'language' => $lang_array,
             'colors' => Color::all(),
@@ -88,7 +89,6 @@ class ConfigController extends Controller
             'loyalty_point_status'=>Helpers::get_business_settings('loyalty_point_status'),
             'loyalty_point_exchange_rate'=>Helpers::get_business_settings('loyalty_point_exchange_rate'),
             'loyalty_point_minimum_point'=>Helpers::get_business_settings('loyalty_point_minimum_point')
-
         ]);
     }
 }

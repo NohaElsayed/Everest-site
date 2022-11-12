@@ -28,10 +28,13 @@ use App\Model\Shop;
 use App\Model\Order;
 use App\Model\Transaction;
 use App\Model\Translation;
+use App\Service;
+use App\ServiceOrder;
 use App\User;
 use App\Model\Wishlist;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -52,6 +55,28 @@ class ServiceController extends Controller
             return view('web-views.maintenance-mode');
         }
         return redirect()->route('home');
+    }
+    public function store(Request $request){
+//        $service=Product::find($request->id);
+//        return $request;
+      //  $user = auth('customer')->user();
+        if(auth()->user())
+        {
+            return route('customer.auth.login');
+        }
+        $request->validate([
+            'phone' => 'required',
+//            'product_id' => 'required',
+        ], [
+            'phone.required' => 'Phone  is required!',
+        ]);
+        $service = new ServiceOrder();
+        $service->service_id =$request->id;
+        $service->notes =$request->notes;
+        $service->phone =$request->phone;
+        $service->save();
+        Toastr::success('Service Added successfully.');
+        return back();
     }
 
     public function home()
@@ -201,7 +226,7 @@ class ServiceController extends Controller
         $request->validate([
             'name' => 'required',
         ], [
-            'name.required' => 'Product name is required!',
+            'name.required' => 'Service name is required!',
         ]);
 
         $result = ProductManager::search_products_web($request['name']);
@@ -293,77 +318,6 @@ class ServiceController extends Controller
         Toastr::error(translate('incomplete_info'));
         return back();
     }
-
-    public function checkout_complete(Request $request)
-    {
-        $unique_id = OrderManager::gen_unique_id();
-        $order_ids = [];
-        foreach (CartManager::get_cart_group_ids() as $group_id) {
-            $data = [
-                'payment_method' => 'cash_on_delivery',
-                'order_status' => 'pending',
-                'payment_status' => 'unpaid',
-                'transaction_ref' => '',
-                'order_group_id' => $unique_id,
-                'cart_group_id' => $group_id
-            ];
-            $order_id = OrderManager::generate_order($data);
-            array_push($order_ids, $order_id);
-        }
-
-        CartManager::cart_clean();
-
-
-        return view('web-views.checkout-complete');
-    }
-    public function checkout_complete_wallet(Request $request = null)
-    {
-        $cartTotal = CartManager::cart_grand_total();
-        $user = Helpers::get_customer($request);
-        if( $cartTotal > $user->wallet_balance)
-        {
-            Toastr::warning(translate('inefficient balance in your wallet to pay for this order!!'));
-            return back();
-        }else{
-            $unique_id = OrderManager::gen_unique_id();
-            $order_ids = [];
-            foreach (CartManager::get_cart_group_ids() as $group_id) {
-                $data = [
-                    'payment_method' => 'pay_by_wallet',
-                    'order_status' => 'confirmed',
-                    'payment_status' => 'paid',
-                    'transaction_ref' => '',
-                    'order_group_id' => $unique_id,
-                    'cart_group_id' => $group_id
-                ];
-                $order_id = OrderManager::generate_order($data);
-                array_push($order_ids, $order_id);
-            }
-
-            CustomerManager::create_wallet_transaction($user->id, Convert::default($cartTotal), 'order_place','order payment');
-            CartManager::cart_clean();
-        }
-
-        if (session()->has('payment_mode') && session('payment_mode') == 'app') {
-            return redirect()->route('payment-success');
-        }
-        return view('web-views.checkout-complete');
-    }
-
-    public function order_placed()
-    {
-        return view('web-views.checkout-complete');
-    }
-
-    public function shop_cart(Request $request)
-    {
-        if (auth('customer')->check() && Cart::where(['customer_id' => auth('customer')->id()])->count() > 0) {
-            return view('web-views.shop-cart');
-        }
-        Toastr::info(translate('no_items_in_basket'));
-        return redirect('/');
-    }
-
     //for seller Shop
 
     public function seller_shop(Request $request, $id)
@@ -382,7 +336,7 @@ class ServiceController extends Controller
             Toastr::error(translate('access_denied!!'));
             return back();
         }
-        $product_ids = Product::active()
+        $product_ids = Service::active()
             ->when($id == 0, function ($query) {
                 return $query->where(['added_by' => 'admin']);
             })
@@ -393,18 +347,18 @@ class ServiceController extends Controller
             ->pluck('id')->toArray();
 
 
-        $avg_rating = Review::whereIn('product_id', $product_ids)->avg('rating');
-        $total_review = Review::whereIn('product_id', $product_ids)->count();
-        if($id == 0){
-            $total_order = Order::where('seller_is','admin')->where('order_type','default_type')->count();
-        }else{
-            $seller = Seller::find($id);
-            $total_order = $seller->orders->where('seller_is','seller')->where('order_type','default_type')->count();
-        }
+        $avg_rating = Review::whereIn('service_id', $product_ids)->avg('rating');
+        $total_review = Review::whereIn('service_id', $product_ids)->count();
+//        if($id == 0){
+//            $total_order = Order::where('seller_is','admin')->where('order_type','default_type')->count();
+//        }else{
+//            $seller = Seller::find($id);
+//            $total_order = $seller->orders->where('seller_is','seller')->where('order_type','default_type')->count();
+//        }
 
 
         //finding category ids
-        $products = Product::whereIn('id', $product_ids)->paginate(12);
+        $products = Service::whereIn('id', $product_ids)->paginate(12);
 
         $category_info = [];
         foreach ($products as $product) {
@@ -435,7 +389,7 @@ class ServiceController extends Controller
 
         //products search
         if ($request->product_name) {
-            $products = Product::active()
+            $products = Service::active()
                 ->when($id == 0, function ($query) {
                     return $query->where(['added_by' => 'admin']);
                 })
@@ -446,7 +400,7 @@ class ServiceController extends Controller
                 ->where('name', 'like', $request->product_name . '%')
                 ->paginate(12);
         } elseif ($request->category_id) {
-            $products = Product::active()
+            $products = Service::active()
                 ->when($id == 0, function ($query) {
                     return $query->where(['added_by' => 'admin']);
                 })
@@ -475,14 +429,13 @@ class ServiceController extends Controller
         return view('web-views.shop-page', compact('products', 'shop', 'categories'))
             ->with('seller_id', $id)
             ->with('total_review', $total_review)
-            ->with('avg_rating', $avg_rating)
-            ->with('total_order', $total_order);
+            ->with('avg_rating', $avg_rating);
     }
 
     //ajax filter (category based)
     public function seller_shop_product(Request $request, $id)
     {
-        $products = Product::active()->with('shop')->where(['added_by' => 'seller'])
+        $products = Service::active()->with('shop')->where(['added_by' => 'seller'])
             ->where('user_id', $id)
             ->whereJsonContains('category_ids', [
                 ['id' => strval($request->category_id)],
@@ -503,30 +456,17 @@ class ServiceController extends Controller
         return view('web-views.shop-page', compact('products', 'shop'))->with('seller_id', $id);
     }
 
-    public function quick_view(Request $request)
-    {
-        $product = ProductManager::get_product($request->product_id);
-        $order_details = OrderDetail::where('product_id', $product->id)->get();
-        $wishlists = Wishlist::where('product_id', $product->id)->get();
-        $countOrder = count($order_details);
-        $countWishlist = count($wishlists);
-        $relatedProducts = Product::with(['reviews'])->where('category_ids', $product->category_ids)->where('id', '!=', $product->id)->limit(12)->get();
-        return response()->json([
-            'success' => 1,
-            'view' => view('web-views.partials._quick-view-data', compact('product', 'countWishlist', 'countOrder', 'relatedProducts'))->render(),
-        ]);
-    }
 
     public function product($slug)
     {
-        $product = Product::where(['service' => 'service'])->active()->with(['reviews'])->where('slug', $slug)->first();
+        $product = Service::with(['reviews'])->where('slug', $slug)->first();
         if ($product != null) {
-            $countOrder = OrderDetail::where('product_id', $product->id)->count();
-            $countWishlist = Wishlist::where('product_id', $product->id)->count();
-            $relatedProducts = Product::with(['reviews'])->active()->where('category_ids', $product->category_ids)->where('id', '!=', $product->id)->limit(12)->get();
-            $deal_of_the_day = DealOfTheDay::where('product_id', $product->id)->where('status', 1)->first();
+//            $countOrder = OrderDetail::where('product_id', $product->id)->count();
+//            $countWishlist = Wishlist::where('product_id', $product->id)->count();
+            $relatedProducts = Service::with(['reviews'])->active()->where('category_ids', $product->category_ids)->where('id', '!=', $product->id)->limit(12)->get();
+//            $deal_of_the_day = DealOfTheDay::where('product_id', $product->id)->where('status', 1)->first();
 
-            return view('web-views.service.details', compact('product', 'countWishlist', 'countOrder', 'relatedProducts', 'deal_of_the_day'));
+            return view('web-views.service.details', compact('product'));
         }
 
         Toastr::error(translate('not_found'));
@@ -536,7 +476,7 @@ class ServiceController extends Controller
     {
         $request['sort_by'] == null ? $request['sort_by'] == 'latest' : $request['sort_by'];
 
-        $porduct_data = Product::where(['service' => 'service'])->with(['reviews']);
+        $porduct_data = Service::with(['reviews']);
 
         if ($request['data_from'] == 'category') {
             $products = $porduct_data->get();
@@ -551,21 +491,21 @@ class ServiceController extends Controller
             $query = $porduct_data->whereIn('id', $product_ids);
         }
 
-        if ($request['data_from'] == 'brand') {
-            $query = $porduct_data->where('brand_id', $request['id']);
-        }
+//        if ($request['data_from'] == 'brand') {
+//            $query = $porduct_data->where('brand_id', $request['id']);
+//        }
 
         if ($request['data_from'] == 'latest') {
             $query = $porduct_data;
         }
 
         if ($request['data_from'] == 'top-rated') {
-            $reviews = Review::select('product_id', DB::raw('AVG(rating) as count'))
-                ->groupBy('product_id')
+            $reviews = Review::select('service_id', DB::raw('AVG(rating) as count'))
+                ->groupBy('service_id')
                 ->orderBy("count", 'desc')->get();
             $product_ids = [];
             foreach ($reviews as $review) {
-                array_push($product_ids, $review['product_id']);
+                array_push($product_ids, $review['service_id']);
             }
             $query = $porduct_data->whereIn('id', $product_ids);
         }
@@ -578,37 +518,37 @@ class ServiceController extends Controller
                 ->get();
             $product_ids = [];
             foreach ($details as $detail) {
-                array_push($product_ids, $detail['product_id']);
+                array_push($product_ids, $detail['service_id']);
             }
             $query = $porduct_data->whereIn('id', $product_ids);
         }
 
-        if ($request['data_from'] == 'most-favorite') {
-            $details = Wishlist::with('product')
-                ->select('product_id', DB::raw('COUNT(product_id) as count'))
-                ->groupBy('product_id')
-                ->orderBy("count", 'desc')
-                ->get();
-            $product_ids = [];
-            foreach ($details as $detail) {
-                array_push($product_ids, $detail['product_id']);
-            }
-            $query = $porduct_data->whereIn('id', $product_ids);
-        }
+//        if ($request['data_from'] == 'most-favorite') {
+//            $details = Wishlist::with('product')
+//                ->select('product_id', DB::raw('COUNT(product_id) as count'))
+//                ->groupBy('product_id')
+//                ->orderBy("count", 'desc')
+//                ->get();
+//            $product_ids = [];
+//            foreach ($details as $detail) {
+//                array_push($product_ids, $detail['product_id']);
+//            }
+//            $query = $porduct_data->whereIn('id', $product_ids);
+//        }
 
         if ($request['data_from'] == 'featured') {
-            $query = Product::with(['reviews'])->active()->where('featured', 1);
+            $query = Service::with(['reviews'])->active();
         }
 
-        if ($request['data_from'] == 'featured_deal') {
-            $featured_deal_id = FlashDeal::where(['status'=>1])->where(['deal_type'=>'feature_deal'])->pluck('id')->first();
-            $featured_deal_product_ids = FlashDealProduct::where('flash_deal_id',$featured_deal_id)->pluck('product_id')->toArray();
-            $query = Product::with(['reviews'])->active()->whereIn('id', $featured_deal_product_ids);
-        }
+//        if ($request['data_from'] == 'featured_deal') {
+//            $featured_deal_id = FlashDeal::where(['status'=>1])->where(['deal_type'=>'feature_deal'])->pluck('id')->first();
+//            $featured_deal_product_ids = FlashDealProduct::where('flash_deal_id',$featured_deal_id)->pluck('product_id')->toArray();
+//            $query = Product::with(['reviews'])->active()->whereIn('id', $featured_deal_product_ids);
+//        }
 
         if ($request['data_from'] == 'search') {
             $key = explode(' ', $request['name']);
-            $product_ids = Product::where(function ($q) use ($key) {
+            $product_ids = Service::where(function ($q) use ($key) {
                 foreach ($key as $value) {
                     $q->orWhere('name', 'like', "%{$value}%");
                 }
@@ -616,7 +556,7 @@ class ServiceController extends Controller
 
             if($product_ids->count()==0)
             {
-                $product_ids = Translation::where('translationable_type', 'App\Model\Product')
+                $product_ids = Translation::where('translationable_type', 'App\Model\Service')
                     ->where('key', 'name')
                     ->where(function ($q) use ($key) {
                         foreach ($key as $value) {
@@ -632,9 +572,9 @@ class ServiceController extends Controller
 
         }
 
-        if ($request['data_from'] == 'discounted') {
-            $query = Product::with(['reviews'])->active()->where('discount', '!=', 0);
-        }
+//        if ($request['data_from'] == 'discounted') {
+//            $query = Product::with(['reviews'])->active()->where('discount', '!=', 0);
+//        }
 
         if ($request['sort_by'] == 'latest') {
             $fetched = $query->latest();
@@ -650,9 +590,9 @@ class ServiceController extends Controller
             $fetched = $query->latest();
         }
 
-        if ($request['min_price'] != null || $request['max_price'] != null) {
-            $fetched = $fetched->whereBetween('unit_price', [Helpers::convert_currency_to_usd($request['min_price']), Helpers::convert_currency_to_usd($request['max_price'])]);
-        }
+//        if ($request['min_price'] != null || $request['max_price'] != null) {
+//            $fetched = $fetched->whereBetween('unit_price', [Helpers::convert_currency_to_usd($request['min_price']), Helpers::convert_currency_to_usd($request['max_price'])]);
+//        }
 
         $data = [
             'id' => $request['id'],
@@ -689,7 +629,7 @@ class ServiceController extends Controller
         return view('web-views.service.view', compact('products', 'data'), $data);
     }
 
-  
+
     public function viewWishlist()
     {
         $wishlists = Wishlist::whereHas('wishlistProduct',function($q){
@@ -715,13 +655,13 @@ class ServiceController extends Controller
                     $countWishlist = Wishlist::whereHas('wishlistProduct',function($q){
                         $q->where('status',1);
                     })->where('customer_id', auth('customer')->id())->get();
-                    $data = \App\CPU\translate("Product has been added to wishlist");
+                    $data = \App\CPU\translate("Service has been added to wishlist");
 
                     $product_count = Wishlist::where(['product_id' => $request->product_id])->count();
                     session()->put('wish_list', Wishlist::where('customer_id', auth('customer')->user()->id)->pluck('product_id')->toArray());
                     return response()->json(['success' => $data, 'value' => 1, 'count' => count($countWishlist), 'id' => $request->product_id, 'product_count' => $product_count]);
                 } else {
-                    $data = \App\CPU\translate("Product already added to wishlist");
+                    $data = \App\CPU\translate("Service already added to wishlist");
                     return response()->json(['error' => $data, 'value' => 2]);
                 }
 
@@ -735,7 +675,7 @@ class ServiceController extends Controller
     public function deleteWishlist(Request $request)
     {
         Wishlist::where(['product_id' => $request['id'], 'customer_id' => auth('customer')->id()])->delete();
-        $data = "Product has been remove from wishlist!";
+        $data = "Service has been remove from wishlist!";
         $wishlists = Wishlist::where('customer_id', auth('customer')->id())->get();
         session()->put('wish_list', Wishlist::where('customer_id', auth('customer')->user()->id)->pluck('product_id')->toArray());
         return response()->json([

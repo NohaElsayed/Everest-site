@@ -39,7 +39,7 @@
 
 <div id="sidebarMain" class="d-none" style=" margin-right: {{Session::get('direction') === "rtl" ? '6px' : ''}};">
     <aside
-        style="background: #ffa500!important; text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}}!important; " 
+        style="background: #ffa500!important; text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}}!important; "
         class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered  ">
         <div class="navbar-vertical-container">
             <div class="navbar-vertical-footer-offset pb-0">
@@ -270,6 +270,30 @@
                                     </li>
                                 </ul>
                             </li>
+                            <!-- Pages -->
+                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/adverts*')?'active':''}}">
+                                <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
+                                   href="javascript:">
+                                    <i class="tio-telegram nav-icon"></i>
+                                    <span
+                                        class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{\App\CPU\translate('Advertisement')}}</span>
+                                </a>
+                                <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                                    style="display: {{Request::is('admin/brand*')?'block':'none'}}">
+                                    <li class="nav-item {{Request::is('admin/adverts/add-new')?'active':''}}">
+                                        <a class="nav-link " href="{{route('admin.adverts.add-new')}}">
+                                            <span class="tio-circle nav-indicator-icon"></span>
+                                            <span class="text-truncate">{{\App\CPU\translate('add_new')}}</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item {{Request::is('admin/adverts/list')?'active':''}}">
+                                        <a class="nav-link " href="{{route('admin.adverts.list')}}">
+                                            <span class="tio-circle nav-indicator-icon"></span>
+                                            <span class="text-truncate">{{\App\CPU\translate('List')}}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                             <li class="navbar-vertical-aside-has-menu {{(Request::is('admin/category*') ||Request::is('admin/sub*')) ?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
                                    href="javascript:">
@@ -352,12 +376,20 @@
                             </li>
                             <li class="navbar-vertical-aside-has-menu {{(Request::is('admin/services/list/in_house') || Request::is('admin/product/bulk-import'))?'active':''}}">
                              <a class="nav-link " href="{{route('admin.services.list',['in_house', ''])}}">
-                                    <i class="tio-shop nav-icon"></i>
+                                    <i class="tio-location-search nav-icon"></i>
                                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                         <span class="text-truncate">{{\App\CPU\translate('InHouse Service')}}</span>
                                     </span>
                                 </a>
                                 </li>
+                            <li class="navbar-vertical-aside-has-menu {{(Request::is('admin/services/orders') || Request::is('admin/product/bulk-import'))?'active':''}}">
+                                <a class="nav-link " href="{{route('admin.services.orders')}}">
+                                    <i class="tio-taxi nav-icon"></i>
+                                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
+                                        <span class="text-truncate">{{\App\CPU\translate('Service Order')}}</span>
+                                    </span>
+                                </a>
+                            </li>
                             <li class="navbar-vertical-aside-has-menu {{Request::is('admin/product/list/seller*')||Request::is('admin/product/updated-product-list')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
                                    href="javascript:">
@@ -782,7 +814,7 @@
                                         class="text-truncate">{{\App\CPU\translate('sms')}} {{\App\CPU\translate('module')}}</span>
                                 </a>
                             </li>
-                          
+
                               <li
                                     class="navbar-vertical-aside-has-menu {{ Request::is('admin/zone*') ? 'active' : '' }}">
                                     <a class="js-navbar-vertical-aside-menu-link nav-link"

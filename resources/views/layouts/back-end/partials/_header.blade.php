@@ -53,8 +53,6 @@
                     </form>
                 </div>
             </div>
-
-
             <!-- Secondary Content -->
             <div class="navbar-nav-wrap-content-right"
                  style="{{Session::get('direction') === "rtl" ? 'margin-left:unset; margin-right: auto' : 'margin-right:unset; margin-left: auto'}}">
