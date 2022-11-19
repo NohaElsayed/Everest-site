@@ -78,7 +78,7 @@ Route::group(['namespace' => 'api\v2', 'prefix' => 'v2', 'middleware' => ['api_l
             Route::put('update/{id}', 'ShippingMethodController@update');
             Route::delete('delete/{id}', 'ShippingMethodController@delete');
         });
-        Route::get('service-seller-order', 'ServiceController@service_order_seller')->name('service-seller-order');
+       Route::get('service-seller-order', 'ServiceController@service_order_seller');
 
         Route::group(['prefix' => 'messages'], function () {
             Route::get('list', 'ChatController@messages');
@@ -87,6 +87,8 @@ Route::group(['namespace' => 'api\v2', 'prefix' => 'v2', 'middleware' => ['api_l
 
         Route::group(['prefix' => 'auth', 'namespace' => 'auth'], function () {
             Route::post('login', 'LoginController@login');
+            Route::post('register', 'RegisterController@register');
+            Route::get('subscription', 'RegisterController@subscription');
 
             Route::post('forgot-password', 'ForgotPasswordController@reset_password_request');
             Route::post('verify-otp', 'ForgotPasswordController@otp_verification_submit');

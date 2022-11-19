@@ -17,6 +17,7 @@ use App\Model\Product;
 use App\Model\Review;
 use App\Model\Translation;
 use App\Service;
+use App\ServiceOrder;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Rap2hpoutre\FastExcel\FastExcel;
 use function App\CPU\translate;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class ServiceController extends Controller
 {
@@ -187,7 +189,17 @@ class ServiceController extends Controller
 
         return view('seller-views.service.list', compact('products', 'search'));
     }
+        public function service_order(){
 
+          $services = Service::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id()])->get('id'); 
+            // foreach($services as $service){
+            //    // $service = ServiceOrder::whereIn('service_id')->get();
+            // }
+         $services = DB::table('service_orders')->whereIn('service_id',$services)->join('services', 'services.id', '=', 'service_orders.service_id')->get();
+            return view('seller-views.service.service-orders', compact('services'));
+     
+    
+        }
 
     public function get_categories(Request $request)
     {

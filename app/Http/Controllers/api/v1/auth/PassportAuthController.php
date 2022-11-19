@@ -9,11 +9,13 @@ use App\Http\Controllers\Controller;
 use App\Model\Zone;
 use App\ServiceOrder;
 use App\User;
+use App\Service;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use function App\CPU\translate;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class PassportAuthController extends Controller
 {
@@ -152,11 +154,15 @@ class PassportAuthController extends Controller
         }
     }
     public function zones(){
-        return $zones =Zone::all();
+        return $zones = response()->json(Zone::all(), 200);
 
     }
     public function adverts(){
-        return $adverts =Advert::all();
+        return $adverts = response()->json(Advert::all(), 200);
+
+    }
+    public function services(){
+        return $services = response()->json(Service::all(), 200);
 
     }
     public function store(Request $request){

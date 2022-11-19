@@ -1611,4 +1611,6 @@
   'update_your_product_code' => 'Update your product code',
   'Upload service images' => 'Upload service images',
   'Phone Seller' => 'Phone Seller',
+  'notes' => 'Notes',
+  'Services Order' => 'Services Order',
 );

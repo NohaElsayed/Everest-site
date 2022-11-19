@@ -32,11 +32,11 @@ class ServiceController extends Controller
                 'auth-001' => translate('Your existing session token does not authorize you any more')
             ], 401);
         }
-
         return response()->json(Service::where(['added_by' => 'seller', 'id' => $seller['id']])->orderBy('id', 'DESC')->get(), 200);
     }
+
     public function service_order_seller(Request $request){
-      $data = Helpers::get_seller_by_token($request);
+        $data = Helpers::get_seller_by_token($request);
         if ($data['success'] == 1) {
             $seller = $data['data'];
         } else {
@@ -44,11 +44,9 @@ class ServiceController extends Controller
                 'auth-001' => translate('Your existing session token does not authorize you any more')
             ], 401);
         }
-      return $sellers = Seller::where(['auth_token' => $data])->get();
-//        foreach($sellers as $seller){
-//           return $services = Service::where(['user_id' => $seller->id])->get();
-//        }
-    //  response()->json( ServiceOrder::where('service_id', $services)->get(), 200);
+        $services = Service::where(['added_by' => 'seller', 'id' => $seller['id']])->orderBy('id', 'DESC')->get();
+       return response()->json($screensall = DB::table('service_orders')->whereIn('service_id',$services)->join('services', 'services.id', '=', 'service_orders.service_id')->get(), 200);
+        
     }
 
     public function upload_images(Request $request)

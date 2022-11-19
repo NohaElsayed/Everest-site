@@ -53,7 +53,7 @@
                                     <input type="email" class="form-control form-control-user" id="exampleInputEmail" name="email" value="{{old('email')}}" placeholder="{{\App\CPU\translate('email_address')}}" required>
                                 </div>
                                 <div class="col-sm-6"><small class="text-danger">( * {{\App\CPU\translate('country_code_is_must')}} {{\App\CPU\translate('like_for_BD_225')}} )</small>
-                                    <input type="number" class="form-control form-control-user" id="exampleInputPhone" name="phone" value="{{old('phone')}}" placeholder="{{\App\CPU\translate('phone_number')}}" required>
+                                    <input type="text" class="form-control form-control-user" id="exampleInputPhone" name="phone" value="{{old('phone')}}" placeholder="{{\App\CPU\translate('phone_number')}}" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -85,7 +85,7 @@
                                               <option value="{{old('subscription')}}" selected disabled>---{{\App\CPU\translate('Select')}}---</option>
                                             @foreach($subscriptions as $subscription)
                                                 <option value="{{$subscription['id']}} {{old('name')==$subscription['id']? 'selected': ''}}">
-                                                    {{$subscription['name']}}  ||  Price:{{$subscription['value']}} P.c
+                                                    {{$subscription['name']}}  ||  Price:{{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($subscription['value']))}} 
                                                 </option>
                                             @endforeach
                                         </select>

@@ -14,7 +14,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Seller', 'prefix' => 'seller', 'as' => 'seller.'], function () {
-
     /*authentication*/
     Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'as' => 'auth.'], function () {
         Route::get('/code/captcha/{tmp}', 'LoginController@captcha')->name('default-captcha');
@@ -78,8 +77,11 @@ Route::group(['namespace' => 'Seller', 'prefix' => 'seller', 'as' => 'seller.'],
             Route::post('update/{id}', 'ServiceController@update')->name('update');
             Route::get('get-categories', 'ServiceController@get_categories')->name('get-categories');
             Route::get('view/{id}', 'ServiceController@view')->name('view');
+            Route::get('service-order', 'ServiceController@service_order')->name('serviceorder');
             Route::delete('delete/{id}', 'ServiceController@delete')->name('delete');
         });
+
+        Route::get('service-seller-order', 'ServiceController@service_order_seller');
           //refund request
         Route::group(['prefix' => 'refund', 'as' => 'refund.'], function () {
             Route::get('list/{status}', 'RefundController@list')->name('list');

@@ -99,6 +99,7 @@
                                             id="sub-category-select"
                                             onchange="getRequest('{{ url('/') }}/seller/product/get-categories?parent_id='+this.value,'sub-sub-category-select','select')">
                                         </select>
+                                          @error('sub_category_id') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-md-4">
                                         <label for="name">{{ \App\CPU\translate('Sub_sub_category') }}</label>
@@ -106,6 +107,7 @@
                                             id="sub-sub-category-select">
 
                                         </select>
+                                          @error('sub_sub_category_id') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
                             </div>
@@ -121,18 +123,20 @@
                                         <input type="number" minlength="5" id="generate_number" name="code"
                                             class="form-control" value="{{ old('code') }}"
                                             placeholder="{{ \App\CPU\translate('code') }}" required>
+                                               @error('code') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-md-4">
                                         <label for="name">{{ \App\CPU\translate('Brand') }}</label>
                                         <select
                                             class="js-example-basic-multiple js-states js-example-responsive form-control"
-                                            name="brand_id" required>
+                                            name="brand_id">
                                             <option value="{{ null }}" selected disabled>
                                                 ---{{ \App\CPU\translate('Select') }}---</option>
                                             @foreach ($br as $b)
                                                 <option value="{{ $b['id'] }}">{{ $b['name'] }}</option>
                                             @endforeach
                                         </select>
+
                                     </div>
 
                                     <div class="col-md-4">
@@ -215,6 +219,7 @@
                                         <input type="number" min="0" value="0" step="0.01"
                                             placeholder="{{ \App\CPU\translate('Unit_price') }}" name="unit_price"
                                             value="{{ old('unit_price') }}" class="form-control" required>
+                                              @error('unit_price') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-md-6">
                                         <label class="control-label">{{ \App\CPU\translate('Purchase_price') }}</label>
@@ -222,6 +227,7 @@
                                             placeholder="{{ \App\CPU\translate('Purchase_price') }}"
                                             name="purchase_price" value="{{ old('purchase_price') }}"
                                             class="form-control" required>
+                                              @error('purchase_price') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
 
@@ -248,6 +254,7 @@
                                         <input type="number" min="0" value="0" step="0.01"
                                             placeholder="{{ \App\CPU\translate('Discount') }}" name="discount"
                                             value="{{ old('discount') }}" class="form-control" required>
+                                              @error('discount') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
 
                                 </div>
@@ -261,18 +268,21 @@
                                         <input type="number" min="0" value="0" step="1"
                                                placeholder="{{ \App\CPU\translate('Quantity') }}" name="current_stock"
                                                value="{{ old('current_stock') }}" class="form-control" required>
+                                                @error('current_stock') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-md-3" id="minimum_order_qty">
                                         <label class="control-label">{{ \App\CPU\translate('minimum_order_quantity') }}</label>
                                         <input type="number" min="1" value="1" step="1"
                                             placeholder="{{ \App\CPU\translate('minimum_order_quantity') }}" name="minimum_order_qty"
                                                class="form-control" required>
+                                                 @error('minimum_order_qty') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-md-3" id="shipping_cost">
                                         <label class="control-label">{{ \App\CPU\translate('shipping_cost') }} </label>
                                         <input type="number" min="0" value="0" step="1"
                                             placeholder="{{ \App\CPU\translate('shipping_cost') }}" name="shipping_cost"
                                             class="form-control" required>
+                                               @error('shipping_cost') <div class="alert alert-danger">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-md-3" id="shipping_cost_multy">
                                         <div>
@@ -333,7 +343,7 @@
                                         )</small>
                                     <input type="text" name="video_link"
                                         placeholder="EX : https://www.youtube.com/embed/5R06LRdUCSE" class="form-control"
-                                        required>
+                                        >
                                 </div>
 
                                 <div class="col-md-8">

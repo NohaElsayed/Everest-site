@@ -25,11 +25,11 @@
     }
 
     .side-logo {
-        background-color: #ffa500;
+        background-color: #8BB381;
     }
 
     .nav-sub {
-        background-color: #ffa500!important;
+        background-color: #8BB381!important;
     }
 
     .nav-indicator-icon {
@@ -39,7 +39,7 @@
 
 <div id="sidebarMain" class="d-none" style=" margin-right: {{Session::get('direction') === "rtl" ? '6px' : ''}};">
     <aside
-        style="background: #ffa500!important; text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}}!important; "
+        style="background: #8BB381!important; text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}}!important; "
         class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered  ">
         <div class="navbar-vertical-container">
             <div class="navbar-vertical-footer-offset pb-0">

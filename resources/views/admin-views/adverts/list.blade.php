@@ -1,6 +1,6 @@
 @extends('layouts.back-end.app')
 
-@section('title', \App\CPU\translate('Brand List'))
+@section('title', \App\CPU\translate('Advertisement List'))
 
 @push('css_or_js')
 
@@ -70,7 +70,7 @@
                                         <td>
                                             <img class="rounded" style="width: 60px;height: 60px;"
                                                 onerror="this.src='{{asset('public/assets/back-end/img/160x160/img2.jpg')}}'"
-                                                 src="{{asset('storage/app/public/brand')}}/{{$b['image']}}" alt="">
+                                                 src="{{asset('storage/app/public/adverts')}}/{{$b['image']}}" alt="">
                                         </td>
                                         <td>
                                             <label class="switch switch-status">

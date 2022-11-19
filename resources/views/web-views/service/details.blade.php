@@ -13,13 +13,13 @@
     <!-- Viewport-->
 
     @if($product['meta_image']!=null)
-        <meta property="og:image" content="{{asset("storage/app/public/service/meta")}}/{{$product->meta_image}}"/>
+        <meta property="og:image" content="{{asset("storage/app/public/Service/meta")}}/{{$product->meta_image}}"/>
         <meta property="twitter:card"
-              content="{{asset("storage/app/public/service/meta")}}/{{$product->meta_image}}"/>
+              content="{{asset("storage/app/public/Service/meta")}}/{{$product->meta_image}}"/>
     @else
-        <meta property="og:image" content="{{asset("storage/app/public/service/thumbnail")}}/{{$product->thumbnail}}"/>
+        <meta property="og:image" content="{{asset("storage/app/public/Service/thumbnail")}}/{{$product->thumbnail}}"/>
         <meta property="twitter:card"
-              content="{{asset("storage/app/public/service/thumbnail/")}}/{{$product->thumbnail}}"/>
+              content="{{asset("storage/app/public/Service/thumbnail/")}}/{{$product->thumbnail}}"/>
     @endif
 
     @if($product['meta_title']!=null)

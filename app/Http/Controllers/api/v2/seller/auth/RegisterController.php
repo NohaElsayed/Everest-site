@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Seller\Auth;
+namespace App\Http\Controllers\api\v2\seller\auth;
 
-use App\CPU\ImageManager;
 use App\Http\Controllers\Controller;
-use App\Model\Seller;
+use Illuminate\Http\Request;
+use App\CPU\ImageManager;
 use App\Model\Shop;
 use App\Model\Zone;
-use App\CentralLogics\CentraLs;
-use Grimzy\LaravelMysqlSpatial\Types\Point;
-use App\Model\Category;
-use Illuminate\Support\Str;
-use App\CPU\Helpers;
+use App\Model\Seller;
 use App\SubscriptionSeller;
-use Brian2694\Toastr\Facades\Toastr;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Model\Category;
+use App\CPU\Helpers;
+use Illuminate\Support\Str;
+use App\CentralLogics\CentraLs;
+use App\Model\Subscription;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Validator;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 class RegisterController extends Controller
 {
     public function get_coordinates($id){
@@ -31,38 +30,24 @@ class RegisterController extends Controller
         $center = (object)['lat'=>(float)trim(explode(' ',$zone->center)[1], 'POINT()'), 'lng'=>(float)trim(explode(' ',$zone->center)[0], 'POINT()')];
         return response()->json(['coordinates'=>$data, 'center'=>$center]);
     }
-
-    public function create()
+    public function register(Request $request)
     {
-       
-        $cat = Category::where(['parent_id' => 0])->get();
-        $subscriptions = SubscriptionSeller::get();
-        return view('seller-views.auth.register', compact('cat','subscriptions'));
-    }
-
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-        
-            'latitude' => 'required',
-            'longitude' => 'required',
+      //  return $request;
+         $validator = Validator::make($request->all(), [ 
+            // 'latitude' => 'required',
+            // 'longitude' => 'required',
             'subscription' => 'required',
-            'zone_id' => 'required',
-        ]);
-
-        $this->validate($request, [
+            // 'zone_id' => 'required',
+        ], [
             'email' => 'required|unique:sellers',
             'shop_address' => 'required',
-            'category_id' => 'required',
+         //   'category_id' => 'required',
             'f_name' => 'required',
             'l_name' => 'required',
             'phone' => 'required',
             'subscription' => 'required',
             'password' => 'required|min:8',
         ]);
-        if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
-        }
         if($request->zone_id)
         {
             $point = new Point($request->latitude, $request->longitude);
@@ -70,31 +55,34 @@ class RegisterController extends Controller
             if(!$zone){
                 $validator->getMessageBag()->add('latitude', trans('messages.coordinates_out_of_zone'));
                 return back()->withErrors($validator)
-                    ->withInput();
+                        ->withInput();
             }
         }
         if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
+            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
-        DB::transaction(function ($r) use ($request) {
+
+         DB::transaction(function ($r) use ($request) {
             $auth_token = Str::random(40);
             $seller = new Seller();
             $seller->f_name = $request->f_name;
             $seller->l_name = $request->l_name;
-            $seller->phone = $request->phone;
-            $seller ->category_id = $request->category_id;
             $seller ->auth_token = $auth_token;
-                   
+          //  $seller->phone = $request->phone;
+           // $seller ->category_id = $request->category_id;
+                         
             $seller->email = $request->email;
             $seller->image = ImageManager::upload('seller/', 'png', $request->file('image'));
             $seller->password = bcrypt($request->password);
             $seller->status =  $request->status == 'approved'?'approved': "pending";
             $seller->save();
 
+            // return response()->json(['Shop apply successfully!'], 200);
+            // $token = $seller->createToken('LaravelAuthApp')->accessToken;
+            // return response()->json(['token' => $token], 200);
+            $seller_id = Seller::latest()->first()->id;
             $shop = new Shop();
-            $shop->seller_id = $seller->id;
+            $shop->seller_id = $seller_id;
             $shop->subscription = $request->subscription;
             $shop->name = $request->shop_name;
             $shop->whats_up = $request->whats_up;
@@ -118,18 +106,19 @@ class RegisterController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-
-        });
+            // $token = $seller->createToken('LaravelAuthApp')->accessToken;
+            // return response()->json(['token' => $token], 200); 
+         });
 
         if($request->status == 'approved'){
-            Toastr::success('Shop apply successfully!');
-            return back();
+            return response()->json(['Shop apply successfully!'], 200);
         }else{
-            Toastr::success('Shop apply successfully!');
+            return response()->json(['Shop apply successfully!'], 200);
             return redirect()->route('seller.auth.login');
         }
-        
-
-        
-    }
+    
+  }
+  public function subscription(){
+    return $subscriptions = response()->json(SubscriptionSeller::all(), 200);
+  }
 }

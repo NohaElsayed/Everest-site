@@ -194,6 +194,16 @@ class ProductManager
         }
         return $path;
     }
+    public static function image_path($image_type)
+    {
+        $path = '';
+        if ($image_type == 'thumbnail') {
+            $path = asset('storage/app/public/Service/thumbnail');
+        } elseif ($image_type == 'Service') {
+            $path = asset('storage/app/public/Service');
+        }
+        return $path;
+    }
 
     public static function get_product_review($id)
     {
