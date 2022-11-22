@@ -68,7 +68,9 @@ Route::group(['namespace' => 'Web','middleware'=>['maintenance_mode']], function
     Route::get('services', 'ServiceController@products')->name('services');
     Route::get('orderDetails', 'ServiceController@orderdetails')->name('orderdetails');
     Route::get('discounted-products', 'ServiceController@discounted_products')->name('discounted-products');
-   // Route::get('quick-view', 'ServiceController@quick_view')->name('quick-view');
+    Route::get('quick-view-service', 'ServiceController@quick_view')->name('quick-view-service');
+    Route::post('service-store/{id}', 'ServiceController@store')->name('store');
+    Route::get('/service/{slug}', 'ServiceController@product')->name('service');
 
     Route::post('review-list-service','ServiceController@review_list_product')->name('review-list-service');
     //Chat with seller from product details

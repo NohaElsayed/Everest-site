@@ -39,7 +39,7 @@
 
 <div id="sidebarMain" class="d-none" style=" margin-right: {{Session::get('direction') === "rtl" ? '6px' : ''}};">
     <aside
-        style="background: #ffa500!important; text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}}!important; " 
+        style="background: #ffa500!important; text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}}!important; "
         class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered  ">
         <div class="navbar-vertical-container">
             <div class="navbar-vertical-footer-offset pb-0">
@@ -358,6 +358,14 @@
                                     </span>
                                 </a>
                                 </li>
+                            <li class="navbar-vertical-aside-has-menu {{(Request::is('admin/services/orders') || Request::is('admin/product/bulk-import'))?'active':''}}">
+                                <a class="nav-link " href="{{route('admin.services.orders')}}">
+                                    <i class="tio-shop nav-icon"></i>
+                                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
+                                        <span class="text-truncate">{{\App\CPU\translate('Service Order')}}</span>
+                                    </span>
+                                </a>
+                            </li>
                             <li class="navbar-vertical-aside-has-menu {{Request::is('admin/product/list/seller*')||Request::is('admin/product/updated-product-list')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
                                    href="javascript:">
@@ -782,7 +790,7 @@
                                         class="text-truncate">{{\App\CPU\translate('sms')}} {{\App\CPU\translate('module')}}</span>
                                 </a>
                             </li>
-                          
+
                               <li
                                     class="navbar-vertical-aside-has-menu {{ Request::is('admin/zone*') ? 'active' : '' }}">
                                     <a class="js-navbar-vertical-aside-menu-link nav-link"

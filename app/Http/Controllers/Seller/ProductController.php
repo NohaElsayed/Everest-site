@@ -288,7 +288,7 @@ class ProductController extends Controller
         $search = $request['search'];
         if ($request->has('search')) {
             $key = explode(' ', $request['search']);
-            $products = Product::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id()])
+            $products = Product::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id(), 'service' => null])
                 ->where(function ($q) use ($key) {
                     foreach ($key as $value) {
                         $q->Where('name', 'like', "%{$value}%");
@@ -296,7 +296,7 @@ class ProductController extends Controller
                 });
             $query_param = ['search' => $request['search']];
         } else {
-            $products = Product::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id()]);
+            $products = Product::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id(), 'service' => null]);
         }
         $products = $products->orderBy('id', 'DESC')->paginate(Helpers::pagination_limit())->appends($query_param);
 
@@ -309,7 +309,7 @@ class ProductController extends Controller
         $sort_oqrderQty = $request['sort_oqrderQty'];
         $query_param = $request->all();
         $search = $request['search'];
-        $pro = Product::where(['added_by' => 'seller', 'user_id' => auth('seller')->id()])
+        $pro = Product::where(['added_by' => 'seller', 'user_id' => auth('seller')->id(), 'service' => null])
             ->where('request_status',1)
             ->when($request->has('status') && $request->status != null, function ($query) use ($request) {
                 $query->where('request_status', $request->status);

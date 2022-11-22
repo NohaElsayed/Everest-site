@@ -256,13 +256,13 @@
                                             class="form-control custom-select" id="searchByFilterValue">
                                         <option selected disabled>{{\App\CPU\translate('Choose')}}</option>
                                         <option
-                                            value="{{route('products',['id'=> $data['id'],'data_from'=>'best-selling','page'=>1])}}" {{isset($data['data_from'])!=null?$data['data_from']=='best-selling'?'selected':'':''}}>{{\App\CPU\translate('best_selling_product')}}</option>
+                                            value="{{route('services',['id'=> $data['id'],'data_from'=>'best-selling','page'=>1])}}" {{isset($data['data_from'])!=null?$data['data_from']=='best-selling'?'selected':'':''}}>{{\App\CPU\translate('best_selling_product')}}</option>
                                         <option
-                                            value="{{route('products',['id'=> $data['id'],'data_from'=>'top-rated','page'=>1])}}" {{isset($data['data_from'])!=null?$data['data_from']=='top-rated'?'selected':'':''}}>{{\App\CPU\translate('top_rated')}}</option>
+                                            value="{{route('services',['id'=> $data['id'],'data_from'=>'top-rated','page'=>1])}}" {{isset($data['data_from'])!=null?$data['data_from']=='top-rated'?'selected':'':''}}>{{\App\CPU\translate('top_rated')}}</option>
                                         <option
-                                            value="{{route('products',['id'=> $data['id'],'data_from'=>'most-favorite','page'=>1])}}" {{isset($data['data_from'])!=null?$data['data_from']=='most-favorite'?'selected':'':''}}>{{\App\CPU\translate('most_favorite')}}</option>
+                                            value="{{route('services',['id'=> $data['id'],'data_from'=>'most-favorite','page'=>1])}}" {{isset($data['data_from'])!=null?$data['data_from']=='most-favorite'?'selected':'':''}}>{{\App\CPU\translate('most_favorite')}}</option>
                                         <option
-                                            value="{{route('products',['id'=> $data['id'],'data_from'=>'featured_deal','page'=>1])}}" {{isset($data['data_from'])!=null?$data['data_from']=='featured_deal'?'selected':'':''}}>{{\App\CPU\translate('featured_deal')}}</option>
+                                            value="{{route('services',['id'=> $data['id'],'data_from'=>'featured_deal','page'=>1])}}" {{isset($data['data_from'])!=null?$data['data_from']=='featured_deal'?'selected':'':''}}>{{\App\CPU\translate('featured_deal')}}</option>
                                     </select>
                                 </label>
                             </div>
@@ -358,7 +358,7 @@
                                         <div class="card-header p-1 flex-between">
                                             <div>
                                                 <label class="for-hover-lable" style="cursor: pointer"
-                                                       onclick="location.href='{{route('products',['id'=> $category['id'],'data_from'=>'category','page'=>1])}}'">
+                                                       onclick="location.href='{{route('services',['id'=> $category['id'],'data_from'=>'category','page'=>1])}}'">
                                                     {{$category['name']}}
                                                 </label>
                                             </div>
@@ -376,7 +376,7 @@
                                                 <div class=" for-hover-lable card-header p-1 flex-between">
                                                     <div>
                                                         <label style="cursor: pointer"
-                                                               onclick="location.href='{{route('products',['id'=> $child['id'],'data_from'=>'category','page'=>1])}}'">
+                                                               onclick="location.href='{{route('services',['id'=> $child['id'],'data_from'=>'category','page'=>1])}}'">
                                                             {{$child['name']}}
                                                         </label>
                                                     </div>
@@ -394,7 +394,7 @@
                                                     @foreach($child->childes as $ch)
                                                         <div class="card-header p-1">
                                                             <label class="for-hover-lable" style="cursor: pointer"
-                                                                   onclick="location.href='{{route('products',['id'=> $ch['id'],'data_from'=>'category','page'=>1])}}'">{{$ch['name']}}</label>
+                                                                   onclick="location.href='{{route('services',['id'=> $ch['id'],'data_from'=>'category','page'=>1])}}'">{{$ch['name']}}</label>
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -427,13 +427,13 @@
                                                 class="form-control custom-select" id="searchByFilterValue">
                                             <option selected disabled>{{\App\CPU\translate('Choose')}}</option>
                                             <option
-                                                value="{{route('products',['id'=> $data['id'],'data_from'=>'best-selling','page'=>1])}}">{{\App\CPU\translate('best_selling_product')}}</option>
+                                                value="{{route('services',['id'=> $data['id'],'data_from'=>'best-selling','page'=>1])}}">{{\App\CPU\translate('best_selling_product')}}</option>
                                             <option
-                                                value="{{route('products',['id'=> $data['id'],'data_from'=>'top-rated','page'=>1])}}">{{\App\CPU\translate('top_rated')}}</option>
+                                                value="{{route('services',['id'=> $data['id'],'data_from'=>'top-rated','page'=>1])}}">{{\App\CPU\translate('top_rated')}}</option>
                                             <option
-                                                value="{{route('products',['id'=> $data['id'],'data_from'=>'most-favorite','page'=>1])}}">{{\App\CPU\translate('most_favorite')}}</option>
+                                                value="{{route('services',['id'=> $data['id'],'data_from'=>'most-favorite','page'=>1])}}">{{\App\CPU\translate('most_favorite')}}</option>
                                             <option
-                                                value="{{route('products',['id'=> $data['id'],'data_from'=>'featured_deal','page'=>1])}}" {{isset($data['data_from'])!=null?$data['data_from']=='featured_deal'?'selected':'':''}}>{{\App\CPU\translate('featured_deal')}}</option>
+                                                value="{{route('services',['id'=> $data['id'],'data_from'=>'featured_deal','page'=>1])}}" {{isset($data['data_from'])!=null?$data['data_from']=='featured_deal'?'selected':'':''}}>{{\App\CPU\translate('featured_deal')}}</option>
                                         </select>
                                     </label>
                                 </div>
@@ -512,7 +512,7 @@
                                     @foreach(\App\CPU\BrandManager::get_brands() as $brand)
                                         <div class="brand mt-4 for-brand-hover" id="brand">
                                             <li style="cursor: pointer;padding: 2px"
-                                                onclick="location.href='{{route('products',['id'=> $brand['id'],'data_from'=>'brand','page'=>1])}}'">
+                                                onclick="location.href='{{route('services',['id'=> $brand['id'],'data_from'=>'brand','page'=>1])}}'">
                                                 {{ $brand['name'] }}
                                                 @if($brand['brand_products_count'] > 0 )
 
@@ -543,7 +543,7 @@
                                             <div class="card-header p-1 flex-between">
                                                 <div>
                                                     <label class="for-hover-lable" style="cursor: pointer"
-                                                           onclick="location.href='{{route('products',['id'=> $category['id'],'data_from'=>'category','page'=>1])}}'">
+                                                           onclick="location.href='{{route('services',['id'=> $category['id'],'data_from'=>'category','page'=>1])}}'">
                                                         {{$category['name']}}
                                                     </label>
                                                 </div>
@@ -582,7 +582,7 @@
                                                         @foreach($child->childes as $ch)
                                                             <div class="card-header p-1">
                                                                 <label class="for-hover-lable" style="cursor: pointer"
-                                                                       onclick="location.href='{{route('products',['id'=> $ch['id'],'data_from'=>'category','page'=>1])}}'">{{$ch['name']}}</label>
+                                                                       onclick="location.href='{{route('services',['id'=> $ch['id'],'data_from'=>'category','page'=>1])}}'">{{$ch['name']}}</label>
                                                             </div>
                                                         @endforeach
                                                     </div>
@@ -619,7 +619,7 @@
                             </button>
 
                             <div class="" style="width: 100%">
-                                <form id="search-form" action="{{ route('products') }}" method="GET">
+                                <form id="search-form" action="{{ route('services') }}" method="GET">
                                     <input hidden name="data_from" value="{{$data['data_from']}}">
                                     <div class=" {{Session::get('direction') === "rtl" ? 'ml-2 float-left' : 'mr-2 float-right'}}">
                                         <label
@@ -647,7 +647,7 @@
                 {{-- </div> --}}
                 @if (count($products) > 0)
                     <div class="row mt-3" id="ajax-products">
-                        @include('web-views.products._ajax-products',['products'=>$products,'decimal_point_settings'=>$decimal_point_settings])
+                        @include('web-views.service._ajax-products',['products'=>$products,'decimal_point_settings'=>$decimal_point_settings])
                     </div>
                 @else
                     <div class="text-center pt-5">
@@ -672,7 +672,7 @@
 
         function filter(value) {
             $.get({
-                url: '{{url('/')}}/products',
+                url: '{{url('/')}}/services',
                 data: {
                     id: '{{$data['id']}}',
                     name: '{{$data['name']}}',
@@ -698,7 +698,7 @@
             let min = $('#min_price').val();
             let max = $('#max_price').val();
             $.get({
-                url: '{{url('/')}}/products',
+                url: '{{url('/')}}/services',
                 data: {
                     id: '{{$data['id']}}',
                     name: '{{$data['name']}}',

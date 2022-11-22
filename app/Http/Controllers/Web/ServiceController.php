@@ -28,10 +28,12 @@ use App\Model\Shop;
 use App\Model\Order;
 use App\Model\Transaction;
 use App\Model\Translation;
+use App\Service;
 use App\User;
 use App\Model\Wishlist;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -52,6 +54,29 @@ class ServiceController extends Controller
             return view('web-views.maintenance-mode');
         }
         return redirect()->route('home');
+    }
+    public function store(Request $request){
+//        $service=Product::find($request->id);
+//        return $request;
+      //  $user = auth('customer')->user();
+        if(auth()->user())
+        {
+            return route('customer.auth.login');
+        }
+        $request->validate([
+            'phone' => 'required',
+//            'product_id' => 'required',
+        ], [
+            'phone.required' => 'Product name is required!',
+        ]);
+        $service = new Service();
+        $service->product_id =$request->product_id;
+        $service->notes =$request->notes;
+        $service->product_id =$request->id;
+        $service->phone =$request->phone;
+        $service->save();
+        Toastr::success('Service Added successfully.');
+        return back();
     }
 
     public function home()
@@ -513,13 +538,13 @@ class ServiceController extends Controller
         $relatedProducts = Product::with(['reviews'])->where('category_ids', $product->category_ids)->where('id', '!=', $product->id)->limit(12)->get();
         return response()->json([
             'success' => 1,
-            'view' => view('web-views.partials._quick-view-data', compact('product', 'countWishlist', 'countOrder', 'relatedProducts'))->render(),
+            'view' => view('web-views._quick-view-data', compact('product', 'countWishlist', 'countOrder', 'relatedProducts'))->render(),
         ]);
     }
 
     public function product($slug)
     {
-        $product = Product::where(['service' => 'service'])->active()->with(['reviews'])->where('slug', $slug)->first();
+        $product = Product::where(['service' => 'service'])->with(['reviews'])->where('slug', $slug)->first();
         if ($product != null) {
             $countOrder = OrderDetail::where('product_id', $product->id)->count();
             $countWishlist = Wishlist::where('product_id', $product->id)->count();
@@ -689,7 +714,7 @@ class ServiceController extends Controller
         return view('web-views.service.view', compact('products', 'data'), $data);
     }
 
-  
+
     public function viewWishlist()
     {
         $wishlists = Wishlist::whereHas('wishlistProduct',function($q){

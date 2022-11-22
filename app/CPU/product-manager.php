@@ -14,7 +14,7 @@ class ProductManager
 {
     public static function get_product($id)
     {
-        return Product::active()->with(['rating'])->where('id', $id)->firstOrFail();
+        return Product::query()->with(['rating'])->where('id', $id)->firstOrFail();
     }
 
     public static function get_latest_products($limit = 10, $offset = 1)

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\api\v1\auth;
 
 use App\CPU\Helpers;
 use App\Http\Controllers\Controller;
+use App\Model\Zone;
 use App\User;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -23,6 +25,9 @@ class PassportAuthController extends Controller
             'password' => 'required|min:8',
             'type' => 'required',
             'age' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'zone_id' => 'required',
         ], [
             'f_name.required' => 'The first name field is required.',
             'l_name.required' => 'The last name field is required.',
@@ -32,17 +37,45 @@ class PassportAuthController extends Controller
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
         $temporary_token = Str::random(40);
-        $user = User::create([
-            'f_name' => $request->f_name,
-            'l_name' => $request->l_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'type' => $request['type'],
-            'age' => $request['age'],
-            'is_active' => 1,
-            'password' => bcrypt($request->password),
-            'temporary_token' => $temporary_token,
-        ]);
+//        $user = User::create([
+//            'f_name' => $request->f_name,
+//            'l_name' => $request->l_name,
+//            'email' => $request->email,
+//            'phone' => $request->phone,
+//            'type' => $request['type'],
+//            'age' => $request['age'],
+//            'is_active' => 1,
+//            'password' => bcrypt($request->password),
+//            'temporary_token' => $temporary_token,
+//        ]);
+        if($request->zone_id)
+        {
+            $point = new Point($request->latitude, $request->longitude);
+            $zone = Zone::contains('coordinates', $point)->where('id', $request->zone_id)->first();
+            if(!$zone){
+                $validator->getMessageBag()->add('latitude', trans('messages.coordinates_out_of_zone'));
+                return back()->withErrors($validator)
+                    ->withInput();
+            }
+        }
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $user = new User();
+        $user->f_name = $request->f_name;
+        $user->l_name = $request->l_name;
+        $user->phone = $request->phone;
+        $user ->email = $request->email;
+        $user ->type = $request->type;
+        $user->age = $request->age;
+        $user->latitude = $request->latitude;
+        $user ->longitude = $request->longitude;
+        $user ->zone_id = $request->zone_id;
+        $user ->password = bcrypt($request['password']);
+        $user ->temporary_token = $temporary_token;
+        $user->save();
 
         $phone_verification = Helpers::get_business_settings('phone_verification');
         $email_verification = Helpers::get_business_settings('email_verification');
@@ -113,5 +146,9 @@ class PassportAuthController extends Controller
                 'errors' => $errors
             ], 401);
         }
+    }
+    public function zones(){
+        return $zones =Zone::all();
+
     }
 }

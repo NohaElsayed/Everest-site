@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\CPU\Helpers;
+use App\Service;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
@@ -83,7 +84,10 @@ class Product extends Model
     {
         return $this->belongsTo(Shop::class, 'seller_id');
     }
-
+    public function service()
+    {
+        return $this->belongsTo(Service::class, 'product_id');
+    }
     public function seller()
     {
         return $this->belongsTo(Seller::class, 'user_id');

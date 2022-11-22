@@ -284,14 +284,14 @@
                                     class="h3 font-weight-normal text-accent ">
                                     {{\App\CPU\Helpers::get_price_range($product) }}
                                 </span>
-                                 <p>
-                                   {{\App\CPU\translate('Seller')}} : {{$product->seller->f_name}}
-                                </p>
-                                <span class="{{Session::get('direction') === "rtl" ? 'mr-2' : 'ml-2'}}"
-                                    style="font-size: 12px;font-weight:400">
-                                    (<span>{{\App\CPU\translate('tax')}} : </span>
-                                    <span id="set-tax-amount"></span>)
-                                </span>
+{{--                                 <p>--}}
+{{--                                   {{\App\CPU\translate('Seller')}} : {{$product->seller->f_name}}--}}
+{{--                                </p>--}}
+{{--                                <span class="{{Session::get('direction') === "rtl" ? 'mr-2' : 'ml-2'}}"--}}
+{{--                                    style="font-size: 12px;font-weight:400">--}}
+{{--                                    (<span>{{\App\CPU\translate('tax')}} : </span>--}}
+{{--                                    <span id="set-tax-amount"></span>)--}}
+{{--                                </span>--}}
                             </div>
 
 
@@ -300,30 +300,30 @@
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $product->id }}">
                                 <div class="position-relative {{Session::get('direction') === "rtl" ? 'ml-n4' : 'mr-n4'}} mb-2">
-                                    @if (count(json_decode($product->colors)) > 0)
-                                        <div class="flex-start">
-                                            <div class="product-description-label mt-2 text-body">{{\App\CPU\translate('color')}}:
-                                            </div>
-                                            <div>
-                                                <ul class="list-inline checkbox-color mb-1 flex-start {{Session::get('direction') === "rtl" ? 'mr-2' : 'ml-2'}}"
-                                                    style="padding-{{Session::get('direction') === "rtl" ? 'right' : 'left'}}: 0;">
-                                                    @foreach (json_decode($product->colors) as $key => $color)
-                                                        <div>
-                                                            <li>
-                                                                <input type="radio"
-                                                                    id="{{ $product->id }}-color-{{ $key }}"
-                                                                    name="color" value="{{ $color }}"
-                                                                    @if($key == 0) checked @endif>
-                                                                <label style="background: {{ $color }};"
-                                                                    for="{{ $product->id }}-color-{{ $key }}"
-                                                                    data-toggle="tooltip"></label>
-                                                            </li>
-                                                        </div>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    @endif
+{{--                                    @if (count(json_decode($product->colors)) > 0)--}}
+{{--                                        <div class="flex-start">--}}
+{{--                                            <div class="product-description-label mt-2 text-body">{{\App\CPU\translate('color')}}:--}}
+{{--                                            </div>--}}
+{{--                                            <div>--}}
+{{--                                                <ul class="list-inline checkbox-color mb-1 flex-start {{Session::get('direction') === "rtl" ? 'mr-2' : 'ml-2'}}"--}}
+{{--                                                    style="padding-{{Session::get('direction') === "rtl" ? 'right' : 'left'}}: 0;">--}}
+{{--                                                    @foreach (json_decode($product->colors) as $key => $color)--}}
+{{--                                                        <div>--}}
+{{--                                                            <li>--}}
+{{--                                                                <input type="radio"--}}
+{{--                                                                    id="{{ $product->id }}-color-{{ $key }}"--}}
+{{--                                                                    name="color" value="{{ $color }}"--}}
+{{--                                                                    @if($key == 0) checked @endif>--}}
+{{--                                                                <label style="background: {{ $color }};"--}}
+{{--                                                                    for="{{ $product->id }}-color-{{ $key }}"--}}
+{{--                                                                    data-toggle="tooltip"></label>--}}
+{{--                                                            </li>--}}
+{{--                                                        </div>--}}
+{{--                                                    @endforeach--}}
+{{--                                                </ul>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    @endif--}}
                                     @php
                                         $qty = 0;
                                         if(!empty($product->variation)){
@@ -360,45 +360,45 @@
                             @endforeach
 
                             <!-- Quantity + Add to cart -->
-                                <div class="row no-gutters">
-                                    <div>
-                                        <div class="product-description-label text-body" style="margin-top: 10px;">{{\App\CPU\translate('Quantity')}}:</div>
-                                    </div>
-                                    <div >
-                                        <div class="product-quantity d-flex justify-content-between align-items-center">
-                                            <div
-                                                class="d-flex justify-content-center align-items-center"
-                                                style="width: 160px;color: {{$web_config['primary_color']}}">
-                                                <span class="input-group-btn" style="">
-                                                    <button class="btn btn-number" type="button"
-                                                            data-type="minus" data-field="quantity"
-                                                            disabled="disabled" style="padding: 10px;color: {{$web_config['primary_color']}}">
-                                                        -
-                                                    </button>
-                                                </span>
-                                                <input type="text" name="quantity"
-                                                    class="form-control input-number text-center cart-qty-field"
-                                                    placeholder="1" value="{{ $product->minimum_order_qty ?? 1 }}" min="{{ $product->minimum_order_qty ?? 1 }}" max="100"
-                                                    style="padding: 0px !important;width: 40%;height: 25px;">
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-number" type="button" data-type="plus"
-                                                            data-field="quantity" style="padding: 10px;color: {{$web_config['primary_color']}}">
-                                                    +
-                                                    </button>
-                                                </span>
-                                            </div>
-                                            <div></div>
-                                            <div class="float-right"  id="chosen_price_div">
-                                                <div class="d-flex justify-content-center align-items-center {{Session::get('direction') === "rtl" ? 'ml-2' : 'mr-2'}}">
-                                                    <div class="product-description-label"><strong>{{\App\CPU\translate('total_price')}}</strong> : </div>
-                                                    &nbsp; <strong id="chosen_price"></strong>
-                                                </div>
+{{--                                <div class="row no-gutters">--}}
+{{--                                    <div>--}}
+{{--                                        <div class="product-description-label text-body" style="margin-top: 10px;">{{\App\CPU\translate('Quantity')}}:</div>--}}
+{{--                                    </div>--}}
+{{--                                    <div >--}}
+{{--                                        <div class="product-quantity d-flex justify-content-between align-items-center">--}}
+{{--                                            <div--}}
+{{--                                                class="d-flex justify-content-center align-items-center"--}}
+{{--                                                style="width: 160px;color: {{$web_config['primary_color']}}">--}}
+{{--                                                <span class="input-group-btn" style="">--}}
+{{--                                                    <button class="btn btn-number" type="button"--}}
+{{--                                                            data-type="minus" data-field="quantity"--}}
+{{--                                                            disabled="disabled" style="padding: 10px;color: {{$web_config['primary_color']}}">--}}
+{{--                                                        ---}}
+{{--                                                    </button>--}}
+{{--                                                </span>--}}
+{{--                                                <input type="text" name="quantity"--}}
+{{--                                                    class="form-control input-number text-center cart-qty-field"--}}
+{{--                                                    placeholder="1" value="{{ $product->minimum_order_qty ?? 1 }}" min="{{ $product->minimum_order_qty ?? 1 }}" max="100"--}}
+{{--                                                    style="padding: 0px !important;width: 40%;height: 25px;">--}}
+{{--                                                <span class="input-group-btn">--}}
+{{--                                                    <button class="btn btn-number" type="button" data-type="plus"--}}
+{{--                                                            data-field="quantity" style="padding: 10px;color: {{$web_config['primary_color']}}">--}}
+{{--                                                    +--}}
+{{--                                                    </button>--}}
+{{--                                                </span>--}}
+{{--                                            </div>--}}
+{{--                                            <div></div>--}}
+{{--                                            <div class="float-right"  id="chosen_price_div">--}}
+{{--                                                <div class="d-flex justify-content-center align-items-center {{Session::get('direction') === "rtl" ? 'ml-2' : 'mr-2'}}">--}}
+{{--                                                    <div class="product-description-label"><strong>{{\App\CPU\translate('total_price')}}</strong> : </div>--}}
+{{--                                                    &nbsp; <strong id="chosen_price"></strong>--}}
+{{--                                                </div>--}}
 
-                                            </div>
-                                        </div>
-                                    </div>
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
 
-                                </div>
+{{--                                </div>--}}
 
                                 <div class="row flex-start no-gutters d-none mt-2">
 
@@ -411,27 +411,43 @@
                                 </div>
 
                                 <div class="d-flex justify-content-start mt-2 mb-3">
-                                    <button
-                                        class="btn element-center btn-gap-{{Session::get('direction') === "rtl" ? 'left' : 'right'}}"
-                                        onclick="buy_now()"
-                                        type="button"
-                                        style="width:37%; height: 45px; background: #FFA825 !important; color: #ffffff;">
-                                        <span class="string-limit">{{\App\CPU\translate('buy_now')}}</span>
-                                    </button>
-                                    <button
-                                        class="btn btn-primary element-center btn-gap-{{Session::get('direction') === "rtl" ? 'left' : 'right'}}"
-                                        onclick="addToCart()"
-                                        type="button"
-                                        style="width:37%; height: 45px;{{Session::get('direction') === "rtl" ? 'margin-right: 20px;' : 'margin-left: 20px;'}}">
-                                        <span class="string-limit">{{\App\CPU\translate('add_to_cart')}}</span>
-                                    </button>
-                                    <button type="button" onclick="addWishlist('{{$product['id']}}')"
-                                            class="btn for-hover-bg"
-                                            style="color:{{$web_config['secondary_color']}};font-size: 18px;">
-                                        <i class="fa fa-heart-o "
-                                        aria-hidden="true"></i>
-                                        <span class="countWishlist-{{$product['id']}}">{{$countWishlist}}</span>
-                                    </button>
+{{--                                    <button--}}
+{{--                                        class="btn element-center btn-gap-{{Session::get('direction') === "rtl" ? 'left' : 'right'}}"--}}
+{{--                                        onclick="buy_now()"--}}
+{{--                                        type="button"--}}
+{{--                                        style="width:37%; height: 45px; background: #FFA825 !important; color: #ffffff;">--}}
+{{--                                        <span class="string-limit">{{\App\CPU\translate('buy_now')}}</span>--}}
+{{--                                    </button>--}}
+{{--                                    <button--}}
+{{--                                        class="btn btn-primary element-center btn-gap-{{Session::get('direction') === "rtl" ? 'left' : 'right'}}"--}}
+{{--                                        onclick="addToCart()"--}}
+{{--                                        type="button"--}}
+{{--                                        style="width:37%; height: 45px;{{Session::get('direction') === "rtl" ? 'margin-right: 20px;' : 'margin-left: 20px;'}}">--}}
+{{--                                        <span class="string-limit">{{\App\CPU\translate('add_to_cart')}}</span>--}}
+{{--                                    </button>--}}
+{{--                                    <button type="button" onclick="addWishlist('{{$product['id']}}')"--}}
+{{--                                            class="btn for-hover-bg"--}}
+{{--                                            style="color:{{$web_config['secondary_color']}};font-size: 18px;">--}}
+{{--                                        <i class="fa fa-heart-o "--}}
+{{--                                        aria-hidden="true"></i>--}}
+{{--                                        <span class="countWishlist-{{$product['id']}}">{{$countWishlist}}</span>--}}
+{{--                                    </button>--}}
+                                </div>
+                            </form>
+                            <form method="post"  action="{{route('store','test')}}" >
+                                {{--                                {{ method_field('patch') }}--}}
+                                {{ csrf_field() }}
+                                <div class="row mb-3">
+                                    <div><strong class="{{Session::get('direction') === "rtl" ? 'right' : 'left'}}">{{\App\CPU\translate('Customer Phone')}} : </strong></div>
+                                    <input type="hidden" name="id" value="{{$product->id}}">
+                                    <input type="text" class="form-control" name="phone">
+                                </div>
+                                <div class="row mb-3">
+                                    <div><strong class="{{Session::get('direction') === "rtl" ? 'right' : 'left'}}">{{\App\CPU\translate('Customer Notes')}} : </strong></div>
+                                    <textarea id="set-tax-amount" class="form-control"name="notes"></textarea>
+                                </div>
+                                <div class="row mb-3">
+                                    <button type="submit" class="{{Session::get('direction') === "rtl" ? 'right' : 'left'}}" class="btn-primary st-label ">{{\App\CPU\translate('Send')}}</button>
                                 </div>
                             </form>
 
@@ -646,9 +662,9 @@
                                                 </div>
                                                 <div class="row pb-4">
                                                     <div class="col-12" id="product-review-list">
-                                                        {{-- @foreach($reviews_of_product as $productReview) --}}
-                                                            {{-- @include('web-views.partials.product-reviews',['productRevie'=>$productRevie]) --}}
-                                                        {{-- @endforeach --}}
+                                                         @foreach($reviews_of_product as $productReview)
+                                                             @include('web-views.partials.product-reviews',['productRevie'=>$productRevie])
+                                                         @endforeach
                                                         @if(count($product->reviews)==0)
                                                             <div class="card">
                                                                 <div class="card-body">

@@ -47,7 +47,7 @@
     </div>
     <div class="single-product-details" style="position:relative;height:145px;padding-top:10px;border-radius:0px 0px 5px 5px; ">
         <div class="text-{{Session::get('direction') === "rtl" ? 'right pr-3' : 'left pl-3'}}">
-            <a href="{{route('product',$product->slug)}}">
+            <a href="{{route('service',$product->slug)}}">
                 {{ Str::limit($product['name'], 23) }}
             </a>
         </div>
@@ -79,19 +79,19 @@
         </div>
 
     </div>
-    <div class="text-center quick-view" style="border-radius:0px 0px 5px 5px;">
-        @if(Request::is('product/*'))
-            <a class="btn btn-primary btn-sm" href="{{route('product',$product->slug)}}">
-                <i class="czi-forward align-middle {{Session::get('direction') === "rtl" ? 'ml-1' : 'mr-1'}}"></i>
-                {{\App\CPU\translate('View')}}
-            </a>
-        @else
-            <a class="btn btn-primary btn-sm"
-            style="margin-top:0px;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;" href="javascript:"
-               onclick="quickView('{{$product->id}}')">
-                <i class="czi-eye align-middle {{Session::get('direction') === "rtl" ? 'ml-1' : 'mr-1'}}"></i>
-                {{\App\CPU\translate('Quick')}}   {{\App\CPU\translate('View')}}
-            </a>
-        @endif
-    </div>
+{{--    <div class="text-center quick-view" style="border-radius:0px 0px 5px 5px;">--}}
+{{--        @if(Request::is('product/*'))--}}
+{{--            <a class="btn btn-primary btn-sm" href="{{route('product',$product->slug)}}">--}}
+{{--                <i class="czi-forward align-middle {{Session::get('direction') === "rtl" ? 'ml-1' : 'mr-1'}}"></i>--}}
+{{--                {{\App\CPU\translate('View')}}--}}
+{{--            </a>--}}
+{{--        @else--}}
+{{--            <a class="btn btn-primary btn-sm"--}}
+{{--            style="margin-top:0px;padding-top:5px;padding-bottom:5px;padding-left:10px;padding-right:10px;" href="javascript:"--}}
+{{--               onclick="quickView('{{$product->id}}')">--}}
+{{--                <i class="czi-eye align-middle {{Session::get('direction') === "rtl" ? 'ml-1' : 'mr-1'}}"></i>--}}
+{{--                {{\App\CPU\translate('Quick')}}   {{\App\CPU\translate('View')}}--}}
+{{--            </a>--}}
+{{--        @endif--}}
+{{--    </div>--}}
 </div>

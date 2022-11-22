@@ -74,9 +74,9 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
             Route::get('status/{id}/{status}', 'subscriptionController@status')->name('status');
             Route::post('search', 'subscriptionController@search')->name('search');
         });
-    
+
         Route::get('zone/get-coordinates/{id}', 'ZoneController@get_coordinates')->name('zone.get-coordinates');
-        
+
         Route::group(['prefix' => 'deal', 'as' => 'deal.','middleware'=>['module:marketing_section']], function () {
             Route::get('flash', 'DealController@flash_index')->name('flash');
             Route::post('flash', 'DealController@flash_submit');
@@ -316,6 +316,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
             Route::get('edit/{id}', 'ServiceController@edit')->name('edit');
             Route::get('view/{id}', 'ServiceController@view')->name('view');
             Route::get('list/{type}', 'ServiceController@list')->name('list');
+            Route::get('orders', 'ServiceController@orders')->name('orders');
             Route::post('update/{id}', 'ServiceController@update')->name('update');
             Route::delete('delete/{id}', 'ServiceController@delete')->name('delete');
 

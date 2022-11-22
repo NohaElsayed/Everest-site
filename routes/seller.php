@@ -66,6 +66,25 @@ Route::group(['namespace' => 'Seller', 'prefix' => 'seller', 'as' => 'seller.'],
             Route::post('bulk-import', 'ProductController@bulk_import_data');
             Route::get('bulk-export', 'ProductController@bulk_export_data')->name('bulk-export');
         });
+
+        Route::group(['prefix' => 'service', 'as' => 'service.'], function () {
+            Route::post('image-upload', 'ServiceController@imageUpload')->name('image-upload');
+            Route::get('remove-image', 'ServiceController@remove_image')->name('remove-image');
+            Route::get('add-new', 'ServiceController@add_new')->name('add-new');
+            Route::post('add-new', 'ServiceController@store');
+            Route::post('status-update', 'ServiceController@status_update')->name('status-update');
+            Route::get('list', 'ServiceController@list')->name('list');
+            Route::get('get-variations', 'ServiceController@get_variations')->name('get-variations');
+            Route::post('update-quantity', 'ServiceController@update_quantity')->name('update-quantity');
+            Route::get('edit/{id}', 'ServiceController@edit')->name('edit');
+            Route::post('update/{id}', 'ServiceController@update')->name('update');
+            Route::post('sku-combination', 'ServiceController@sku_combination')->name('sku-combination');
+            Route::get('get-categories', 'ServiceController@get_categories')->name('get-categories');
+            Route::get('barcode', 'ServiceController@get_categories')->name('get-categories');
+            Route::get('barcode/{id}', 'ServiceController@barcode')->name('barcode');
+            Route::get('view/{id}', 'ServiceController@view')->name('view');
+            Route::delete('delete/{id}', 'ServiceController@delete')->name('delete');
+        });
         //refund request
         Route::group(['prefix' => 'refund', 'as' => 'refund.'], function () {
             Route::get('list/{status}', 'RefundController@list')->name('list');
@@ -87,7 +106,7 @@ Route::group(['namespace' => 'Seller', 'prefix' => 'seller', 'as' => 'seller.'],
 
             Route::get('export-order-data/{status}', 'OrderController@bulk_export_data')->name('order-bulk-export');
         });
-     
+
         //pos management
         Route::group(['prefix' => 'pos', 'as' => 'pos.'], function () {
             Route::get('/', 'POSController@index')->name('index');
