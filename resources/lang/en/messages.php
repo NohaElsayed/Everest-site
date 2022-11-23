@@ -1605,4 +1605,8 @@
   'Customer Notes' => 'Customer Notes',
   'Customer_not_found_or_Account_has_been_suspended' => 'Customer not found or Account has been suspended',
   '3 Days Return Policy' => '3 Days Return Policy',
+  'out_of_stock!' => 'Out of stock!',
+  'choose_delivery_method' => 'Choose delivery method',
+  'select_delivery_method_first' => 'Select delivery method first',
+  'contact_shop_name' => 'Contact shop name',
 );
