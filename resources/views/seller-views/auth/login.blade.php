@@ -139,7 +139,7 @@
                             </div>
                             <!-- End Checkbox -->
                             {{-- recaptcha --}}
-                            @php($recaptcha = \App\CPU\Helpers::get_business_settings('recaptcha'))
+                            {{-- @php($recaptcha = \App\CPU\Helpers::get_business_settings('recaptcha'))
                             @if(isset($recaptcha) && $recaptcha['status'] == 1)
                                 <div id="recaptcha_element" style="width: 100%;" data-type="image"></div>
                                 <br/>
@@ -156,7 +156,7 @@
                                         </a>
                                     </div>
                                 </div>
-                            @endif
+                            @endif --}}
 
                             <button type="submit" class="btn btn-lg btn-block btn-primary">{{\App\CPU\translate('sign_in')}}</button>
                         </form>

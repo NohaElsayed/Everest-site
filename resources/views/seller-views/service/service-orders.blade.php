@@ -78,7 +78,7 @@
 {{--                                        <td>--}}
 {{--                                            {{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($p['purchase_price']))}}--}}
 {{--                                        </td>--}}
-                                        <td>{{$p ->phone_customer}} </td>
+                                        <td>{{$p ->phone}} </td>
                                         <td>{{$p ->notes}} </td>
                                         <td>
 {{--                                            <a class="btn btn-warning btn-sm" title="{{ \App\CPU\translate('barcode') }}"--}}

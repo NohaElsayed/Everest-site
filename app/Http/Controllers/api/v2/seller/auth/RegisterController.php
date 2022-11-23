@@ -36,7 +36,7 @@ class RegisterController extends Controller
          $validator = Validator::make($request->all(), [ 
             // 'latitude' => 'required',
             // 'longitude' => 'required',
-            'subscription' => 'required',
+          //  'subscription' => 'required',
             // 'zone_id' => 'required',
         ], [
             'email' => 'required|unique:sellers',
@@ -48,19 +48,21 @@ class RegisterController extends Controller
             'subscription' => 'required',
             'password' => 'required|min:8',
         ]);
-        if($request->zone_id)
-        {
-            $point = new Point($request->latitude, $request->longitude);
-            $zone = Zone::contains('coordinates', $point)->where('id', $request->zone_id)->first();
-            if(!$zone){
-                $validator->getMessageBag()->add('latitude', trans('messages.coordinates_out_of_zone'));
-                return back()->withErrors($validator)
-                        ->withInput();
-            }
-        }
+        return $request;
+        // if($request->zone_id)
+        // {
+        //     $point = new Point($request->latitude, $request->longitude);
+        //     $zone = Zone::contains('coordinates', $point)->where('id', $request->zone_id)->first();
+        //     if(!$zone){
+        //         $validator->getMessageBag()->add('latitude', trans('messages.coordinates_out_of_zone'));
+        //         return back()->withErrors($validator)
+        //                 ->withInput();
+        //     }
+        // }
         if ($validator->fails()) {
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
+        return $request;
 
          DB::transaction(function ($r) use ($request) {
             $auth_token = Str::random(40);

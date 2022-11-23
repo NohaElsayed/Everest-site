@@ -10,8 +10,6 @@ use App\Model\Zone;
 use App\CentralLogics\CentraLs;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use App\Model\Category;
-use Illuminate\Support\Str;
-use App\CPU\Helpers;
 use App\SubscriptionSeller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
@@ -46,23 +44,21 @@ class RegisterController extends Controller
         
             'latitude' => 'required',
             'longitude' => 'required',
-            'subscription' => 'required',
+            // 'subscription' => 'required',
             'zone_id' => 'required',
         ]);
 
         $this->validate($request, [
             'email' => 'required|unique:sellers',
             'shop_address' => 'required',
-            'category_id' => 'required',
+            // 'category_id' => 'required',
             'f_name' => 'required',
             'l_name' => 'required',
             'phone' => 'required',
             'subscription' => 'required',
             'password' => 'required|min:8',
         ]);
-        if ($validator->fails()) {
-            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
-        }
+
         if($request->zone_id)
         {
             $point = new Point($request->latitude, $request->longitude);
@@ -70,7 +66,7 @@ class RegisterController extends Controller
             if(!$zone){
                 $validator->getMessageBag()->add('latitude', trans('messages.coordinates_out_of_zone'));
                 return back()->withErrors($validator)
-                    ->withInput();
+                        ->withInput();
             }
         }
         if ($validator->fails()) {
@@ -79,13 +75,12 @@ class RegisterController extends Controller
                 ->withInput();
         }
         DB::transaction(function ($r) use ($request) {
-            $auth_token = Str::random(40);
             $seller = new Seller();
             $seller->f_name = $request->f_name;
             $seller->l_name = $request->l_name;
-            $seller->phone = $request->phone;
+          //  $seller->phone = $request->phone;
             $seller ->category_id = $request->category_id;
-            $seller ->auth_token = $auth_token;
+           
                    
             $seller->email = $request->email;
             $seller->image = ImageManager::upload('seller/', 'png', $request->file('image'));

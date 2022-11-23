@@ -113,8 +113,8 @@ class ServiceController extends Controller
                 }
             }
             Translation::insert($data);
-
-            return response()->json($data, 200);
+            Toastr::success('Service added successfully!');
+            return redirect()->route('seller.service.list');
         }
     }
     public function view($id)

@@ -194,7 +194,6 @@ class ProductController extends BaseController
         //Generates the combinations of customer choice options
 
         $combinations = Helpers::combinations($options);
-
         $variations = [];
         $stock_count = 0;
         if (count($combinations[0]) > 0) {

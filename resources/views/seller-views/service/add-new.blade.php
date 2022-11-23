@@ -56,7 +56,7 @@
                                             ({{ strtoupper($lang) }})
                                         </label>
                                         <input type="text" {{ $lang == $default_lang ? 'required' : '' }} name="name[]"
-                                               id="{{ $lang }}_name" class="form-control" placeholder="New Product"
+                                               id="{{ $lang }}_name" class="form-control" placeholder="New Service"
                                                required>
                                     </div>
                                     <input type="hidden" name="lang[]" value="{{ $lang }}">
@@ -68,8 +68,7 @@
                                     </div>
                                 </div>
                             @endforeach
-                        </div>
-                    </div>
+                        </div>                    </div>
 
                     <div class="card mt-2 rest-part">
                         <div class="card-header">
@@ -113,7 +112,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label for="code">{{ \App\CPU\translate('product_code_sku') }}
+                                        <label for="code">{{ \App\CPU\translate('service_code_sku') }}
                                             <span class="text-danger">*</span>
                                             <a class="style-one-pro" style="cursor: pointer;"
                                                onclick="document.getElementById('generate_number').value = getRndInteger()">{{ \App\CPU\translate('generate') }}
@@ -211,9 +210,9 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label class="control-label">{{ \App\CPU\translate('Unit_price') }}</label>
+                                        <label class="control-label">{{ \App\CPU\translate('Service price') }}</label>
                                         <input type="number" min="0" value="0" step="0.01"
-                                               placeholder="{{ \App\CPU\translate('Unit_price') }}" name="unit_price"
+                                               placeholder="{{ \App\CPU\translate('Service price') }}" name="unit_price"
                                                value="{{ old('unit_price') }}" class="form-control" required>
                                     </div>
 {{--                                    <div class="col-md-4">--}}
@@ -350,7 +349,7 @@
 
                                 <div class="col-md-8">
                                     <div class="form-group">
-                                        <label>{{ \App\CPU\translate('Upload_product_images') }}</label><small
+                                        <label>{{ \App\CPU\translate('Upload_service_images') }}</label><small
                                             style="color: red">* ( {{ \App\CPU\translate('ratio 1:1') }} )</small>
                                     </div>
                                     <div class="p-2 border border-dashed" style="max-width:430px;">

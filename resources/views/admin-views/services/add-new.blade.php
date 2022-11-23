@@ -201,9 +201,9 @@
                             <div class="form-group"> --}}
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label class="control-label">{{ \App\CPU\translate('price') }}</label>
+                                        <label class="control-label">{{ \App\CPU\translate(' Service price') }}</label>
                                         <input type="number" min="0" step="0.01"
-                                            placeholder="{{ \App\CPU\translate('price') }}" name="unit_price"
+                                            placeholder="{{ \App\CPU\translate('Service price') }}" name="unit_price"
                                             value="{{ old('unit_price') }}" class="form-control" required>
                                     </div>
                                     {{-- <div class="col-md-6">

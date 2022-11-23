@@ -214,8 +214,8 @@
                                             id="image{{$key}}">
                                             <img class="cz-image-zoom img-responsive" style="width:100%;max-height:323px;"
                                                 onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                src="{{asset("storage/app/public/product/$photo")}}"
-                                                data-zoom="{{asset("storage/app/public/product/$photo")}}"
+                                                src="{{asset("storage/app/public/Service/$photo")}}"
+                                                data-zoom="{{asset("storage/app/public/Service/$photo")}}"
                                                 alt="Product image" width="">
                                             <div class="cz-image-zoom-pane"></div>
                                         </div>
@@ -234,7 +234,7 @@
                                                             href="#image{{$key}}">
                                                                 <img
                                                                     onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                                    src="{{asset("storage/app/public/product/$photo")}}"
+                                                                    src="{{asset("storage/app/public/Service/$photo")}}"
                                                                     alt="Product thumb">
                                                             </a>
                                                         </div>

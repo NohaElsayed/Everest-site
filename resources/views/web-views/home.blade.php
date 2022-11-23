@@ -1475,7 +1475,7 @@
                     </div>
                     <div style="text-align: center;">
                         <p>
-                            {{ \App\CPU\translate('7 Days Return Policy')}}
+                            {{ \App\CPU\translate('3 Days Return Policy')}}
                         </p>
                     </div>
                 </div>
