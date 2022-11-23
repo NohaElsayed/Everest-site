@@ -12,10 +12,12 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
  */
-
 Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_lang']], function () {
     Route::group(['prefix' => 'auth', 'namespace' => 'auth'], function () {
         Route::get('zones', 'PassportAuthController@zones');
+        Route::get('services', 'PassportAuthController@services');
+        Route::post('service-store', 'PassportAuthController@store');
+        Route::get('adverts', 'PassportAuthController@adverts');
         Route::post('register', 'PassportAuthController@register');
         Route::post('login', 'PassportAuthController@login');
 
@@ -177,8 +179,6 @@ Route::group(['namespace' => 'api\v1', 'prefix' => 'v1', 'middleware' => ['api_l
     Route::group(['prefix' => 'coupon','middleware' => 'auth:api'], function () {
         Route::get('apply', 'CouponController@apply');
     });
-
-
 
     //map api
     Route::group(['prefix' => 'mapapi'], function () {

@@ -63,7 +63,7 @@
                                 <tr>
                                     <th>{{\App\CPU\translate('SL#')}}</th>
                                     <th>{{\App\CPU\translate('Service Name')}}</th>
-                                    <th>{{\App\CPU\translate('purchase_price')}}</th>
+{{--                                    <th>{{\App\CPU\translate('purchase_price')}}</th>--}}
                                     <th>{{\App\CPU\translate('selling_price')}}</th>
                                     <th>{{\App\CPU\translate('verify_status')}}</th>
                                     <th>{{\App\CPU\translate('Active')}} {{\App\CPU\translate('status')}}</th>
@@ -77,11 +77,11 @@
                                         <td><a href="{{route('seller.service.view',[$p['id']])}}">
                                                 {{\Illuminate\Support\Str::limit($p['name'],40)}}
                                             </a></td>
+{{--                                        <td>--}}
+{{--                                            {{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($p['purchase_price']))}}--}}
+{{--                                        </td>--}}
                                         <td>
-                                            {{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($p['purchase_price']))}}
-                                        </td>
-                                        <td>
-                                            {{ \App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($p['unit_price']))}}
+                                            {{ \App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($p['price']))}}
                                         </td>
                                         <td>
                                             @if($p->request_status == 0)
@@ -100,16 +100,16 @@
                                             </label>
                                         </td>
                                         <td>
-                                            <a class="btn btn-warning btn-sm" title="{{ \App\CPU\translate('barcode') }}"
-                                                    href="{{ route('seller.service.barcode', [$p['id']]) }}">
-                                                    <i class="tio-barcode"></i>
-                                                </a>
+{{--                                            <a class="btn btn-warning btn-sm" title="{{ \App\CPU\translate('barcode') }}"--}}
+{{--                                                    href="{{ route('seller.service.barcode', [$p['id']]) }}">--}}
+{{--                                                    <i class="tio-barcode"></i>--}}
+{{--                                                </a>--}}
 
-                                            <a class="btn btn-info btn-sm"
-                                                title="{{\App\CPU\translate('view')}}"
-                                                href="{{route('seller.service.view',[$p['id']])}}">
-                                                <i class="tio-visible"></i>
-                                            </a>
+{{--                                            <a class="btn btn-info btn-sm"--}}
+{{--                                                title="{{\App\CPU\translate('view')}}"--}}
+{{--                                                href="{{route('seller.service.view',[$p['id']])}}">--}}
+{{--                                                <i class="tio-visible"></i>--}}
+{{--                                            </a>--}}
                                             <a  class="btn btn-primary btn-sm"
                                                 title="{{\App\CPU\translate('Edit')}}"
                                                 href="{{route('seller.service.edit',[$p['id']])}}">

@@ -24,7 +24,7 @@
         <!-- Content Row -->
         <div class="row">
             <div class="col-md-12">
-                <form class="product-form" action="{{route('admin.product.update',$product->id)}}" method="post"
+                <form class="product-form" action="{{route('admin.service.update',$product->id)}}" method="post"
                       style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};"
                       enctype="multipart/form-data"
                       enctype="multipart/form-data"
@@ -100,7 +100,7 @@
                                             class="js-example-basic-multiple js-states js-example-responsive form-control"
                                             name="category_id"
                                             id="category_id"
-                                            onchange="getRequest('{{url('/')}}/admin/product/get-categories?parent_id='+this.value,'sub-category-select','select')">
+                                            onchange="getRequest('{{url('/')}}/admin/service/get-categories?parent_id='+this.value,'sub-category-select','select')">
                                             <option value="0" selected disabled>---{{\App\CPU\translate('Select')}}---</option>
                                             @foreach($categories as $category)
                                                 <option
@@ -176,13 +176,13 @@
                     </div> --}}
 
                     {{-- <div class="card mt-2 rest-part"> --}}
-                        <div class="card-header">
-                            <h4>{{\App\CPU\translate('Variation')}}</h4>
-                        </div>
+{{--                        <div class="card-header">--}}
+{{--                            <h4>{{\App\CPU\translate('Variation')}}</h4>--}}
+{{--                        </div>--}}
                         {{-- <div class="card-body">
 
                             <div class="form-group"> --}}
-                                <div class="row">
+{{--                                <div class="row">--}}
                                     {{-- <div class="col-md-6">
 
                                         <label for="colors">
@@ -207,49 +207,55 @@
                                         </select>
                                     </div> --}}
 
-                                    <div class="col-md-6">
-                                        <label for="attributes" style="padding-bottom: 3px">
-                                            {{\App\CPU\translate('Attributes')}} :
-                                        </label>
-                                        <select
-                                            class="js-example-basic-multiple js-states js-example-responsive form-control"
-                                            name="choice_attributes[]" id="choice_attributes" multiple="multiple">
-                                            @foreach (\App\Model\Attribute::orderBy('name', 'asc')->get() as $key => $a)
-                                                @if($product['attributes']!='null')
-                                                    <option
-                                                        value="{{ $a['id']}}" {{in_array($a->id,json_decode($product['attributes'],true))?'selected':''}}>
-                                                        {{$a['name']}}
-                                                    </option>
-                                                @else
-                                                    <option value="{{ $a['id']}}">{{$a['name']}}</option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                    </div>
+{{--                                    <div class="col-md-6">--}}
+{{--                                        <label for="attributes" style="padding-bottom: 3px">--}}
+{{--                                            {{\App\CPU\translate('Attributes')}} :--}}
+{{--                                        </label>--}}
+{{--                                        <select--}}
+{{--                                            class="js-example-basic-multiple js-states js-example-responsive form-control"--}}
+{{--                                            name="choice_attributes[]" id="choice_attributes" multiple="multiple">--}}
+{{--                                            @foreach (\App\Model\Attribute::orderBy('name', 'asc')->get() as $key => $a)--}}
+{{--                                                @if($product['attributes']!='null')--}}
+{{--                                                    <option--}}
+{{--                                                        value="{{ $a['id']}}" {{in_array($a->id,json_decode($product['attributes'],true))?'selected':''}}>--}}
+{{--                                                        {{$a['name']}}--}}
+{{--                                                    </option>--}}
+{{--                                                @else--}}
+{{--                                                    <option value="{{ $a['id']}}">{{$a['name']}}</option>--}}
+{{--                                                @endif--}}
+{{--                                            @endforeach--}}
+{{--                                        </select>--}}
+{{--                                    </div>--}}
 
-                                    <div class="col-md-12 mt-2 mb-2">
-                                        <div class="customer_choice_options" id="customer_choice_options">
-                                            @include('admin-views.product.partials._choices',['choice_no'=>json_decode($product['attributes']),'choice_options'=>json_decode($product['choice_options'],true)])
-                                        </div>
-                                    </div>
-                                </div>
+{{--                                    <div class="col-md-12 mt-2 mb-2">--}}
+{{--                                        <div class="customer_choice_options" id="customer_choice_options">--}}
+{{--                                            @include('admin-views.product.partials._choices',['choice_no'=>json_decode($product['attributes']),'choice_options'=>json_decode($product['choice_options'],true)])--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
                             {{-- </div>
                         </div>
                     </div> --}}
 
                     <div class="card mt-2 rest-part">
-                        <div class="card-header">
-                            <h4>{{\App\CPU\translate('Product price & stock')}}</h4>
-                        </div>
+{{--                        <div class="card-header">--}}
+{{--                            <h4>{{\App\CPU\translate('Service')}}</h4>--}}
+{{--                        </div>--}}
                         {{-- <div class="card-body">
                             <div class="form-group"> --}}
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label class="control-label">{{\App\CPU\translate('price')}}</label>
+                                        <label class="control-label">{{\App\CPU\translate('Service price')}}</label>
                                         <input type="number" min="0" step="0.01"
-                                               placeholder="{{\App\CPU\translate('price') }}"
+                                               placeholder="{{\App\CPU\translate(' Service price') }}"
                                                name="unit_price" class="form-control"
-                                               value={{\App\CPU\Convert::default($product->unit_price)}} required>
+                                               value={{\App\CPU\Convert::default($product->price)}} required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="control-label">{{ \App\CPU\translate('Number Phone') }}</label>
+                                        <input type="number" value="{{ $product->phone}}"
+                                               step="0.01" placeholder="{{ \App\CPU\translate('Number Phone') }}"
+                                               name="phone" class="form-control">
                                     </div>
                                     </div>
                                     {{-- <div class="col-md-6">
@@ -268,20 +274,20 @@
                                                class="form-control" required>
                                         <input name="tax_type" value="percent" style="display: none">
                                     </div> --}}
-                               <div class="row">
-                                    <div class="col-md-4 mt-2">
-                                        <label class="control-label">{{\App\CPU\translate('Discount')}}</label>
-                                        <input type="number" min="0"
-                                               value={{ $product->discount_type=='flat'?\App\CPU\Convert::default($product->discount): $product->discount}} step="0.01"
-                                               placeholder="{{\App\CPU\translate('Discount') }}" name="discount"
-                                               class="form-control" >
-                                    </div>
-                                     <div class="col-md-4">
-                                        <label class="control-label">{{ \App\CPU\translate('Number Phone') }}</label>
-                                        <input type="number" value="{{ old('phone') }}"
-                                            step="0.01" placeholder="{{ \App\CPU\translate('Number Phone') }}"
-                                            name="phone" class="form-control">
-                                    </div>
+{{--                               <div class="row">--}}
+{{--                                    <div class="col-md-4 mt-2">--}}
+{{--                                        <label class="control-label">{{\App\CPU\translate('Discount')}}</label>--}}
+{{--                                        <input type="number" min="0"--}}
+{{--                                               value={{ $product->discount_type=='flat'?\App\CPU\Convert::default($product->discount): $product->discount}} step="0.01"--}}
+{{--                                               placeholder="{{\App\CPU\translate('Discount') }}" name="discount"--}}
+{{--                                               class="form-control" >--}}
+{{--                                    </div>--}}
+{{--                                     <div class="col-md-4">--}}
+{{--                                        <label class="control-label">{{ \App\CPU\translate('Number Phone') }}</label>--}}
+{{--                                        <input type="number" value="{{ old('phone') }}"--}}
+{{--                                            step="0.01" placeholder="{{ \App\CPU\translate('Number Phone') }}"--}}
+{{--                                            name="phone" class="form-control">--}}
+{{--                                    </div>--}}
                                     {{-- <div class="col-md-4 mt-6">
                                         <select
                                             style="width: 100%"
@@ -331,7 +337,7 @@
                                             </label>
                                         </div>
                                     </div> --}}
-                                </div>
+{{--                                </div>--}}
                             {{-- </div>
                             <br>
                         </div>
@@ -364,7 +370,7 @@
                                                     <div class="card-body">
                                                         <img style="width: 100%" height="auto"
                                                              onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                             src="{{asset("storage/app/public/product/meta")}}/{{$product['meta_image']}}"
+                                                             src="{{asset("storage/app/public/service/meta")}}/{{$product['meta_image']}}"
                                                              alt="Meta image">
                                                     </div>
                                                 </div>
@@ -389,7 +395,7 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>{{\App\CPU\translate('Upload product images')}}</label><small
+                                        <label>{{\App\CPU\translate('Upload service images')}}</label><small
                                             style="color: red">* ( {{\App\CPU\translate('ratio')}} 1:1 )</small>
                                     </div>
                                     <div class="p-2 border border-dashed" style="max-width:430px;">
@@ -400,9 +406,9 @@
                                                         <div class="card-body">
                                                             <img style="width: 100%" height="auto"
                                                                  onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                                 src="{{asset("storage/app/public/product/$photo")}}"
+                                                                 src="{{asset("storage/app/public/service/$photo")}}"
                                                                  alt="Product image">
-                                                            <a href="{{route('admin.product.remove-image',['id'=>$product['id'],'name'=>$photo])}}"
+                                                            <a href="{{route('admin.service.remove-image',['id'=>$product['id'],'name'=>$photo])}}"
                                                                class="btn btn-danger btn-block">{{\App\CPU\translate('Remove')}}</a>
 
                                                         </div>
@@ -426,7 +432,7 @@
                                                 <div class="card-body">
                                                     <img style="width: 100%" height="auto"
                                                          onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
-                                                         src="{{asset("storage/app/public/product/thumbnail")}}/{{$product['thumbnail']}}"
+                                                         src="{{asset("storage/app/public/service/thumbnail")}}/{{$product['thumbnail']}}"
                                                          alt="Product image">
                                                 </div>
                                             </div>
@@ -668,8 +674,8 @@
                 let category = $("#category_id").val();
                 let sub_category = $("#sub-category-select").attr("data-id");
                 let sub_sub_category = $("#sub-sub-category-select").attr("data-id");
-                getRequest('{{url('/')}}/admin/product/get-categories?parent_id=' + category + '&sub_category=' + sub_category, 'sub-category-select', 'select');
-                getRequest('{{url('/')}}/admin/product/get-categories?parent_id=' + sub_category + '&sub_category=' + sub_sub_category, 'sub-sub-category-select', 'select');
+                getRequest('{{url('/')}}/admin/service/get-categories?parent_id=' + category + '&sub_category=' + sub_category, 'sub-category-select', 'select');
+                getRequest('{{url('/')}}/admin/service/get-categories?parent_id=' + sub_category + '&sub_category=' + sub_sub_category, 'sub-sub-category-select', 'select');
             }, 100)
             // color select select2
             $('.color-var-select').select2({
@@ -700,7 +706,7 @@
                 }
             });
             $.post({
-                url: '{{route('admin.product.update',$product->id)}}',
+                url: '{{route('admin.service.update',$product->id)}}',
                 data: formData,
                 contentType: false,
                 processData: false,
@@ -713,7 +719,7 @@
                             });
                         }
                     } else {
-                        toastr.success('product updated successfully!', {
+                        toastr.success('service updated successfully!', {
                             CloseButton: true,
                             ProgressBar: true
                         });

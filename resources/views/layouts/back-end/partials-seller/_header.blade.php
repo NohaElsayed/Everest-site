@@ -112,7 +112,7 @@
                                 <i class="tio-email"></i>
                                 @php($message=\App\Model\Chatting::where(['seen_by_seller'=>1,'seller_id'=>auth('seller')->id()])->count())
                                 @if($message!=0)
-                                    <span class="btn-status btn-sm-status btn-status-danger"></span>
+                                    <span class="btn-status btn-sm-status btn-status-danger">{{\App\Model\Chatting::where(['seen_by_seller'=>1,'seller_id'=>auth('seller')->id()])->count()}}</span>
                                 @endif
                             </a>
                         </div>

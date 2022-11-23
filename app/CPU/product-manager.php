@@ -14,7 +14,7 @@ class ProductManager
 {
     public static function get_product($id)
     {
-        return Product::query()->with(['rating'])->where('id', $id)->firstOrFail();
+        return Product::active()->with(['rating'])->where('id', $id)->firstOrFail();
     }
 
     public static function get_latest_products($limit = 10, $offset = 1)
@@ -191,6 +191,16 @@ class ProductManager
             $path = asset('storage/app/public/product/thumbnail');
         } elseif ($image_type == 'product') {
             $path = asset('storage/app/public/product');
+        }
+        return $path;
+    }
+    public static function image_path($image_type)
+    {
+        $path = '';
+        if ($image_type == 'thumbnail') {
+            $path = asset('storage/app/public/Service/thumbnail');
+        } elseif ($image_type == 'Service') {
+            $path = asset('storage/app/public/Service');
         }
         return $path;
     }

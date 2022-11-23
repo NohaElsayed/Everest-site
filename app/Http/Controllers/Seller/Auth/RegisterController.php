@@ -44,14 +44,14 @@ class RegisterController extends Controller
         
             'latitude' => 'required',
             'longitude' => 'required',
-            'subscription' => 'required',
+            // 'subscription' => 'required',
             'zone_id' => 'required',
         ]);
 
         $this->validate($request, [
             'email' => 'required|unique:sellers',
             'shop_address' => 'required',
-            'category_id' => 'required',
+            // 'category_id' => 'required',
             'f_name' => 'required',
             'l_name' => 'required',
             'phone' => 'required',
@@ -78,7 +78,7 @@ class RegisterController extends Controller
             $seller = new Seller();
             $seller->f_name = $request->f_name;
             $seller->l_name = $request->l_name;
-            $seller->phone = $request->phone;
+          //  $seller->phone = $request->phone;
             $seller ->category_id = $request->category_id;
            
                    

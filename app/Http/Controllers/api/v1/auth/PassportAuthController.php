@@ -3,15 +3,19 @@
 
 namespace App\Http\Controllers\api\v1\auth;
 
+use App\Advert;
 use App\CPU\Helpers;
 use App\Http\Controllers\Controller;
 use App\Model\Zone;
+use App\ServiceOrder;
 use App\User;
+use App\Service;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use function App\CPU\translate;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class PassportAuthController extends Controller
 {
@@ -23,11 +27,11 @@ class PassportAuthController extends Controller
             'email' => 'required|unique:users',
             'phone' => 'required|unique:users',
             'password' => 'required|min:8',
-            'type' => 'required',
-            'age' => 'required',
-            'latitude' => 'required',
-            'longitude' => 'required',
-            'zone_id' => 'required',
+//            'type' => 'required',
+//            'age' => 'required',
+//            'latitude' => 'required',
+//            'longitude' => 'required',
+//            'zone_id' => 'required',
         ], [
             'f_name.required' => 'The first name field is required.',
             'l_name.required' => 'The last name field is required.',
@@ -75,6 +79,7 @@ class PassportAuthController extends Controller
         $user ->zone_id = $request->zone_id;
         $user ->password = bcrypt($request['password']);
         $user ->temporary_token = $temporary_token;
+        $user ->is_active = 1;
         $user->save();
 
         $phone_verification = Helpers::get_business_settings('phone_verification');
@@ -138,6 +143,7 @@ class PassportAuthController extends Controller
             }
 
             $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
+            User::where(['id' => auth()->id()])->update(['temporary_token' => $token]);
             return response()->json(['token' => $token], 200);
         } else {
             $errors = [];
@@ -148,7 +154,27 @@ class PassportAuthController extends Controller
         }
     }
     public function zones(){
-        return $zones =Zone::all();
+        return $zones = response()->json(Zone::all(), 200);
 
+    }
+    public function adverts(){
+        return $adverts = response()->json(Advert::all(), 200);
+
+    }
+    public function services(){
+        return $services = response()->json(Service::all(), 200);
+
+    }
+    public function store(Request $request){
+      //  return $request;
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required',
+        ]);
+        $service = new ServiceOrder();
+        $service->service_id =$request->service_id;
+        $service->notes =$request->notes;
+        $service->phone =$request->phone;
+        $service->save();
+        return response()->json('Request Service Successfully', 200);
     }
 }

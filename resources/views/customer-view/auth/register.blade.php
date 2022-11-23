@@ -76,18 +76,18 @@
                                         <div class="invalid-feedback">{{\App\CPU\translate('Please enter your phone number')}}!</div>
                                     </div>
                                 </div>
-                              
+
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                            <input type="date" style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};" class="form-control form-control-user" id="exampleInputEmail" name="age" value="{{old('age')}}" placeholder="{{\App\CPU\translate('age')}}" required>
+                                            <input type="date" style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};" class="form-control form-control-user" id="exampleInputEmail" name="age" value="{{old('age')}}" placeholder="{{\App\CPU\translate('age')}}" >
                                         <div class="invalid-feedback">{{\App\CPU\translate('Please enter your phone number')}}!</div>
                                          </div>
                                         </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                            <select name="type" class="form-control form-control-user"  placeholder="{{\App\CPU\translate('type')}}" required style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};"  required>
-                                            <option value="1">Female</option>
-                                            <option value="2">Male</option>
+                                            <select name="type" class="form-control form-control-user"  placeholder="{{\App\CPU\translate('type')}}" required style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};" >
+                                            <option value="0">Female</option>
+                                            <option value="1">Male</option>
                                             </select>
                                              <div class="invalid-feedback">{{\App\CPU\translate('Please enter your phone number')}}!</div>
                                         </div>

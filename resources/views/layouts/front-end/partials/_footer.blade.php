@@ -137,7 +137,7 @@
 
 <footer class="page-footer font-small mdb-colorrtl">
     <!-- Footer Links -->
-    <div style="background:{{$web_config['primary_color']}}20;padding-top:30px;">
+    <div style="background:{{$web_config['primary_color']}}20;padding-top:30px;  font-weight: bold !important;">
         <div class="container text-center" style="padding-bottom: 13px;">
 
             <!-- Footer links -->
@@ -274,7 +274,7 @@
                         <div class="col-md-7">
                             <div class="row d-flex align-items-center mobile-view-center-align {{Session::get('direction') === "rtl" ? ' flex-row-reverse' : ''}}">
                                 <div style="{{Session::get('direction') === "rtl" ? 'margin-right:23px;' : ''}}">
-                                    <span class="mb-4 font-weight-bold footer-heder">{{ \App\CPU\translate('Start a conversation')}}</span>
+                                    {{-- <span class="mb-4 font-weight-bold footer-heder">{{ \App\CPU\translate('Start a conversation')}}</span> --}}
                                 </div>
                                 <div class="{{Session::get('direction') === "rtl" ? 'mr-3' : 'ml-3'}}">
                                     <hr class="start_address_under_line" style="border: 1px solid #E0E0E0;"/>

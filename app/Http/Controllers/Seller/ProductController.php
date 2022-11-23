@@ -7,6 +7,7 @@ use App\CPU\Convert;
 use App\CPU\Helpers;
 use App\CPU\ImageManager;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Seller\ProductRequest;
 use App\Model\Brand;
 use App\Model\Category;
 use App\Model\Color;
@@ -71,35 +72,36 @@ class ProductController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name'              => 'required',
-            'category_id'       => 'required',
-            'brand_id'          => 'required',
-            'unit'              => 'required',
-            'images'            => 'required',
-            'image'             => 'required',
-            'tax'               => 'required|min:0',
-            'unit_price'        => 'required|numeric|min:1',
-            'purchase_price'    => 'required|numeric|min:1',
-            'discount'          => 'required|gt:-1',
-            'shipping_cost'     => 'required|gt:-1',
-            'code'              => 'required|numeric|min:1|digits_between:6,20|unique:products',
-            'minimum_order_qty' => 'required|numeric|min:1',
+//        return $request;
+    //    $validator = Validator::make($request->all(), [
+        //     'name'              => 'required',
+        //     'category_id'       => 'required',
+        //     'brand_id'          => 'required',
+        //     'unit'              => 'required',
+        //     'images'            => 'required',
+        //     'image'             => 'required',
+        //     'tax'               => 'required|min:0',
+        //     'unit_price'        => 'required|numeric|min:1',
+        //     'purchase_price'    => 'required|numeric|min:1',
+        //     'discount'          => 'required|gt:-1',
+        //     'shipping_cost'     => 'required|gt:-1',
+        //     'code'              => 'required|numeric|min:1|digits_between:6,20|unique:products',
+        //     'minimum_order_qty' => 'required|numeric|min:1',
 
-        ], [
-            'name.required'         => 'Product name is required!',
-            'category_id.required'  => 'category  is required!',
-            'images.required'       => 'Product images is required!',
-            'image.required'        => 'Product thumbnail is required!',
-            'brand_id.required'     => 'brand  is required!',
-            'unit.required'         => 'Unit  is required!',
-            'code.min'              => 'The code must be positive!',
-            'code.digits_between'   => 'The code must be minimum 6 digits!',
-            'minimum_order_qty.required' => 'The minimum order quantity is required!',
-            'minimum_order_qty.min' => 'The minimum order quantity must be positive!',
-        ]);
+        // ], [
+         //   'name.required'         => 'Product name is required!',
+        //     'category_id.required'  => 'category  is required!',
+        //     'images.required'       => 'Product images is required!',
+        //     'image.required'        => 'Product thumbnail is required!',
+        //     'brand_id.required'     => 'brand  is required!',
+        //     'unit.required'         => 'Unit  is required!',
+        //     'code.min'              => 'The code must be positive!',
+        //     'code.digits_between'   => 'The code must be minimum 6 digits!',
+        //     'minimum_order_qty.required' => 'The minimum order quantity is required!',
+        //     'minimum_order_qty.min' => 'The minimum order quantity must be positive!',
+        // ]);
 
         if ($request['discount_type'] == 'percent') {
             $dis = ($request['unit_price'] / 100) * $request['discount'];
@@ -107,21 +109,21 @@ class ProductController extends Controller
             $dis = $request['discount'];
         }
 
-        if ($request['unit_price'] <= $dis) {
-            $validator->after(function ($validator) {
-                $validator->errors()->add(
-                    'unit_price', 'Discount can not be more or equal to the price!'
-                );
-            });
-        }
+        // if ($request['unit_price'] <= $dis) {
+        //     // $validator->after(function ($validator) {
+        //         $validator->errors()->add(
+        //             'unit_price', 'Discount can not be more or equal to the price!'
+        //         );
+        //     // });
+        // }
 
-        if (is_null($request->name[array_search('en', $request->lang)])) {
-            $validator->after(function ($validator) {
-                $validator->errors()->add(
-                    'name', 'Name field is required!'
-                );
-            });
-        }
+        // if (is_null($request->name[array_search('en', $request->lang)])) {
+        //     $validator->after(function ($validator) {
+        //         $validator->errors()->add(
+        //             'name', 'Name field is required!'
+        //         );
+        //     });
+        // }
 
         $product = new Product();
         $product->user_id = auth('seller')->id();
@@ -218,9 +220,9 @@ class ProductController extends Controller
             $stock_count = (integer)$request['current_stock'];
         }
 
-        if ($validator->errors()->count() > 0) {
-            return response()->json(['errors' => Helpers::error_processor($validator)]);
-        }
+        // if ($validator->errors()->count() > 0) {
+        //     return response()->json(['errors' => Helpers::error_processor($validator)]);
+        // }
 
         //combinations end
         $product->variation = json_encode($variations);
@@ -288,7 +290,7 @@ class ProductController extends Controller
         $search = $request['search'];
         if ($request->has('search')) {
             $key = explode(' ', $request['search']);
-            $products = Product::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id(), 'service' => null])
+            $products = Product::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id()])
                 ->where(function ($q) use ($key) {
                     foreach ($key as $value) {
                         $q->Where('name', 'like', "%{$value}%");
@@ -296,7 +298,7 @@ class ProductController extends Controller
                 });
             $query_param = ['search' => $request['search']];
         } else {
-            $products = Product::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id(), 'service' => null]);
+            $products = Product::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id()]);
         }
         $products = $products->orderBy('id', 'DESC')->paginate(Helpers::pagination_limit())->appends($query_param);
 
@@ -309,7 +311,7 @@ class ProductController extends Controller
         $sort_oqrderQty = $request['sort_oqrderQty'];
         $query_param = $request->all();
         $search = $request['search'];
-        $pro = Product::where(['added_by' => 'seller', 'user_id' => auth('seller')->id(), 'service' => null])
+        $pro = Product::where(['added_by' => 'seller', 'user_id' => auth('seller')->id()])
             ->where('request_status',1)
             ->when($request->has('status') && $request->status != null, function ($query) use ($request) {
                 $query->where('request_status', $request->status);

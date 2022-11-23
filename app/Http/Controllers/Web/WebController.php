@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Advert;
 use App\CPU\Helpers;
 use App\CPU\OrderManager;
 use App\CPU\ProductManager;
@@ -56,7 +57,9 @@ class WebController extends Controller
 
     public function home()
     {
-        $home_categories = Category::where('home_status', true)->priority()->get();
+
+        $br = Advert::all();
+            $home_categories = Category::where('home_status', true)->priority()->get();
         $home_categories->map(function ($data) {
             $id = '"'.$data['id'].'"';
             $data['products'] = Product::active()
@@ -111,7 +114,7 @@ class WebController extends Controller
 
         $deal_of_the_day = DealOfTheDay::join('products', 'products.id', '=', 'deal_of_the_days.product_id')->select('deal_of_the_days.*', 'products.unit_price')->where('products.status', 1)->where('deal_of_the_days.status', 1)->first();
 
-        return view('web-views.home', compact('featured_products', 'topRated', 'bestSellProduct', 'latest_products', 'categories', 'brands', 'deal_of_the_day', 'top_sellers', 'home_categories'));
+        return view('web-views.home', compact('br','featured_products', 'topRated', 'bestSellProduct', 'latest_products', 'categories', 'brands', 'deal_of_the_day', 'top_sellers', 'home_categories'));
     }
 
     public function flash_deals($id)

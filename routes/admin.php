@@ -154,6 +154,16 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
             Route::get('export', 'BrandController@export')->name('export');
             Route::post('status-update', 'BrandController@status_update')->name('status-update');
         });
+        Route::group(['prefix' => 'adverts', 'as' => 'adverts.','middleware'=>['module:product_management']], function () {
+            Route::get('add-new', 'AdvertController@add_new')->name('add-new');
+            Route::post('add-new', 'AdvertController@store');
+            Route::get('list', 'AdvertController@list')->name('list');
+            Route::get('update/{id}', 'AdvertController@edit')->name('update');
+            Route::post('update/{id}', 'AdvertController@update');
+            Route::post('delete', 'AdvertController@delete')->name('delete');
+//            Route::get('export', 'BrandController@export')->name('export');
+            Route::post('status-update', 'AdvertController@status_update')->name('status-update');
+        });
 
         Route::group(['prefix' => 'banner', 'as' => 'banner.','middleware'=>['module:marketing_section']], function () {
             Route::post('add-new', 'BannerController@store')->name('store');
@@ -192,7 +202,24 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
             Route::get('view', 'BusinessSettingsController@viewSocialLogin')->name('view');
             Route::post('update/{service}', 'BusinessSettingsController@updateSocialLogin')->name('update');
         });
-
+        Route::group(['prefix' => 'service', 'as' => 'service.'], function () {
+            Route::post('image-upload', 'ServiceController@imageUpload')->name('image-upload');
+            Route::get('remove-image', 'ServiceController@remove_image')->name('remove-image');
+            Route::get('add-new', 'ServiceController@add_new')->name('add-new');
+            Route::post('add-new', 'ServiceController@store')->name('store');
+            Route::post('status-update', 'ServiceController@status_update')->name('status-update');
+            Route::get('list', 'ServiceController@list')->name('list');
+            Route::get('get-variations', 'ServiceController@get_variations')->name('get-variations');
+            Route::post('update-quantity', 'ServiceController@update_quantity')->name('update-quantity');
+            Route::get('edit/{id}', 'ServiceController@edit')->name('edit');
+            Route::post('update/{id}', 'ServiceController@update')->name('update');
+            Route::post('sku-combination', 'ServiceController@sku_combination')->name('sku-combination');
+            Route::get('get-categories', 'ServiceController@get_categories')->name('get-categories');
+            Route::get('barcode', 'ServiceController@get_categories')->name('get-categories');
+            Route::get('barcode/{id}', 'ServiceController@barcode')->name('barcode');
+            Route::get('view/{id}', 'ServiceController@view')->name('view');
+            Route::delete('delete/{id}', 'ServiceController@delete')->name('delete');
+        });
         Route::group(['prefix' => 'currency', 'as' => 'currency.','middleware'=>['module:business_settings']], function () {
             Route::get('view', 'CurrencyController@index')->name('view')->middleware('actch');;
             Route::get('fetch', 'CurrencyController@fetch')->name('fetch');
@@ -317,6 +344,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
             Route::get('view/{id}', 'ServiceController@view')->name('view');
             Route::get('list/{type}', 'ServiceController@list')->name('list');
             Route::get('orders', 'ServiceController@orders')->name('orders');
+            Route::post('status-update', 'ServiceController@status_update')->name('status-update');
+            Route::get('approve-status', 'ServiceController@approve_status')->name('approve-status');
             Route::post('update/{id}', 'ServiceController@update')->name('update');
             Route::delete('delete/{id}', 'ServiceController@delete')->name('delete');
 

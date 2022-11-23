@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Mail;
 Route::get('maintenance-mode', 'Web\WebController@maintenance_mode')->name('maintenance-mode');
 
 
-Route::group(['namespace' => 'Web','middleware'=>['maintenance_mode']], function () {
+Route::group(['namespace' => 'Web'], function () {
     Route::get('/', 'WebController@home')->name('home');
 
     Route::get('quick-view', 'WebController@quick_view')->name('quick-view');

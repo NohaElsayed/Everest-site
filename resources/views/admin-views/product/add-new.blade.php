@@ -654,7 +654,7 @@
     </script>
 
     <script>
-        $(".lang_link").click(function(e) {
+        {{-- $(".lang_link").click(function(e) {
             e.preventDefault();
             $(".lang_link").removeClass('active');
             $(".lang_form").addClass('d-none');
@@ -669,7 +669,7 @@
             } else {
                 $(".rest-part").addClass('d-none');
             }
-        })
+        }) --}}
     </script>
 
     {{-- ck editor --}}

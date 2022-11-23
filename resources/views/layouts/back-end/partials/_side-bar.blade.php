@@ -25,11 +25,11 @@
     }
 
     .side-logo {
-        background-color: #ffa500;
+        background-color: #8BB381;
     }
 
     .nav-sub {
-        background-color: #ffa500!important;
+        background-color: #8BB381!important;
     }
 
     .nav-indicator-icon {
@@ -39,7 +39,7 @@
 
 <div id="sidebarMain" class="d-none" style=" margin-right: {{Session::get('direction') === "rtl" ? '6px' : ''}};">
     <aside
-        style="background: #ffa500!important; text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}}!important; "
+        style="background: #8BB381!important; font-weight: bold !important; text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}}!important; "
         class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered  ">
         <div class="navbar-vertical-container">
             <div class="navbar-vertical-footer-offset pb-0">
@@ -80,7 +80,7 @@
                        @if (\App\CPU\Helpers::module_permission_check('pos_management'))
                         <li class="nav-item">
                             <small
-                                class="nav-subtitle">{{\App\CPU\translate('pos')}} {{\App\CPU\translate('system')}}</small>
+                                class="nav-subtitle" style=" font-size: 13px; font-weight: bold !important;" >{{\App\CPU\translate('pos')}} {{\App\CPU\translate('system')}}</small>
                             <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                         </li>
                         <li class="navbar-vertical-aside-has-menu {{Request::is('admin/pos/*')?'active':''}}">
@@ -115,7 +115,7 @@
                         <!-- End POS -->
                         @if(\App\CPU\Helpers::module_permission_check('order_management'))
                             <li class="nav-item {{Request::is('admin/orders*')?'scroll-here':''}}">
-                                <small class="nav-subtitle" title="">{{\App\CPU\translate('order_management')}}</small>
+                                <small class="nav-subtitle" style=" font-size: 13px; font-weight: bold !important;" title="">{{\App\CPU\translate('order_management')}}</small>
                                 <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                             </li>
                             <!-- Order -->
@@ -240,9 +240,9 @@
                         @endif
                     <!--order management ends-->
 
-                        @if(\App\CPU\Helpers::module_permission_check('product_management'))
+                       @if(\App\CPU\Helpers::module_permission_check('product_management'))
                             <li class="nav-item {{(Request::is('admin/brand*') || Request::is('admin/category*') || Request::is('admin/sub*') || Request::is('admin/attribute*') || Request::is('admin/product*'))?'scroll-here':''}}">
-                                <small class="nav-subtitle"
+                                <small class="nav-subtitle"  style=" font-size: 13px; font-weight: bold !important;"
                                        title="">{{\App\CPU\translate('product_management')}}</small>
                                 <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                             </li>
@@ -264,6 +264,30 @@
                                     </li>
                                     <li class="nav-item {{Request::is('admin/brand/list')?'active':''}}">
                                         <a class="nav-link " href="{{route('admin.brand.list')}}">
+                                            <span class="tio-circle nav-indicator-icon"></span>
+                                            <span class="text-truncate">{{\App\CPU\translate('List')}}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- Pages -->
+                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/adverts*')?'active':''}}">
+                                <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
+                                   href="javascript:">
+                                    <i class="tio-telegram nav-icon"></i>
+                                    <span
+                                        class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{\App\CPU\translate('Advertisement')}}</span>
+                                </a>
+                                <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                                    style="display: {{Request::is('admin/brand*')?'block':'none'}}">
+                                    <li class="nav-item {{Request::is('admin/adverts/add-new')?'active':''}}">
+                                        <a class="nav-link " href="{{route('admin.adverts.add-new')}}">
+                                            <span class="tio-circle nav-indicator-icon"></span>
+                                            <span class="text-truncate">{{\App\CPU\translate('add_new')}}</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item {{Request::is('admin/adverts/list')?'active':''}}">
+                                        <a class="nav-link " href="{{route('admin.adverts.list')}}">
                                             <span class="tio-circle nav-indicator-icon"></span>
                                             <span class="text-truncate">{{\App\CPU\translate('List')}}</span>
                                         </a>
@@ -336,7 +360,7 @@
                                             </span>
                                         </a>
                                     </li>
-                                    <li class="nav-item {{Request::is('admin/product/bulk-import')?'active':''}}">
+                                    {{-- <li class="nav-item {{Request::is('admin/product/bulk-import')?'active':''}}">
                                         <a class="nav-link " href="{{route('admin.product.bulk-import')}}">
                                             <span class="tio-circle nav-indicator-icon"></span>
                                             <span class="text-truncate">{{\App\CPU\translate('bulk_import')}}</span>
@@ -347,12 +371,12 @@
                                             <span class="tio-circle nav-indicator-icon"></span>
                                             <span class="text-truncate">{{\App\CPU\translate('bulk_export')}}</span>
                                         </a>
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </li>
                             <li class="navbar-vertical-aside-has-menu {{(Request::is('admin/services/list/in_house') || Request::is('admin/product/bulk-import'))?'active':''}}">
                              <a class="nav-link " href="{{route('admin.services.list',['in_house', ''])}}">
-                                    <i class="tio-shop nav-icon"></i>
+                                    <i class="tio-location-search nav-icon"></i>
                                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                         <span class="text-truncate">{{\App\CPU\translate('InHouse Service')}}</span>
                                     </span>
@@ -360,7 +384,7 @@
                                 </li>
                             <li class="navbar-vertical-aside-has-menu {{(Request::is('admin/services/orders') || Request::is('admin/product/bulk-import'))?'active':''}}">
                                 <a class="nav-link " href="{{route('admin.services.orders')}}">
-                                    <i class="tio-shop nav-icon"></i>
+                                    <i class="tio-taxi nav-icon"></i>
                                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                         <span class="text-truncate">{{\App\CPU\translate('Service Order')}}</span>
                                     </span>
@@ -418,7 +442,7 @@
 
                         @if(\App\CPU\Helpers::module_permission_check('marketing_section'))
                             <li class="nav-item {{(Request::is('admin/banner*') || Request::is('admin/coupon*') || Request::is('admin/notification*') || Request::is('admin/deal*'))?'scroll-here':''}}">
-                                <small class="nav-subtitle" title="">{{\App\CPU\translate('Marketing_Section')}}</small>
+                                <small class="nav-subtitle" style=" font-size: 13px; font-weight: bold !important;" title="">{{\App\CPU\translate('Marketing_Section')}}</small>
                                 <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                             </li>
                             <li class="navbar-vertical-aside-has-menu {{Request::is('admin/banner*')?'active':''}}">
@@ -477,7 +501,7 @@
 
                         @if(\App\CPU\Helpers::module_permission_check('business_section'))
                             <li class="nav-item {{(Request::is('admin/report/product-in-wishlist') ||Request::is('admin/transaction/refund-list') || Request::is('admin/reviews*') || Request::is('admin/sellers/withdraw_list') || Request::is('admin/report/product-stock'))?'scroll-here':''}}">
-                                <small class="nav-subtitle" title="">{{\App\CPU\translate('business_section')}}</small>
+                                <small  style=" font-size: 13px; font-weight: bold !important;" class="nav-subtitle" title="">{{\App\CPU\translate('business_section')}}</small>
                                 <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                             </li>
 
@@ -524,7 +548,7 @@
 
                         @if(\App\CPU\Helpers::module_permission_check('user_section'))
                             <li class="nav-item {{(Request::is('admin/customer/list') ||Request::is('admin/sellers/subscriber-list')||Request::is('admin/sellers/seller-add') || Request::is('admin/sellers/seller-list'))?'scroll-here':''}}">
-                                <small class="nav-subtitle" title="">{{\App\CPU\translate('user_section')}}</small>
+                                <small class="nav-subtitle" style=" font-size: 13px; font-weight: bold !important;" title="">{{\App\CPU\translate('user_section')}}</small>
                                 <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                             </li>
                             <li class="navbar-vertical-aside-has-menu {{Request::is('admin/seller*')?'active':''}}">
@@ -646,7 +670,7 @@
                     <!-- refund section -->
                         @if(\App\CPU\Helpers::module_permission_check('refund_management'))
                             <li class="nav-item">
-                                <small class="nav-subtitle" title="">{{\App\CPU\translate('refund_management')}}</small>
+                                <small class="nav-subtitle" style=" font-size: 13px; font-weight: bold !important;" title="">{{\App\CPU\translate('refund_management')}}</small>
                                 <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                             </li>
                             <li class="navbar-vertical-aside-has-menu {{Request::is('admin/refund-section/refund-list')?'active':''}}">
@@ -759,7 +783,7 @@
 
                         @if(\App\CPU\Helpers::module_permission_check('business_settings'))
                             <li class="nav-item {{(Request::is('admin/currency/view') || Request::is('admin/business-settings/language*') || Request::is('admin/business-settings/shipping-method*') || Request::is('admin/business-settings/payment-method') || Request::is('admin/business-settings/seller-settings*'))?'scroll-here':''}}">
-                                <small class="nav-subtitle" title="">{{\App\CPU\translate('business_settings')}}</small>
+                                <small class="nav-subtitle" style=" font-size: 13px; font-weight: bold !important;" title="">{{\App\CPU\translate('business_settings')}}</small>
                                 <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                             </li>
 
@@ -1074,7 +1098,7 @@
 
                         @if(\App\CPU\Helpers::module_permission_check('employee_section'))
                             <li class="nav-item {{(Request::is('admin/employee*') || Request::is('admin/custom-role*'))?'scroll-here':''}}">
-                                <small class="nav-subtitle">{{\App\CPU\translate('employee_section')}}</small>
+                                <small  style=" font-size: 13px; font-weight: bold !important;" class="nav-subtitle">{{\App\CPU\translate('employee_section')}}</small>
                                 <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                             </li>
 
@@ -1114,7 +1138,7 @@
 
                         @if(\App\CPU\Helpers::module_permission_check('delivery_man_management'))
                             <li class="nav-item {{Request::is('admin/delivery-man*')?'scroll-here':''}}">
-                                <small class="nav-subtitle">{{\App\CPU\translate('delivery_man_management')}}</small>
+                                <small style=" font-size: 13px; font-weight: bold !important;" class="nav-subtitle">{{\App\CPU\translate('delivery_man_management')}}</small>
                                 <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                             </li>
 

@@ -70,6 +70,7 @@ class ProductController extends BaseController
 
     public function store(Request $request)
     {
+      //  return $request;
         $validator = Validator::make($request->all(), [
             'name'              => 'required',
             'category_id'       => 'required',
@@ -193,7 +194,6 @@ class ProductController extends BaseController
         //Generates the combinations of customer choice options
 
         $combinations = Helpers::combinations($options);
-
         $variations = [];
         $stock_count = 0;
         if (count($combinations[0]) > 0) {
@@ -295,9 +295,9 @@ class ProductController extends BaseController
         $query_param = [];
         $search = $request['search'];
         if ($type == 'in_house') {
-            $pro = Product::where(['added_by' => 'admin', 'service' => null]);
+            $pro = Product::where(['added_by' => 'admin']);
         } else {
-            $pro = Product::where(['added_by' => 'seller' ,'service' => null])->where('request_status', $request->status);
+            $pro = Product::where(['added_by' => 'seller' ])->where('request_status', $request->status);
         }
 
         if ($request->has('search')) {

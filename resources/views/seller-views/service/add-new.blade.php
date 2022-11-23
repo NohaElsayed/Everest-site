@@ -13,7 +13,7 @@
                 <li class="breadcrumb-item"><a
                         href="{{ route('seller.dashboard.index') }}">{{ \App\CPU\translate('Dashboard') }}</a></li>
                 <li class="breadcrumb-item" aria-current="page"><a
-                        href="{{ route('seller.service.list') }}">{{ \App\CPU\translate('Service') }}</a></li>
+                            href="{{ route('seller.service.list') }}">{{ \App\CPU\translate('Service') }}</a></li>
                 <li class="breadcrumb-item">{{ \App\CPU\translate('Add_new') }}</li>
             </ol>
         </nav>
@@ -23,8 +23,8 @@
             <div class="col-md-12">
 
                 <form class="product-form" action="{{ route('seller.service.add-new') }}" method="post"
-                    enctype="multipart/form-data"
-                    style="text-align: {{ Session::get('direction') === 'rtl' ? 'right' : 'left' }};"
+                      enctype="multipart/form-data"
+                      style="text-align: {{ Session::get('direction') === 'rtl' ? 'right' : 'left' }};"
                       id="product_form"
                       onsubmit="check()">>
                     @csrf
@@ -39,8 +39,8 @@
                                 @foreach (json_decode($language) as $lang)
                                     <li class="nav-item">
                                         <a class="nav-link lang_link {{ $lang == $default_lang ? 'active' : '' }}"
-                                            href="#"
-                                            id="{{ $lang }}-link">{{ \App\CPU\Helpers::get_language_name($lang) . '(' . strtoupper($lang) . ')' }}</a>
+                                           href="#"
+                                           id="{{ $lang }}-link">{{ \App\CPU\Helpers::get_language_name($lang) . '(' . strtoupper($lang) . ')' }}</a>
                                     </li>
                                 @endforeach
                             </ul>
@@ -49,27 +49,26 @@
                         <div class="card-body">
                             @foreach (json_decode($language) as $lang)
                                 <div class="{{ $lang != $default_lang ? 'd-none' : '' }} lang_form"
-                                    id="{{ $lang }}-form">
+                                     id="{{ $lang }}-form">
                                     <div class="form-group">
                                         <label class="input-label"
-                                            for="{{ $lang }}_name">{{ \App\CPU\translate('name') }}
+                                               for="{{ $lang }}_name">{{ \App\CPU\translate('name') }}
                                             ({{ strtoupper($lang) }})
                                         </label>
                                         <input type="text" {{ $lang == $default_lang ? 'required' : '' }} name="name[]"
-                                            id="{{ $lang }}_name" class="form-control" placeholder="New Service"
-                                            required>
+                                               id="{{ $lang }}_name" class="form-control" placeholder="New Service"
+                                               required>
                                     </div>
                                     <input type="hidden" name="lang[]" value="{{ $lang }}">
                                     <div class="form-group pt-4">
                                         <label class="input-label"
-                                            for="{{ $lang }}_description">{{ \App\CPU\translate('description') }}
+                                               for="{{ $lang }}_description">{{ \App\CPU\translate('description') }}
                                             ({{ strtoupper($lang) }})</label>
                                         <textarea name="description[]" class="editor textarea" cols="30" rows="10" required>{{ old('details') }}</textarea>
                                     </div>
                                 </div>
                             @endforeach
-                        </div>
-                    </div>
+                        </div>                    </div>
 
                     <div class="card mt-2 rest-part">
                         <div class="card-header">
@@ -81,8 +80,8 @@
                                     <div class="col-md-4">
                                         <label for="name">{{ \App\CPU\translate('Category') }}</label>
                                         <select class="js-example-basic-multiple form-control" name="category_id"
-                                            onchange="getRequest('{{ url('/') }}/seller/service/get-categories?parent_id='+this.value,'sub-category-select','select')"
-                                            required>
+                                                onchange="getRequest('{{ url('/') }}/seller/product/get-categories?parent_id='+this.value,'sub-category-select','select')"
+                                                required>
                                             <option value="{{ old('category_id') }}" selected disabled>
                                                 ---{{ \App\CPU\translate('Select') }}---</option>
                                             @foreach ($cat as $c)
@@ -96,19 +95,24 @@
 {{--                                    <div class="col-md-4">--}}
 {{--                                        <label for="name">{{ \App\CPU\translate('Sub_category') }}</label>--}}
 {{--                                        <select class="js-example-basic-multiple form-control" name="sub_category_id"--}}
-{{--                                            id="sub-category-select"--}}
-{{--                                            onchange="getRequest('{{ url('/') }}/seller/service/get-categories?parent_id='+this.value,'sub-sub-category-select','select')">--}}
+{{--                                                id="sub-category-select"--}}
+{{--                                                onchange="getRequest('{{ url('/') }}/seller/product/get-categories?parent_id='+this.value,'sub-sub-category-select','select')">--}}
 {{--                                        </select>--}}
 {{--                                    </div>--}}
 {{--                                    <div class="col-md-4">--}}
 {{--                                        <label for="name">{{ \App\CPU\translate('Sub_sub_category') }}</label>--}}
 {{--                                        <select class="js-example-basic-multiple form-control" name="sub_sub_category_id"--}}
-{{--                                            id="sub-sub-category-select">--}}
+{{--                                                id="sub-sub-category-select">--}}
 
 {{--                                        </select>--}}
 {{--                                    </div>--}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
                                     <div class="col-md-4">
-                                        <label for="code">{{ \App\CPU\translate('Service_code_sku') }}
+                                        <label for="code">{{ \App\CPU\translate('service_code_sku') }}
                                             <span class="text-danger">*</span>
                                             <a class="style-one-pro" style="cursor: pointer;"
                                                onclick="document.getElementById('generate_number').value = getRndInteger()">{{ \App\CPU\translate('generate') }}
@@ -117,21 +121,6 @@
                                                class="form-control" value="{{ old('code') }}"
                                                placeholder="{{ \App\CPU\translate('code') }}" required>
                                     </div>
-                                </div>
-                            </div>
-
-{{--                            <div class="form-group">--}}
-{{--                                <div class="row">--}}
-{{--                                    <div class="col-md-4">--}}
-{{--                                        <label for="code">{{ \App\CPU\translate('Service_code_sku') }}--}}
-{{--                                            <span class="text-danger">*</span>--}}
-{{--                                            <a class="style-one-pro" style="cursor: pointer;"--}}
-{{--                                                onclick="document.getElementById('generate_number').value = getRndInteger()">{{ \App\CPU\translate('generate') }}--}}
-{{--                                                {{ \App\CPU\translate('code') }}</a></label>--}}
-{{--                                        <input type="number" minlength="5" id="generate_number" name="code"--}}
-{{--                                            class="form-control" value="{{ old('code') }}"--}}
-{{--                                            placeholder="{{ \App\CPU\translate('code') }}" required>--}}
-{{--                                    </div>--}}
 {{--                                    <div class="col-md-4">--}}
 {{--                                        <label for="name">{{ \App\CPU\translate('Brand') }}</label>--}}
 {{--                                        <select--}}
@@ -160,11 +149,11 @@
                         </div>
                     </div>
 
-{{--                    <div class="card mt-2 rest-part">--}}
-{{--                        <div class="card-header">--}}
-{{--                            <h4>{{ \App\CPU\translate('Variations') }}</h4>--}}
-{{--                        </div>--}}
-{{--                        <div class="card-body">--}}
+                    <div class="card mt-2 rest-part">
+                        <div class="card-header">
+                            <h4>{{ \App\CPU\translate('Variations') }}</h4>
+                        </div>
+                        <div class="card-body">
 
 {{--                            <div class="form-group">--}}
 {{--                                <div class="row">--}}
@@ -174,7 +163,7 @@
 {{--                                        </label>--}}
 {{--                                        <label class="switch">--}}
 {{--                                            <input type="checkbox" class="status" name="colors_active"--}}
-{{--                                                value="{{ old('colors_active') }}">--}}
+{{--                                                   value="{{ old('colors_active') }}">--}}
 {{--                                            <span class="slider round"></span>--}}
 {{--                                        </label>--}}
 {{--                                        <select--}}
@@ -211,43 +200,49 @@
 {{--                                </div>--}}
 {{--                            </div>--}}
 {{--                        </div>--}}
-{{--                    </div>--}}
+                    </div>
 
-                    <div class="card mt-2 rest-part">
-                        <div class="card-header">
-                            <h4>{{ \App\CPU\translate('Service_price_&_stock') }}</h4>
-                        </div>
+{{--                    <div class="card mt-2 rest-part">--}}
+{{--                        <div class="card-header">--}}
+{{--                            <h4>{{ \App\CPU\translate('Product_price_&_stock') }}</h4>--}}
+{{--                        </div>--}}
                         <div class="card-body">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label class="control-label">{{ \App\CPU\translate('Unit_price') }}</label>
+                                        <label class="control-label">{{ \App\CPU\translate('Service price') }}</label>
                                         <input type="number" min="0" value="0" step="0.01"
-                                            placeholder="{{ \App\CPU\translate('Unit_price') }}" name="unit_price"
-                                            value="{{ old('unit_price') }}" class="form-control" required>
+                                               placeholder="{{ \App\CPU\translate('Service price') }}" name="unit_price"
+                                               value="{{ old('unit_price') }}" class="form-control" required>
                                     </div>
+{{--                                    <div class="col-md-4">--}}
+{{--                                        <label class="control-label">{{ \App\CPU\translate('discount_type') }}</label>--}}
+{{--                                        <select class="form-control js-select2-custom" name="discount_type">--}}
+{{--                                            <option value="flat">{{ \App\CPU\translate('Flat') }}</option>--}}
+{{--                                            <option value="percent">{{ \App\CPU\translate('Percent') }}</option>--}}
+{{--                                        </select></div>--}}
                                     <div class="col-md-4">
-                                        <label class="control-label">{{ \App\CPU\translate('Discount') }}</label>
-                                        <input type="number" min="0" value="0" step="0.01"
-                                               placeholder="{{ \App\CPU\translate('Discount') }}" name="discount"
-                                               value="{{ old('discount') }}" class="form-control" required></div>
+                                        <label class="control-label">{{ \App\CPU\translate('Phone') }}</label>
+                                        <input type="number"
+                                               placeholder="{{ \App\CPU\translate('Phone') }}" name="unit_price"
+                                               value="{{ old('phone') }}" class="form-control" required></div>
 
                                         {{--                                    <div class="col-md-6">--}}
 {{--                                        <label class="control-label">{{ \App\CPU\translate('Purchase_price') }}</label>--}}
 {{--                                        <input type="number" min="0" value="0" step="0.01"--}}
-{{--                                            placeholder="{{ \App\CPU\translate('Purchase_price') }}"--}}
-{{--                                            name="purchase_price" value="{{ old('purchase_price') }}"--}}
-{{--                                            class="form-control" required>--}}
+{{--                                               placeholder="{{ \App\CPU\translate('Purchase_price') }}"--}}
+{{--                                               name="purchase_price" value="{{ old('purchase_price') }}"--}}
+{{--                                               class="form-control" required>--}}
 {{--                                    </div>--}}
-                                </div>
+{{--                                </div>--}}
 
 {{--                                <div class="row pt-4">--}}
 {{--                                    <div class="col-md-4">--}}
 {{--                                        <label class="control-label">{{ \App\CPU\translate('Tax') }}</label>--}}
 {{--                                        <label class="badge badge-info">{{ \App\CPU\translate('Percent') }} ( % )</label>--}}
 {{--                                        <input type="number" min="0" value="0" step="0.01"--}}
-{{--                                            placeholder="{{ \App\CPU\translate('Tax') }}" name="tax"--}}
-{{--                                            value="{{ old('tax') }}" class="form-control">--}}
+{{--                                               placeholder="{{ \App\CPU\translate('Tax') }}" name="tax"--}}
+{{--                                               value="{{ old('tax') }}" class="form-control">--}}
 {{--                                        <input name="tax_type" value="percent" style="display: none">--}}
 {{--                                    </div>--}}
 
@@ -262,8 +257,8 @@
 {{--                                    <div class="col-md-4">--}}
 {{--                                        <label class="control-label">{{ \App\CPU\translate('Discount') }}</label>--}}
 {{--                                        <input type="number" min="0" value="0" step="0.01"--}}
-{{--                                            placeholder="{{ \App\CPU\translate('Discount') }}" name="discount"--}}
-{{--                                            value="{{ old('discount') }}" class="form-control" required>--}}
+{{--                                               placeholder="{{ \App\CPU\translate('Discount') }}" name="discount"--}}
+{{--                                               value="{{ old('discount') }}" class="form-control" required>--}}
 {{--                                    </div>--}}
 
 {{--                                </div>--}}
@@ -281,14 +276,14 @@
 {{--                                    <div class="col-md-3" id="minimum_order_qty">--}}
 {{--                                        <label class="control-label">{{ \App\CPU\translate('minimum_order_quantity') }}</label>--}}
 {{--                                        <input type="number" min="1" value="1" step="1"--}}
-{{--                                            placeholder="{{ \App\CPU\translate('minimum_order_quantity') }}" name="minimum_order_qty"--}}
+{{--                                               placeholder="{{ \App\CPU\translate('minimum_order_quantity') }}" name="minimum_order_qty"--}}
 {{--                                               class="form-control" required>--}}
 {{--                                    </div>--}}
 {{--                                    <div class="col-md-3" id="shipping_cost">--}}
 {{--                                        <label class="control-label">{{ \App\CPU\translate('shipping_cost') }} </label>--}}
 {{--                                        <input type="number" min="0" value="0" step="1"--}}
-{{--                                            placeholder="{{ \App\CPU\translate('shipping_cost') }}" name="shipping_cost"--}}
-{{--                                            class="form-control" required>--}}
+{{--                                               placeholder="{{ \App\CPU\translate('shipping_cost') }}" name="shipping_cost"--}}
+{{--                                               class="form-control" required>--}}
 {{--                                    </div>--}}
 {{--                                    <div class="col-md-3" id="shipping_cost_multy">--}}
 {{--                                        <div>--}}
@@ -348,13 +343,13 @@
 {{--                                        {{ \App\CPU\translate('optional, please provide embed link not direct link') }}.--}}
 {{--                                        )</small>--}}
 {{--                                    <input type="text" name="video_link"--}}
-{{--                                        placeholder="EX : https://www.youtube.com/embed/5R06LRdUCSE" class="form-control"--}}
-{{--                                        >--}}
+{{--                                           placeholder="EX : https://www.youtube.com/embed/5R06LRdUCSE" class="form-control"--}}
+{{--                                           required>--}}
 {{--                                </div>--}}
 
                                 <div class="col-md-8">
                                     <div class="form-group">
-                                        <label>{{ \App\CPU\translate('Upload_Service_images') }}</label><small
+                                        <label>{{ \App\CPU\translate('Upload_service_images') }}</label><small
                                             style="color: red">* ( {{ \App\CPU\translate('ratio 1:1') }} )</small>
                                     </div>
                                     <div class="p-2 border border-dashed" style="max-width:430px;">
@@ -379,7 +374,7 @@
                         <div class="row">
                             <div class="col-md-12" style="padding-top: 20px">
                                 <button type="submit"
-                                    class="btn btn-primary float-right">{{ \App\CPU\translate('Submit') }}</button>
+                                        class="btn btn-primary float-right">{{ \App\CPU\translate('Submit') }}</button>
                             </div>
                         </div>
                     </div>
@@ -390,7 +385,7 @@
 @endsection
 
 @push('script')
-    <script src="{{ asset('public/assets/back-end/js/tags-input.min.js')}}"></script>
+    <script src="{{ asset('public/assets/back-end/js/tags-input.min.js') }}"></script>
     <script src="{{ asset('public/assets/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('public/assets/back-end/js/spartan-multi-image-picker.js') }}"></script>
     <script>
@@ -509,99 +504,6 @@
             width: 'resolve'
         });
     </script>
-
-    <script>
-        function getRequest(route, id, type) {
-            $.get({
-                url: route,
-                dataType: 'json',
-                success: function(data) {
-                    if (type == 'select') {
-                        $('#' + id).empty().append(data.select_tag);
-                    }
-                },
-            });
-        }
-
-        $('input[name="colors_active"]').on('change', function() {
-            if (!$('input[name="colors_active"]').is(':checked')) {
-                $('#colors-selector').prop('disabled', true);
-            } else {
-                $('#colors-selector').prop('disabled', false);
-            }
-        });
-
-        $('#choice_attributes').on('change', function() {
-            $('#customer_choice_options').html(null);
-            $.each($("#choice_attributes option:selected"), function() {
-                //console.log($(this).val());
-                add_more_customer_choice_option($(this).val(), $(this).text());
-            });
-        });
-
-        function add_more_customer_choice_option(i, name) {
-            let n = name.split(' ').join('');
-            $('#customer_choice_options').append(
-                '<div class="row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="' + i +
-                '"><input type="text" class="form-control" name="choice[]" value="' + n +
-                '" placeholder="{{ trans('Choice Title') }}" readonly></div><div class="col-lg-9"><input type="text" class="form-control" name="choice_options_' +
-                i +
-                '[]" placeholder="{{ trans('Enter choice values') }}" data-role="tagsinput" onchange="update_sku()"></div></div>'
-            );
-
-            $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
-        }
-        $('#colors-selector').on('change', function() {
-            update_sku();
-        });
-
-        $('input[name="unit_price"]').on('keyup', function() {
-            update_sku();
-        });
-
-
-        function update_sku() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                type: "POST",
-                url: '{{ route('seller.service.sku-combination') }}',
-                data: $('#product_form').serialize(),
-                success: function(data) {
-                    $('#sku_combination').html(data.view);
-                    $('#sku_combination').addClass('pt-4');
-                    if (data.length > 1) {
-                        $('#quantity').hide();
-                    } else {
-                        $('#quantity').show();
-                    }
-                }
-            });
-        };
-
-        $(document).ready(function() {
-            // color select select2
-            $('.color-var-select').select2({
-                templateResult: colorCodeSelect,
-                templateSelection: colorCodeSelect,
-                escapeMarkup: function(m) {
-                    return m;
-                }
-            });
-
-            function colorCodeSelect(state) {
-                var colorCode = $(state.element).val();
-                if (!colorCode) return state.text;
-                return "<span class='color-preview' style='background-color:" + colorCode + ";'></span>" + state
-                    .text;
-            }
-        });
-    </script>
-
     <script>
         function check() {
             Swal.fire({

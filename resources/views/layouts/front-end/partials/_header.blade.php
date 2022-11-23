@@ -121,7 +121,7 @@
 @endif
 
 
-<header class="box-shadow-sm rtl">
+<header class="box-shadow-sm rtl" style=" font-weight: bold !important;">
     <!-- Topbar-->
     <div class="topbar">
         <div class="container">

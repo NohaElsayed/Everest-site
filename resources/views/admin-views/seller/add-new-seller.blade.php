@@ -72,7 +72,7 @@
                                     </div>
                                        <div class="form-group row">
                                    <div class="col-sm-6 mb-3 mb-sm-0 mt-4">
-                                        <label for="name">{{\App\CPU\translate('Category')}}</label>
+                                        {{-- <label for="name">{{\App\CPU\translate('Category')}}</label>
                                         <select
                                             class="js-example-basic-multiple form-control"
                                             name="category_id" required>
@@ -83,14 +83,14 @@
                                                 </option>
                                             @endforeach
                                         </select>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-sm-6 mb-3 mb-sm-0 mt-4">
                                         <label for="name">{{\App\CPU\translate('Subscription')}}</label>
                                         <select class="js-example-basic-multiple form-control" name="subscription" required>
                                               <option value="{{old('subscription')}}" selected disabled>---{{\App\CPU\translate('Select')}}---</option>
                                             @foreach($subscriptions as $subscription)
-                                                <option value="{{$subscription['id']}} {{old('name')==$subscription['id']? 'selected': ''}}">
-                                                    {{$subscription['name']}} Month  ||  Price:{{$subscription['value']}} P.c
+                                                  <option value="{{$subscription['id']}} {{old('name')==$subscription['id']? 'selected': ''}}">
+                                                    {{$subscription['name']}}  ||  Price:{{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($subscription['value']))}} 
                                                 </option>
                                             @endforeach
                                         </select>

@@ -1,5 +1,5 @@
-<div id="headerMain" class="d-none" style="background: #ffa500!important;">
-    <header id="header" style="background-color: #041562"
+<div id="headerMain" class="d-none" style="background: #ffa500!important;  font-weight: bold !important;">
+    <header id="header" style="background-color: #8BB381"
             class="navbar navbar-expand-lg navbar-fixed navbar-height navbar-flush navbar-container navbar-bordered">
 
         <div class="navbar-nav-wrap">

@@ -53,7 +53,7 @@
                                     <input type="email" class="form-control form-control-user" id="exampleInputEmail" name="email" value="{{old('email')}}" placeholder="{{\App\CPU\translate('email_address')}}" required>
                                 </div>
                                 <div class="col-sm-6"><small class="text-danger">( * {{\App\CPU\translate('country_code_is_must')}} {{\App\CPU\translate('like_for_BD_225')}} )</small>
-                                    <input type="number" class="form-control form-control-user" id="exampleInputPhone" name="phone" value="{{old('phone')}}" placeholder="{{\App\CPU\translate('phone_number')}}" required>
+                                    <input type="text" class="form-control form-control-user" id="exampleInputPhone" name="phone" value="{{old('phone')}}" placeholder="{{\App\CPU\translate('phone_number')}}" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -65,8 +65,16 @@
                                     <div class="pass invalid-feedback">{{\App\CPU\translate('Repeat')}}  {{\App\CPU\translate('password')}} {{\App\CPU\translate('not match')}} .</div>
                                 </div>
                             </div>
-                               <div class="form-group row">
-                             <div class="col-sm-6 mb-3 mb-sm-0 mt-4">
+                            <div class="form-group row">
+                            <div class="col-sm-6 mb-3 mb-sm-0 mt-4">
+                              <label for="name">{{\App\CPU\translate('Whats_Up')}} {{\App\CPU\translate('Number')}}</label>
+                                    <input type="text" class="form-control form-control-user" id="whatsup" name="whats_up" placeholder="{{\App\CPU\translate('Whats_Up')}}" value="{{old('Whats_Up')}}"required>
+                                </div>
+                                {{-- <div class="col-sm-6">
+                                    <textarea name="shop_address" class="form-control" id="shop_address"rows="1" placeholder="{{\App\CPU\translate('shop_address')}}">{{old('shop_address')}}</textarea>
+                                </div> --}}
+                            {{-- </div> --}}
+                                    {{-- <div class="col-sm-6 mb-3 mb-sm-0 mt-4">
                                         <label for="name">{{\App\CPU\translate('Category')}}</label>
                                         <select
                                             class="js-example-basic-multiple form-control"
@@ -78,14 +86,14 @@
                                                 </option>
                                             @endforeach
                                         </select>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-sm-6 mb-3 mb-sm-0 mt-4">
                                         <label for="name">{{\App\CPU\translate('Subscription')}}</label>
                                         <select class="js-example-basic-multiple form-control" name="subscription" required>
                                               <option value="{{old('subscription')}}" selected disabled>---{{\App\CPU\translate('Select')}}---</option>
                                             @foreach($subscriptions as $subscription)
                                                 <option value="{{$subscription['id']}} {{old('name')==$subscription['id']? 'selected': ''}}">
-                                                    {{$subscription['name']}}  ||  Price:{{$subscription['value']}} P.c
+                                                    {{$subscription['name']}}  ||  Price:{{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($subscription['value']))}} 
                                                 </option>
                                             @endforeach
                                         </select>
@@ -100,15 +108,7 @@
                                     <textarea name="shop_address" class="form-control" id="shop_address"rows="1" placeholder="{{\App\CPU\translate('shop_address')}}">{{old('shop_address')}}</textarea>
                                 </div>
                             </div>
-                                  <h5 class="black">{{\App\CPU\translate('Whats_Up')}} {{\App\CPU\translate('Number')}}</h5>
-                            <div class="form-group row">
-                                <div class="col-sm-6 mb-3 mb-sm-0 ">
-                                    <input type="text" class="form-control form-control-user" id="whatsup" name="whats_up" placeholder="{{\App\CPU\translate('Whats_Up')}}" value="{{old('Whats_Up')}}"required>
-                                </div>
-                                {{-- <div class="col-sm-6">
-                                    <textarea name="shop_address" class="form-control" id="shop_address"rows="1" placeholder="{{\App\CPU\translate('shop_address')}}">{{old('shop_address')}}</textarea>
-                                </div> --}}
-                            </div>
+                           
                             <div class="">
                                 <div class="pb-1">
                                     <center>

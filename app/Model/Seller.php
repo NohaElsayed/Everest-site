@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Service;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -41,10 +42,14 @@ class Seller extends Authenticatable
     {
         return $this->hasMany(Product::class, 'user_id')->where(['added_by'=>'seller']);
     }
+    public function service()
+    {
+        return $this->hasMany(Service::class, 'user_id')->where(['added_by'=>'seller']);
+    }
 
     public function wallet()
     {
         return $this->hasOne(SellerWallet::class);
     }
-    
+
 }

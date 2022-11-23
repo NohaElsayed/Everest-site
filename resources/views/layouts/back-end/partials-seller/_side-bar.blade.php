@@ -38,7 +38,7 @@
 </style>
 <div id="sidebarMain" class="d-none">
     <aside
-        style="background: #ffffff!important; text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};"
+        style="background: #ffffff!important;  font-weight: bold !important; text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};"
         class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered  ">
         <div class="navbar-vertical-container">
             <div class="navbar-vertical-footer-offset" style="padding-bottom: 0">
@@ -123,8 +123,8 @@
                         <!-- End POS -->
 
                         <li class="nav-item">
-                            <small class="nav-subtitle">{{\App\CPU\translate('order_management')}}</small>
-                            <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                            <small style=" font-size: 13px; font-weight: bold !important;" class="nav-subtitle">{{\App\CPU\translate('order_management')}}</small>
+                            <small  class="tio-more-horizontal nav-subtitle-replacer"></small>
                         </li>
 
                         <!-- Pages -->
@@ -238,7 +238,7 @@
                         <!-- End Pages -->
 
                         <li class="nav-item">
-                            <small class="nav-subtitle">{{\App\CPU\translate('product_management')}}</small>
+                            <small style=" font-size: 13px; font-weight: bold !important;" class="nav-subtitle">{{\App\CPU\translate('product_management')}}</small>
                             <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                         </li>
 
@@ -268,7 +268,7 @@
                                     </a>
                                 </li>
 
-                                <li class="nav-item {{Request::is('seller/product/bulk-import')?'active':''}}">
+                                {{-- <li class="nav-item {{Request::is('seller/product/bulk-import')?'active':''}}">
                                     <a class="nav-link " href="{{route('seller.product.bulk-import')}}">
                                         <span class="tio-circle nav-indicator-icon"></span>
                                         <span class="text-truncate">{{\App\CPU\translate('bulk_import')}}</span>
@@ -280,7 +280,7 @@
                                         <span class="tio-circle nav-indicator-icon"></span>
                                         <span class="text-truncate">{{\App\CPU\translate('bulk_export')}}</span>
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
 
@@ -402,7 +402,7 @@
 
                         <!-- End Pages -->
                         <li class="nav-item {{( Request::is('seller/business-settings*'))?'scroll-here':''}}">
-                            <small class="nav-subtitle" title="">{{\App\CPU\translate('business_section')}}</small>
+                            <small style=" font-size: 13px; font-weight: bold !important;" class="nav-subtitle" title="">{{\App\CPU\translate('business_section')}}</small>
                             <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                         </li>
                         @php($shippingMethod = \App\CPU\Helpers::get_business_settings('shipping_method'))
