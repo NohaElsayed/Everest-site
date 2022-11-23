@@ -14,6 +14,7 @@ use App\Model\Seller;
 use App\Model\SellerWallet;
 use App\Model\ShippingType;
 use App\Model\ShippingAddress;
+use App\Model\DeliveryMethod;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -242,6 +243,8 @@ class OrderManager
         }
         $address_id = session('address_id') ? session('address_id') : null;
         $billing_address_id = session('billing_address_id') ? session('billing_address_id') : null;
+        $shop_id = null;
+        $deliveryMethodId = DeliveryMethod::where('slug','delivery')->first()->id;
         $coupon_code = session()->has('coupon_code') ? session('coupon_code') : 0;
         $discount = session()->has('coupon_discount') ? session('coupon_discount') : 0;
         $order_note = session()->has('order_note') ? session('order_note') : null;
@@ -285,7 +288,22 @@ class OrderManager
                 $shipping_type = isset($seller_shipping) == true ? $seller_shipping->shipping_type : 'order_wise';
             }
         }
-
+         if(session('store_ids'))
+         {
+             $storeIds=session('store_ids');
+            foreach($storeIds as $seller => $storeId)
+            {
+                 if($seller_data->seller_id == $seller && $seller_data->seller_is != 'admin')
+                 {
+                     $shop_id = $storeId;
+                     $deliveryMethodId = DeliveryMethod::where('slug','pick up')->first()->id;
+                     $address_id =null;
+                     $billing_address_id =null;
+                      break;
+                  }
+            
+         }
+        }
         $or = [
             'id' => $order_id,
             'verification_code' => rand(100000, 999999),
@@ -303,12 +321,14 @@ class OrderManager
             'coupon_code' => $coupon_code,
             'order_amount' => CartManager::cart_grand_total($cart_group_id) - $discount,
             'shipping_address' => $address_id,
-            'shipping_address_data' => ShippingAddress::find($address_id),
+            'shipping_address_data' => $shop_id == null ? ShippingAddress::find($address_id) : null,
             'billing_address' => $billing_address_id,
             'billing_address_data' => ShippingAddress::find($billing_address_id),
             'shipping_cost' => CartManager::get_shipping_cost($data['cart_group_id']),
             'shipping_method_id' => $shipping_method_id,
             'shipping_type' => $shipping_type,
+            'shop_id' => $shop_id,
+            'delivery_method_id' => $deliveryMethodId,
             'created_at' => now(),
             'updated_at' => now(),
             'order_note' => $order_note
