@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.4| 8.1.10",
+        "php": "^7.4| ^8.0",
         "ext-curl": "*",
         "ext-json": "*",
         "ext-openssl": "*",
@@ -105,6 +105,9 @@
         "sort-packages": true,
         "allow-plugins": {
             "composer/package-versions-deprecated": true
+        },
+        "platform": {
+            "php": "8.0.0"
         }
     },
     "minimum-stability": "dev",

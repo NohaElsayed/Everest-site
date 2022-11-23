@@ -1604,4 +1604,5 @@
   'Customer Phone' => 'Customer Phone',
   'Customer Notes' => 'Customer Notes',
   'Customer_not_found_or_Account_has_been_suspended' => 'Customer not found or Account has been suspended',
+  '3 Days Return Policy' => '3 Days Return Policy',
 );

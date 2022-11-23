@@ -19,7 +19,9 @@ class Order extends Model
         'extra_discount'=>'float',
         'delivery_man_id'=>'integer',
         'shipping_method_id'=>'integer',
-        'seller_id'=>'integer'
+        'seller_id'=>'integer',
+        'delivery_method_id'=>'integer',
+        'shop_id'=>'integer',
     ];
 
     public function details()
@@ -60,4 +62,15 @@ class Order extends Model
     {
         return $this->belongsTo(DeliveryMan::class,'delivery_man_id');
     }
+
+    public function deliveryMethod()
+    {
+        return $this->belongsTo(DeliveryMethod::class, 'delivery_method_id');
+    }
+
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class, 'shop_id');
+    }
+    
 }

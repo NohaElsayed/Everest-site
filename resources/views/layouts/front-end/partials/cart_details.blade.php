@@ -149,12 +149,22 @@
 
                             @if($shippingMethod=='sellerwise_shipping' && $shipping_type == 'order_wise')
                                 @php($choosen_shipping=\App\Model\CartShipping::where(['cart_group_id'=>$cartItem['cart_group_id']])->first())
-
+                                @php($choosen_delivery=\App\Model\CartDelivery::where(['cart_group_id'=>$cartItem['cart_group_id']])->first())
+                                  
                                 @if(isset($choosen_shipping)==false)
                                     @php($choosen_shipping['shipping_method_id']=0)
                                 @endif
 
+                                @if(isset($choosen_delivery)==false)
+                                    @php($choosen_delivery['delivery_method_id']=0)
+                                @endif
+
                                 @php($shippings=\App\CPU\Helpers::get_shipping_methods($cartItem['seller_id'],$cartItem['seller_is']))
+                                @if($cartItem->seller_is == 'admin')
+                                @php($deliveries = \App\Model\DeliveryMethod::where(['slug'=>'delivery'])->get())
+                               @else
+                               @php($deliveries = \App\Model\DeliveryMethod::all())
+                               @endif 
                             <tr>
                                 <td colspan="4">
 
@@ -163,19 +173,36 @@
                                     <!-- choosen shipping method-->
 
                                         <div class="row">
-
-                                            <div class="col-12">
+                                      
+                                          <div class="col-12">
+                                                <select class="form-control"
+                                                        onchange="set_delivery_id(this.value,'{{$cartItem['cart_group_id']}}',1)" id="delivery-seller">
+                                                    <option>{{\App\CPU\translate('choose_delivery_method')}}</option>
+                                                    @foreach($deliveries as $delivery)
+                                                        <option data-slug="{{$delivery['slug']}}"
+                                                            value="{{$delivery['id']}}" {{$choosen_delivery['delivery_method_id'] == $delivery['id']?'selected':''}}>
+                                                            {{ $delivery['name'] }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @if($choosen_delivery['delivery_method_id'] != 0)   
+                                            @php($deliverySlug = \App\Model\DeliveryMethod::where('id',$choosen_delivery['delivery_method_id'])->first()->slug)  
+                                            @if($deliverySlug == 'delivery')
+                                             <div class="col-12" id="shipping-seller">
                                                 <select class="form-control"
                                                         onchange="set_shipping_id(this.value,'{{$cartItem['cart_group_id']}}')">
                                                     <option>{{\App\CPU\translate('choose_shipping_method')}}</option>
                                                     @foreach($shippings as $shipping)
-                                                        <option
+                                                        <option 
                                                             value="{{$shipping['id']}}" {{$choosen_shipping['shipping_method_id']==$shipping['id']?'selected':''}}>
                                                             {{$shipping['title'].' ( '.$shipping['duration'].' ) '.\App\CPU\Helpers::currency_converter($shipping['cost'])}}
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                            </div>
+                                             </div>
+                                           @endif 
+                                        @endif 
                                         </div>
 
                                     @endif
@@ -209,22 +236,57 @@
                 @if ($shipping_type == 'order_wise')
                     @php($shippings=\App\CPU\Helpers::get_shipping_methods(1,'admin'))
                     @php($choosen_shipping=\App\Model\CartShipping::where(['cart_group_id'=>$cartItem['cart_group_id']])->first())
+                    @php($choosen_delivery=\App\Model\CartDelivery::where(['cart_group_id'=>$cartItem['cart_group_id']])->first())
+
+                    @php($cartSellers = \App\Model\Cart::where(['customer_id' => auth('customer')->id()])->groupBy('cart_group_id')->pluck('seller_is')->toArray())
+
+                    @if (in_array("admin",$cartSellers))
+                     @php($deliveries = \App\Model\DeliveryMethod::where(['slug'=>'delivery'])->get())
+                    @else
+                      @php($deliveries = \App\Model\DeliveryMethod::all())
+                    @endif
 
                     @if(isset($choosen_shipping)==false)
                         @php($choosen_shipping['shipping_method_id']=0)
                     @endif
+
+                    @if(isset($choosen_delivery)==false)
+                        @php($choosen_delivery['delivery_method_id']=0)
+                    @endif
+
                     <div class="row">
-                        <div class="col-12">
-                            <select class="form-control" onchange="set_shipping_id(this.value,'all_cart_group')">
-                                <option>{{\App\CPU\translate('choose_shipping_method')}}</option>
-                                @foreach($shippings as $shipping)
-                                    <option
-                                        value="{{$shipping['id']}}" {{$choosen_shipping['shipping_method_id']==$shipping['id']?'selected':''}}>
-                                        {{$shipping['title'].' ( '.$shipping['duration'].' ) '.\App\CPU\Helpers::currency_converter($shipping['cost'])}}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                        
+
+                      <div class="col-12">
+                            <select class="form-control"
+                                 onchange="set_delivery_id(this.value,'all_cart_group',2)" id="delivery-all">
+                                  <option>{{\App\CPU\translate('choose_delivery_method')}}</option>
+                                         @foreach($deliveries as $delivery)
+                                             <option data-slug="{{$delivery['slug']}}"
+                                                 value="{{$delivery['id']}}" {{$choosen_delivery['delivery_method_id'] == $delivery['id']?'selected':''}}>
+                                                    {{ $delivery['name'] }}
+                                              </option>
+                                         @endforeach
+                             </select>
+                      </div>
+                                                
+                                     @if($choosen_delivery['delivery_method_id'] != 0)   
+                                             @php($deliverySlug = \App\Model\DeliveryMethod::where('id',$choosen_delivery['delivery_method_id'])->first()->slug)  
+                                            @if($deliverySlug == 'delivery')             
+                                             <div class="col-12" id="shipping-all">
+                                                <select class="form-control"
+                                                        onchange="set_shipping_id(this.value,'all_cart_group')">
+                                                    <option>{{\App\CPU\translate('choose_shipping_method')}}</option>
+                                                    @foreach($shippings as $shipping)
+                                                        <option 
+                                                            value="{{$shipping['id']}}" {{$choosen_shipping['shipping_method_id']==$shipping['id']?'selected':''}}>
+                                                            {{$shipping['title'].' ( '.$shipping['duration'].' ) '.\App\CPU\Helpers::currency_converter($shipping['cost'])}}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                             </div>
+                                           @endif 
+                                        @endif 
                     </div>
                 @endif
             @endif
@@ -289,6 +351,79 @@
             },
             complete: function () {
                 $('#loading').hide();
+            },
+        });
+    }
+
+    function set_delivery_id(id,cart_group_id,type) {
+        var slug;
+        if(type == 2)
+        {
+         slug = $('#delivery-all option:selected').data("slug");
+        } 
+        else
+        {
+         slug = $('#delivery-seller option:selected').data("slug");
+        }
+        $.get({
+            url: '{{url('/')}}/customer/set-delivery-method',
+            dataType: 'json',
+            data: {
+                id: id,
+                cart_group_id: cart_group_id
+            },
+            beforeSend: function () {
+                $('#loading').show();
+            },
+            success: function (data) {
+                location.reload();
+             /* if(type == 2)
+              {
+                  if(slug == 'delivery')
+                  {
+                    document.getElementById('shipping-all').style.display = 'block';
+                  }
+                  else
+                  {
+                    document.getElementById('shipping-all').style.display = 'none';
+                  }
+              }
+              else if(type == 1)
+              {
+                if(slug == 'delivery')
+                  {
+                    document.getElementById('shipping-seller').style.display = 'block';
+                  }
+                  else
+                  {
+                    document.getElementById('shipping-seller').style.display = 'none';
+                  }
+              }*/
+            },
+            complete: function () {
+                $('#loading').hide();
+             /*   if(type == 2)
+              {
+                  if(slug == 'delivery')
+                  {
+                    document.getElementById('shipping-all').style.display = 'block';
+                  }
+                  else
+                  {
+                    document.getElementById('shipping-all').style.display = 'none';
+                  }
+              }
+              else if(type == 1)
+              {
+                if(slug == 'delivery')
+                  {
+                    document.getElementById('shipping-seller').style.display = 'block';
+                  }
+                  else
+                  {
+                    document.getElementById('shipping-seller').style.display = 'none';
+                  }
+              }*/
             },
         });
     }

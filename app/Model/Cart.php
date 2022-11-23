@@ -20,6 +20,11 @@ class Cart extends Model
         return $this->hasOne(CartShipping::class,'cart_group_id','cart_group_id');
     }
 
+    public function cart_delivery()
+    {
+        return $this->hasOne(CartDelivery::class,'cart_group_id','cart_group_id');
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class)->where('status', 1);
