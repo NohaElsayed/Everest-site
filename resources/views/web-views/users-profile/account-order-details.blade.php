@@ -233,35 +233,17 @@
                                 @if( $order->order_type == 'default_type')
                                 <td class="order_table_td">
                                     <div class="order_table_info_div">
-                                  
-                                @if($order->shop_id)
-                                <div class="order_table_info_div_1 py-2">
-                                            <span
-                                                class="d-block spandHeadO">{{\App\CPU\translate('shop_address')}}: </span>
-                                        </div>
-                                        @php($shop=\App\Model\Shop::where('id',$order->shop_id)->first())
-                                        <div class="order_table_info_div_2">
-                                            <span class="spanTr">
-                                                @if($shop)
-                                                     {{$shop->name}},
-                                                     {{$shop->address}},<br>
-                                                     {{$shop->contact}}
-                                                    
-                                                @endif
-                                             
-                                            </span>
-                                        </div>
-                                @else
-                                <div class="order_table_info_div_1 py-2">
+                                        <div class="order_table_info_div_1 py-2">
                                             <span
                                                 class="d-block spandHeadO">{{\App\CPU\translate('shipping_address')}}: </span>
                                         </div>
+
                                         @if($order->shippingAddress)
                                             @php($shipping=$order->shippingAddress)
                                         @else
                                             @php($shipping=json_decode($order['shipping_address_data']))
                                         @endif
-                                    
+
                                         <div class="order_table_info_div_2">
                                             <span class="spanTr">
                                                 @if($shipping)
@@ -270,10 +252,8 @@
                                                     , {{$shipping->zip}}
                                                     
                                                 @endif
-                                             
                                             </span>
                                         </div>
-                                        @endif  
                                     </div>
                                 </td>
                                 <td class="order_table_td">
@@ -282,7 +262,7 @@
                                             <span
                                                 class="d-block spandHeadO">{{\App\CPU\translate('billing_address')}}: </span>
                                         </div>
-                                @if($order->shop_id == null)
+
                                         @if($order->billingAddress)
                                             @php($billing=$order->billingAddress)
                                         @else
@@ -303,7 +283,6 @@
                                                 @endif
                                             </span>
                                         </div>
-                                      @endif  
                                     </div>
                                 </td>
                                 @endif

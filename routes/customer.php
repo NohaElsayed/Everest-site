@@ -58,10 +58,7 @@ Route::group(['namespace' => 'Customer', 'prefix' => 'customer', 'as' => 'custom
     Route::group([], function () {
         Route::get('set-payment-method/{name}', 'SystemController@set_payment_method')->name('set-payment-method');
         Route::get('set-shipping-method', 'SystemController@set_shipping_method')->name('set-shipping-method');
-        Route::get('set-delivery-method', 'SystemController@set_delivery_method')->name('set-delivery-method');
         Route::post('choose-shipping-address', 'SystemController@choose_shipping_address')->name('choose-shipping-address');
-        Route::post('choose-store-address', 'SystemController@choose_store_address')->name('choose-store-address');
-        Route::post('choose-shippingstore-address', 'SystemController@choose_shippingstore_address')->name('choose-shippingstore-address');
         Route::post('choose-billing-address', 'SystemController@choose_billing_address')->name('choose-billing-address');
 
         Route::group(['prefix' => 'reward-points', 'as' => 'reward-points.', 'middleware' => ['auth:customer']], function () {

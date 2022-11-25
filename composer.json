@@ -5,11 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-<<<<<<< HEAD
         "php": "^7.4| 8.1.10",
-=======
-        "php": "^7.4| ^8.0",
->>>>>>> 42037d747d01c6bdc7a0637d3e12639b65ae8e23
         "ext-curl": "*",
         "ext-json": "*",
         "ext-openssl": "*",
@@ -62,6 +58,7 @@
         "files": [
             "app/CPU/helpers.php",
             "app/CPU/image-manager.php",
+            "app/CPU/filemanager.php",
             "app/CPU/category-manager.php",
             "app/CPU/brand-manager.php",
             "app/CPU/product-manager.php",
@@ -109,9 +106,6 @@
         "sort-packages": true,
         "allow-plugins": {
             "composer/package-versions-deprecated": true
-        },
-        "platform": {
-            "php": "8.0.0"
         }
     },
     "minimum-stability": "dev",
