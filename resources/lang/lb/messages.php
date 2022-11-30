@@ -1612,4 +1612,5 @@
   'service_code_sku' => 'Service code sku',
   'Service price' => 'Service price',
   'Upload_service_images' => 'Upload service images',
+  'star' => 'Star',
 );

@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Gregwar\Captcha\CaptchaBuilder;
 use App\CPU\Helpers;
+use App\Employ;
+use Auth;
 use Illuminate\Support\Facades\Session;
 use Gregwar\Captcha\PhraseBuilder;
 
@@ -19,7 +21,6 @@ class LoginController extends Controller
     {
         $this->middleware('guest:seller', ['except' => ['logout']]);
     }
-
     public function captcha($tmp)
     {
 
@@ -42,9 +43,14 @@ class LoginController extends Controller
         $builder->output();
     }
 
-    public function login()
-    {
+    public function login(){
+
         return view('seller-views.auth.login');
+    }
+    
+    public function loginempl()
+    {
+        return view('seller-views.auth.loginemp');
     }
 
     public function submit(Request $request)
@@ -53,7 +59,7 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6'
         ]);
-        //recaptcha validation
+       // recaptcha validation
         $recaptcha = Helpers::get_business_settings('recaptcha');
         if (isset($recaptcha) && $recaptcha['status'] == 1) {
             try {
@@ -79,9 +85,8 @@ class LoginController extends Controller
             }
         }
 
-        $se = Seller::where(['email' => $request['email']])->first(['status']);
-
-        if (isset($se) && $se['status'] == 'approved' && auth('seller')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+         $se = Seller::where(['email' => $request['email']])->first(['status']);
+       if (isset($se) && $se['status'] == 'approved' && auth('seller')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
             Toastr::info('Welcome to your dashboard!');
             if (SellerWallet::where('seller_id', auth('seller')->id())->first() == false) {
                 DB::table('seller_wallets')->insert([
@@ -104,10 +109,18 @@ class LoginController extends Controller
             return redirect()->back()->withInput($request->only('email', 'remember'))
                 ->withErrors(['Your account has been suspended!.']);
         }
-
         return redirect()->back()->withInput($request->only('email', 'remember'))
             ->withErrors(['Credentials does not match.']);
-    }
+     }
+     public function loginemp(Request $request){
+           // return $request;
+                if (auth('employ')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+                    return  redirect()->route('seller.dashboard.index');
+                }else{
+            return redirect()->back()->withInput($request->only('email', 'remember'))
+                ->withErrors(['Credentials does not match.']);
+            }
+        }
 
     public function logout(Request $request)
     {

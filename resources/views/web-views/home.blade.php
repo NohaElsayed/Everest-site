@@ -671,7 +671,6 @@
 
                                         <i class="czi-arrow-{{Session::get('direction') === "rtl" ? 'left' : 'right'}}" style="font-size: 8px !important;background:none !important;color:#4B5864;"></i>
                                     </a>
-
                                 </ul>
                             @else
                                 <ul class="dropdown-menu"

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Title -->
-                            <title style="font-family: 'Cairo', sans-serif" class="mb-30">{{\App\CPU\translate('seller')}}</title>
+     <title style="font-family: 'Cairo', sans-serif" class="mb-30">{{\App\CPU\translate('Employe')}}</title>
             
     <!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico">
@@ -70,22 +70,15 @@
                 <!-- Card -->
                 <div class="card card-lg mb-5">
                     <div class="card-body">
-                      <center> 
-                    <h3> <a href="{{route('seller.auth.loginempl')}}">{{\App\CPU\translate('Employ sign_in')}}</a></h3> </center>
                         <!-- Form -->
-                           <form id="form-id"  action="{{route('seller.auth.login')}}" method="post">
-                        {{-- @endif --}}
+                         <form id="form-id"  action="{{route('seller.auth.loginemp')}}" method="post">
                             @csrf
 
                             <div class="text-center">
                                 <div class="mb-5">
                                     <h1 class="display-4">{{\App\CPU\translate('sign_in')}}</h1>
                                     <center> 
-                                    {{-- @if($type == 'employ')
-                            <h1 style="font-family: 'Cairo', sans-serif" class="mb-30">{{\App\CPU\translate('sign_in seller')}}</h1>
-                            @else
                              <h1 style="font-family: 'Cairo', sans-serif" class="mb-30">{{\App\CPU\translate('sign_in Employe')}}</h1>
-                              @endif --}}
                                     </center>
                                 </div>
                                 

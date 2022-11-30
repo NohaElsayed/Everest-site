@@ -81,11 +81,13 @@
                         <!-- End Dashboards -->
                         @php($seller = auth('seller')->user())
                         <!-- POS -->
-                        @php($sellerId = $seller->id)
+                              @if(auth('seller')->user())
+                        @php($sellerId = $seller->id) @endif
                         @php($seller_pos=\App\Model\BusinessSetting::where('type','seller_pos')->first()->value)
                         @if ($seller_pos==1)
                             @if ($seller->pos_status == 1)
                                 <li class="nav-item">
+                              
                                     <small
                                         class="nav-subtitle">{{\App\CPU\translate('pos')}} {{\App\CPU\translate('system')}} </small>
                                     <small class="tio-more-horizontal nav-subtitle-replacer"></small>
@@ -121,7 +123,7 @@
                         @endif
 
                         <!-- End POS -->
-
+                   @can('ORDER MANAGEMENT')
                         <li class="nav-item">
                             <small style=" font-size: 13px; font-weight: bold !important;" class="nav-subtitle">{{\App\CPU\translate('order_management')}}</small>
                             <small  class="tio-more-horizontal nav-subtitle-replacer"></small>
@@ -236,7 +238,8 @@
                             </ul>
                         </li>
                         <!-- End Pages -->
-
+                      @endcan
+                          {{-- @can('PRODUCT MANAGEMENT') --}}
                         <li class="nav-item">
                             <small style=" font-size: 13px; font-weight: bold !important;" class="nav-subtitle">{{\App\CPU\translate('product_management')}}</small>
                             <small class="tio-more-horizontal nav-subtitle-replacer"></small>
@@ -283,13 +286,16 @@
                                 </li> --}}
                             </ul>
                         </li>
-
+                     {{-- @endcan --}}
+                      {{-- @can('services') --}}
                         <li class="nav-item {{Request::is('seller/product/list')?'active':''}}">
                             <a class="nav-link " href="{{route('seller.service.list')}}">
                                 <span class="tio-circle nav-indicator-icon"></span>
                                 <span class="text-truncate">{{\App\CPU\translate('services')}}</span>
                             </a>
                         </li>
+                          {{-- @endcan --}}
+                          @can('reviews')
                         <li class="navbar-vertical-aside-has-menu {{Request::is('seller/reviews/list*')?'active':''}}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link"
                                href="{{route('seller.reviews.list')}}">
@@ -299,6 +305,8 @@
                                 </span>
                             </a>
                         </li>
+                            @endcan
+                            @can('refund_request_lis')
                         <li class="navbar-vertical-aside-has-menu {{Request::is('seller/refund*')?'active':''}}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
                                href="javascript:">
@@ -368,7 +376,8 @@
                                 </li>
                             </ul>
                         </li>
-
+                        @endcan
+                          @can('Messages')
                         <li class="navbar-vertical-aside-has-menu {{Request::is('seller/messages*')?'active':''}}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link"
                                href="{{route('seller.messages.chat')}}">
@@ -378,6 +387,8 @@
                                 </span>
                             </a>
                         </li>
+                           @endcan
+                           @can('My bank Info')
                         <li class="navbar-vertical-aside-has-menu {{Request::is('seller/profile*')?'active':''}}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link"
                                href="{{route('seller.profile.view')}}">
@@ -387,8 +398,8 @@
                                 </span>
                             </a>
                         </li>
-
-
+                         @endcan
+                         @can('My shop')
                         <li class="navbar-vertical-aside-has-menu {{Request::is('seller/shop*')?'active':''}}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link"
                                href="{{route('seller.shop.view')}}">
@@ -398,8 +409,9 @@
                                 </span>
                             </a>
                         </li>
+                         @endcan
 
-
+                     @can('BUSINESS SECTION')
                         <!-- End Pages -->
                         <li class="nav-item {{( Request::is('seller/business-settings*'))?'scroll-here':''}}">
                             <small style=" font-size: 13px; font-weight: bold !important;" class="nav-subtitle" title="">{{\App\CPU\translate('business_section')}}</small>
@@ -429,7 +441,23 @@
                                     </span>
                             </a>
                         </li>
-
+                       @endcan
+                         {{-- @can('roles')
+                        <li class="nav-item {{Request::is('seller/product/list')?'active':''}}">
+                            <a class="nav-link " href="{{route('seller.roles.index')}}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{\App\CPU\translate('roles')}}</span>
+                            </a>
+                        </li>
+                          @endcan --}}
+                            @can('roles')
+                        <li class="nav-item {{Request::is('seller/product/list')?'active':''}}">
+                            <a class="nav-link " href="{{route('seller.users.index')}}">
+                                <span class="tio-circle nav-indicator-icon"></span>
+                                <span class="text-truncate">{{\App\CPU\translate('Employe')}}</span>
+                            </a>
+                        </li>
+                          @endcan
                         @php( $shipping_method = \App\CPU\Helpers::get_business_settings('shipping_method'))
                         @if($shipping_method=='sellerwise_shipping')
                             <li class="nav-item {{Request::is('seller/delivery-man*')?'scroll-here':''}}">

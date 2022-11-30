@@ -79,6 +79,7 @@ class ChattingController extends Controller
                 'seller_id'      => auth('seller')->id(),
                 'shop_id'        => $shop_id,
                 'message'        => $request->message,
+                'photo'        => $request->photo,
                 'sent_by_seller' => 1,
                 'seen_by_seller' => 0,
                 'created_at'     => now(),

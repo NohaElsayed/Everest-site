@@ -85,7 +85,7 @@
                                             <option value="{{ old('category_id') }}" selected disabled>
                                                 ---{{ \App\CPU\translate('Select') }}---</option>
                                             @foreach ($cat as $c)
-                                                <option value="{{ $c['id'] }}"
+                                                <option value="{{ $c['id'] }}" class="{{Session::get('direction') === "rtl" ? 'pr-3' : 'pl-3'}}"
                                                     {{ old('name') == $c['id'] ? 'selected' : '' }}>
                                                     {{ $c['name'] }}
                                                 </option>

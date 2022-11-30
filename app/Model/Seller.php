@@ -6,11 +6,13 @@ use App\Service;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class Seller extends Authenticatable
 {
+    use HasRoles;
     use Notifiable;
-
+    protected $guard_name = 'seller';
     protected $casts = [
         'id' => 'integer',
         'orders_count' => 'integer',

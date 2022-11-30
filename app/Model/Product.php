@@ -118,7 +118,7 @@ class Product extends Model
 
     public function getNameAttribute($name)
     {
-        if (strpos(url()->current(), '/admin') || strpos(url()->current(), '/seller')) {
+        if (strpos(url()->current(), '/admin')) {
             return $name;
         }
         return $this->translations[0]->value ?? $name;
@@ -126,7 +126,7 @@ class Product extends Model
 
     public function getDetailsAttribute($detail)
     {
-        if (strpos(url()->current(), '/admin') || strpos(url()->current(), '/seller')) {
+        if (strpos(url()->current(), '/admin')) {
             return $detail;
         }
         return $this->translations[1]->value ?? $detail;

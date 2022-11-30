@@ -105,7 +105,12 @@ class ServiceController extends Controller
         }
 
         $product = new Service();
-        $product->user_id = auth('seller')->id();
+        if(auth('employ')->id()){
+            $product->emp_id= auth('employ')->user()->id;
+            $seller= auth('employ')->user()->added;
+            $product->user_id = $seller;
+            }else{
+            $product->user_id = auth('seller')->id();
         $product->added_by = "seller";
         $product->name = $request->name[array_search('en', $request->lang)];
         $product->slug = Str::slug($request->name[array_search('en', $request->lang)], '-') . '-' . Str::random(6);
@@ -168,22 +173,36 @@ class ServiceController extends Controller
             return redirect()->route('seller.service.list');
         }
     }
-
+    }
     function list(Request $request)
     {
         $query_param = [];
         $search = $request['search'];
         if ($request->has('search')) {
             $key = explode(' ', $request['search']);
+            if(auth('employ')->id()){
+                $product= auth('employ')->user()->added;
+             $products = Service::where(['added_by' => 'seller', 'user_id' => $product])->where(function ($q) use ($key) {
+                foreach ($key as $value) {
+                    $q->Where('name', 'like', "%{$value}%");
+                }
+            });
+              }else{
             $products = Service::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id()])
                 ->where(function ($q) use ($key) {
                     foreach ($key as $value) {
                         $q->Where('name', 'like', "%{$value}%");
                     }
                 });
+            }
             $query_param = ['search' => $request['search']];
         } else {
-            $products = Service::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id()]);
+            if(auth('employ')->id()){
+                $product= auth('employ')->user()->added;
+             $products = Service::where(['added_by' => 'seller', 'user_id' => $product]);
+              }else{
+                $products = Service::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id()]);
+              }
         }
         $products = $products->orderBy('id', 'DESC')->paginate(Helpers::pagination_limit())->appends($query_param);
 
