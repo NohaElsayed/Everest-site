@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\CPU\Helpers;
 use App\CPU\ImageManager;
-use App\Employ;
+use App\Model\Seller;
 use Brian2694\Toastr\Facades\Toastr;
 use Spatie\Permission\Models\Role;
 use DB;
@@ -22,8 +22,8 @@ class EmployeController extends Controller
 */
 public function index(Request $request)
 {
- $user = Auth()->user()->id;
-$data = Employ::where('added' , $user)->orderBy('id','DESC')->paginate(5);
+ $user = Auth('seller')->user()->id;
+$data = Seller::where('added' , $user)->orderBy('id','DESC')->paginate(5);
 return view('seller-views.users.show_users',compact('data'))
 ->with('i', ($request->input('page', 1) - 1) * 5);
 }
@@ -49,25 +49,32 @@ return view('seller-views.users.Add_user',compact('roles'));
 */
 public function store(Request $request)
 {
+  // return $request;
 
 $this->validate($request, [
-'name' => 'required',
-'email' => 'required|email|unique:employs,email',
+'f_name' => 'required',
+'l_name' => 'required',
+'email' => 'required|email|unique:sellers,email',
 'password' => 'required|same:confirm-password',
 'roles_name' => 'required'
 ]);
   //$input['password'] = Hash::make($input['password']);
-
-$user =new Employ();
-$user->name = $request->name ;
+ // return auth('seller')->user()->roles_name;
+$user =new Seller();
+$user->f_name = $request->f_name ;
+$user->l_name = $request->l_name ;
 $user->email = $request->email ;
-$user->Status = $request->Status ;
+$user->status = 'approved';
 $user->password = bcrypt($request->password);
-$user->added = auth('seller')->user()->id;
+if(auth('seller')->user()->roles_name == 'seller'){
+
+ return $user->added = auth('seller')->user()->id;
+ }
+ $user->added = auth('seller')->user()->id;
 $user-> save();
 $user->assignRole($request->roles_name);
-return redirect()->route('seller.users.index')
-->with('success','تم اضافة المستخدم بنجاح');
+Toastr::success('Employee added successfully!');
+return redirect()->route('seller.users.index');
 }
 
 /**
@@ -78,7 +85,7 @@ return redirect()->route('seller.users.index')
 */
 public function show($id)
 {
-$user = Employ::find($id);
+$user = Seller::find($id);
 return view('seller-views.users.show',compact('user'));
 }
 /**
@@ -89,7 +96,7 @@ return view('seller-views.users.show',compact('user'));
 */
 public function edit($id)
 {
-$user = Employ::find($id);
+$user = Seller::find($id);
 $roles = Role::pluck('name','name')->all();
 $userRole = $user->roles->pluck('name','name')->all();
 return view('seller-views.users.edit',compact('user','roles','userRole'));
@@ -104,9 +111,10 @@ return view('seller-views.users.edit',compact('user','roles','userRole'));
 public function update(Request $request, $id)
 {
 $this->validate($request, [
-'name' => 'required',
+'f_name' => 'required',
+'l_name' => 'required',
 'email' => 'required|email|unique:employs,email,'.$id,
-'password' => 'same:confirm-password',
+ 'password' => 'same:confirm-password',
 'roles' => 'required'
 ]);
 $input = $request->all();
@@ -115,12 +123,12 @@ $input['password'] = Hash::make($input['password']);
 }else{
 $input = array_except($input,array('password'));
 }
-$user = Employ::find($id);
+$user = Seller::find($id);
 $user->update($input);
 DB::table('model_has_roles')->where('model_id',$id)->delete();
 $user->assignRole($request->input('roles'));
-return redirect()->route('seller.users.index')
-->with('success','تم تحديث معلومات المستخدم بنجاح');
+Toastr::success('Employee Updated successfully!');
+return redirect()->route('seller.users.index');
 }
 /**
 * Remove the specified resource from storage.
@@ -130,7 +138,8 @@ return redirect()->route('seller.users.index')
 */
 public function destroy(Request $request)
 {
-    Employ::find($request->user_id)->delete();
-return redirect()->route('sellers.users.index')->with('success','تم حذف المستخدم بنجاح');
+    Seller::find($request->user_id)->delete();
+    Toastr::success('Employee Deleted successfully!');
+return redirect()->route('sellers.users.index');
 }
 }

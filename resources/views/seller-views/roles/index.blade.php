@@ -7,44 +7,6 @@
 @endpush
 
 @section('content')
-
-
-@if (session()->has('Add'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: " تم اضافة الصلاحية بنجاح",
-                type: "success"
-            });
-        }
-
-    </script>
-@endif
-
-@if (session()->has('edit'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: " تم تحديث بيانات الصلاحية بنجاح",
-                type: "success"
-            });
-        }
-
-    </script>
-@endif
-
-@if (session()->has('delete'))
-    <script>
-        window.onload = function() {
-            notif({
-                msg: " تم حذف الصلاحية بنجاح",
-                type: "error"
-            });
-        }
-
-    </script>
-@endif
-
 <!-- row -->
 <div class="row row-sm">
     <div class="col-xl-12">
@@ -54,7 +16,8 @@
                     <div class="col-lg-12 margin-tb">
                         <div class="pull-right">
                             {{-- @can('اضافة صلاحية') --}}
-                                <a class="btn btn-primary btn-sm" href="{{ route('seller.roles.create') }}">{{ \App\CPU\translate('Add') }} </a>
+                                <a class="btn btn-primary btn-sm" href="{{ route('seller.roles.create') }}" 
+                                style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};">{{ \App\CPU\translate('Add') }} </a>
                             {{-- @endcan --}}
                         </div>
                     </div>
@@ -79,7 +42,7 @@
                                     <td>{{ $role->name }}</td>
                                     <td>
                                         {{-- @can('عرض صلاحية') --}}
-                                            <a class="btn btn-success btn-sm"
+                                            <a class="btn btn-success btn-sm" style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};"
                                                 href="{{ route('seller.roles.show', $role->id) }}">{{ \App\CPU\translate('View') }} </a>
                                         {{-- @endcan --}}
                                         

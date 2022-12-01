@@ -39,11 +39,11 @@
                     <!-- col -->
                     <div class="col-lg-4">
                         <ul id="treeview1">
-                            <li><a href="#">{{ \App\CPU\translate('Permission') }}</a>
+                            <li><a href="#" style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};">{{ \App\CPU\translate('Permission') }}</a>
                                 <ul>
-                                    <li>
+                                    <li style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};">
                                         @foreach($permission as $value)
-                                        <label>{{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
+                                        <label style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};">{{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
                                             {{ $value->name }}</label>
                                         <br />
                                         @endforeach
@@ -54,7 +54,7 @@
                         </ul>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                        <button type="submit" class="btn btn-main-primary">{{ \App\CPU\translate('Update') }} </button>
+                        <button type="submit" class="btn btn-main-primary" style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};">{{ \App\CPU\translate('Update') }} </button>
                     </div>
                     <!-- /col -->
                 </div>

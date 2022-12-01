@@ -48,10 +48,10 @@ class LoginController extends Controller
         return view('seller-views.auth.login');
     }
     
-    public function loginempl()
-    {
-        return view('seller-views.auth.loginemp');
-    }
+    // public function loginempl()
+    // {
+    //     return view('seller-views.auth.loginemp');
+    // }
 
     public function submit(Request $request)
     {
@@ -112,15 +112,15 @@ class LoginController extends Controller
         return redirect()->back()->withInput($request->only('email', 'remember'))
             ->withErrors(['Credentials does not match.']);
      }
-     public function loginemp(Request $request){
-           // return $request;
-                if (auth('employ')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
-                    return  redirect()->route('seller.dashboard.index');
-                }else{
-            return redirect()->back()->withInput($request->only('email', 'remember'))
-                ->withErrors(['Credentials does not match.']);
-            }
-        }
+    //  public function loginemp(Request $request){
+    //        // return $request;
+    //             if (auth('employ')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+    //                 return  redirect()->route('seller.dashboard.index');
+    //             }else{
+    //         return redirect()->back()->withInput($request->only('email', 'remember'))
+    //             ->withErrors(['Credentials does not match.']);
+    //         }
+    //     }
 
     public function logout(Request $request)
     {

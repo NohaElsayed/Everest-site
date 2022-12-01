@@ -12,6 +12,7 @@ class Seller extends Authenticatable
 {
     use HasRoles;
     use Notifiable;
+    protected $guarded = [];  
     protected $guard_name = 'seller';
     protected $casts = [
         'id' => 'integer',

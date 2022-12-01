@@ -35,42 +35,34 @@
             <div class="card-header pb-0">
                 <div class="col-sm-1 col-md-2">
                     {{-- @can('اضافة مستخدم') --}}
-                        <a class="btn btn-primary btn-sm" href="{{ route('seller.users.create') }}">{{ \App\CPU\translate('Add User') }}</a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('seller.users.create') }}" style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};">{{ \App\CPU\translate('Add User') }}</a>
                     {{-- @endcan --}}
                 </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive hoverable-table">
-                    <table class="table table-hover" id="example1" data-page-length='50' style=" text-align: center;">
+                    <table class="table table-hover" id="example1" data-page-length='50' style=" text-align: center;text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};">
                         <thead>
                             <tr>
                                 <th class="wd-10p border-bottom-0">#</th>
-                                <th class="wd-15p border-bottom-0"> {{ \App\CPU\translate('Nmae') }}</th>
-                                <th class="wd-20p border-bottom-0">{{ \App\CPU\translate('E- mail') }}</th>
-                                <th class="wd-15p border-bottom-0"> {{ \App\CPU\translate('Status') }}</th>
-                                <th class="wd-15p border-bottom-0">نوع المستخدم</th>
-                                <th class="wd-10p border-bottom-0">العمليات</th>
+                                <th class="wd-15p border-bottom-0" style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};"> {{ \App\CPU\translate('Nmae') }}</th>
+                                <th class="wd-20p border-bottom-0" style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};">{{ \App\CPU\translate('E- mail') }}</th>
+                                {{-- <th class="wd-15p border-bottom-0" style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};"> {{ \App\CPU\translate('Status') }}</th> --}}
+                                <th class="wd-15p border-bottom-0"style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};">{{ \App\CPU\translate('Type User') }}</th>
+                                <th class="wd-10p border-bottom-0" style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};">{{ \App\CPU\translate('Action') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($data as $key => $user)
                                 <tr>
                                     <td>{{ ++$i }}</td>
-                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->f_name }} {{ $user->l_name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>
-                                        @if ($user->Status == 'مفعل')
-                                            <span class="label text-success d-flex">
-                                                <div class="dot-label bg-success ml-1"></div>{{ $user->Status }}
-                                            </span>
-                                        @else
-                                            <span class="label text-danger d-flex">
-                                                <div class="dot-label bg-danger ml-1"></div>{{ $user->Status }}
-                                            </span>
-                                        @endif
-                                    </td>
-
-                                    <td>
+                                      
+                                    {{-- </td>
+                                    {{ $user->status }}
+                                    <td> --}}
                                         @if (!empty($user->getRoleNames()))
                                             @foreach ($user->getRoleNames() as $v)
                                                 <label class="badge badge-success">{{ $v }}</label>
@@ -81,14 +73,13 @@
                                     <td>
                                         {{-- @can('تعديل مستخدم') --}}
                                             <a href="{{ route('seller.users.edit', $user->id) }}" class="btn btn-sm btn-info"
-                                                title="{{ \App\CPU\translate('Edit') }}"><i class="las la-pen"></i></a>
+                                                title="{{ \App\CPU\translate('Edit') }}"> {{ \App\CPU\translate('Edit') }}<i class="las la-pen"></i></a>
                                         {{-- @endcan
 
                                         @can('حذف مستخدم') --}}
                                             <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
                                                 data-user_id="{{ $user->id }}" data-username="{{ $user->name }}"
-                                                data-toggle="modal" href="#modaldemo8" title="{{ \App\CPU\translate('Delete') }}"><i
-                                                    class="las la-trash"></i></a>
+                                                data-toggle="modal" href="#modaldemo8"> {{ \App\CPU\translate('Delete') }}<i class="las la-trash"></i></a>
                                         {{-- @endcan --}}
                                     </td>
                                 </tr>

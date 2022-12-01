@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'Seller', 'prefix' => 'seller', 'as' => 'seller.'], function () {
     /*authentication*/
     Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'as' => 'auth.'], function () {
-        Route::get('/loginemplo', 'LoginController@loginempl')->name('loginempl');
-        Route::post('loginemp', 'LoginController@loginemp')->name('loginemp');
+        // Route::get('/loginemplo', 'LoginController@loginempl')->name('loginempl');
+        // Route::post('loginemp', 'LoginController@loginemp')->name('loginemp');
 
         Route::get('/code/captcha/{tmp}', 'LoginController@captcha')->name('default-captcha');
         Route::get('/login', 'LoginController@login')->name('login');

@@ -71,7 +71,7 @@
                 <div class="card card-lg mb-5">
                     <div class="card-body">
                       <center> 
-                    <h3> <a href="{{route('seller.auth.loginempl')}}">{{\App\CPU\translate('Employ sign_in')}}</a></h3> </center>
+                    {{-- <h3> <a href="{{route('seller.auth.loginempl')}}">{{\App\CPU\translate('Employ sign_in')}}</a></h3> </center> --}}
                         <!-- Form -->
                            <form id="form-id"  action="{{route('seller.auth.login')}}" method="post">
                         {{-- @endif --}}

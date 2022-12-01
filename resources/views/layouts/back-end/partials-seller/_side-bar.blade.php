@@ -6,7 +6,7 @@
 
     .navbar .nav-link:hover {
         color: #041562;
-    }
+
 
     .navbar .active > .nav-link, .navbar .nav-link.active, .navbar .nav-link.show, .navbar .show > .nav-link {
         color: #F14A16;
@@ -239,7 +239,7 @@
                         </li>
                         <!-- End Pages -->
                       @endcan
-                          {{-- @can('PRODUCT MANAGEMENT') --}}
+                          @can('PRODUCT MANAGEMENT')
                         <li class="nav-item">
                             <small style=" font-size: 13px; font-weight: bold !important;" class="nav-subtitle">{{\App\CPU\translate('product_management')}}</small>
                             <small class="tio-more-horizontal nav-subtitle-replacer"></small>
@@ -286,15 +286,15 @@
                                 </li> --}}
                             </ul>
                         </li>
-                     {{-- @endcan --}}
-                      {{-- @can('services') --}}
+                     @endcan
+                       @can('services')
                         <li class="nav-item {{Request::is('seller/product/list')?'active':''}}">
                             <a class="nav-link " href="{{route('seller.service.list')}}">
                                 <span class="tio-circle nav-indicator-icon"></span>
                                 <span class="text-truncate">{{\App\CPU\translate('services')}}</span>
                             </a>
                         </li>
-                          {{-- @endcan --}}
+                          @endcan
                           @can('reviews')
                         <li class="navbar-vertical-aside-has-menu {{Request::is('seller/reviews/list*')?'active':''}}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link"
@@ -442,14 +442,14 @@
                             </a>
                         </li>
                        @endcan
-                         {{-- @can('roles')
+                         @can('roles')
                         <li class="nav-item {{Request::is('seller/product/list')?'active':''}}">
                             <a class="nav-link " href="{{route('seller.roles.index')}}">
                                 <span class="tio-circle nav-indicator-icon"></span>
                                 <span class="text-truncate">{{\App\CPU\translate('roles')}}</span>
                             </a>
                         </li>
-                          @endcan --}}
+                          @endcan
                             @can('roles')
                         <li class="nav-item {{Request::is('seller/product/list')?'active':''}}">
                             <a class="nav-link " href="{{route('seller.users.index')}}">
