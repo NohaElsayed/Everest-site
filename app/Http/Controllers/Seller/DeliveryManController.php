@@ -119,7 +119,13 @@ class DeliveryManController extends Controller
         }
 
         $dm = new DeliveryMan();
+        if(auth('seller')->user()->added != null){
+            $seller= auth('seller')->user()->added;
+            $dm->seller_id = $seller;
+        }
+            else{
         $dm->seller_id = auth('seller')->id();
+            }
         $dm->f_name = $request->f_name;
         $dm->l_name = $request->l_name;
         $dm->email = $request->email;
@@ -198,10 +204,12 @@ class DeliveryManController extends Controller
     }
 
     public function delete(Request $request,$id)
-    {
-
+    {  if(auth('seller')->user()->added != null){
+        $seller= auth('seller')->user()->added;
+        $delivery_man = DeliveryMan::where(['seller_id' =>  $seller, 'id' => $id])->first();
+    }else{
         $delivery_man = DeliveryMan::where(['seller_id' => auth('seller')->id(), 'id' => $id])->first();
-
+    }
 
         if (Storage::disk('public')->exists('delivery-man/' . $delivery_man['image'])) {
             Storage::disk('public')->delete('delivery-man/' . $delivery_man['image']);

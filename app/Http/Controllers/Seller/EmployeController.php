@@ -66,10 +66,10 @@ $user->l_name = $request->l_name ;
 $user->email = $request->email ;
 $user->status = 'approved';
 $user->password = bcrypt($request->password);
-if(auth('seller')->user()->roles_name == 'seller'){
+//if(auth('seller')->user()->roles_name == 'seller'){
 
  return $user->added = auth('seller')->user()->id;
- }
+ //}
  $user->added = auth('seller')->user()->id;
 $user-> save();
 $user->assignRole($request->roles_name);

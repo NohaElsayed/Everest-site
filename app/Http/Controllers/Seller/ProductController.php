@@ -127,9 +127,9 @@ class ProductController extends Controller
         // }
 
         $product = new Product();
-        if(auth('employ')->id()){
-        $seller= auth('employ')->user()->added;
-        $product->emp_id= auth('employ')->user()->id;
+        if(auth('seller')->user()->added != null){
+        $seller= auth('seller')->user()->added;
+        $product->emp_id= auth('seller')->user()->id;
         $product->user_id = $seller;
         }else{
         $product->user_id = auth('seller')->id();}
@@ -292,12 +292,13 @@ class ProductController extends Controller
 
     function list(Request $request)
     {
+        
         $query_param = [];
         $search = $request['search'];
         if ($request->has('search')) {
             $key = explode(' ', $request['search']);
-            if(auth('employ')->id()){
-                $product= auth('employ')->user()->added;
+            if(auth('seller')->user()->added != null){
+                $product= auth('seller')->user()->added;
              $products = Product::where(['added_by' => 'seller', 'user_id' => $product])
              ->where(function ($q) use ($key) {
                 foreach ($key as $value) {
@@ -314,8 +315,8 @@ class ProductController extends Controller
             }
             $query_param = ['search' => $request['search']];
         } else {
-          if(auth('employ')->id()){
-            $product= auth('employ')->user()->added;
+          if(auth('seller')->user()->added != null){
+            $product= auth('seller')->user()->added;
          $products = Product::where(['added_by' => 'seller', 'user_id' => $product]);
           }else{
             $products = Product::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id()]);

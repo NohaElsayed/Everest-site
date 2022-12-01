@@ -28,8 +28,11 @@ class OrderController extends Controller
 {
     public function list(Request $request, $status)
     {
+        if(auth('seller')->user()->added != null){
+            $sellerId= auth('seller')->user()->added;}
+            else{
         $sellerId = auth('seller')->id();
-
+            }
         $search = $request['search'];
         $from = $request['from'];
         $to = $request['to'];
@@ -67,7 +70,11 @@ class OrderController extends Controller
 
     public function details($id)
     {
+        if(auth('seller')->user()->added != null){
+            $sellerId= auth('seller')->user()->added;}
+            else{
         $sellerId = auth('seller')->id();
+            }
         $order = Order::with(['details' => function ($query) use ($sellerId) {
             $query->where('seller_id', $sellerId);
         }])->with('customer', 'shipping')
@@ -119,7 +126,11 @@ class OrderController extends Controller
 
     public function generate_invoice($id)
     {
+        if(auth('seller')->user()->added != null){
+            $sellerId= auth('seller')->user()->added;}
+            else{
         $sellerId = auth('seller')->id();
+            }
         $seller = Seller::find($sellerId)->gst;
 
         $order = Order::with(['details' => function ($query) use ($sellerId) {
