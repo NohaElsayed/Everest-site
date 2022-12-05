@@ -55,9 +55,9 @@ return [
             'driver' => 'session',
             'provider' => 'sellers',
         ],
-        'employ' => [
+        'delivery' => [
             'driver' => 'session',
-            'provider' => 'employs',
+            'provider' => 'deliveries',
         ],
 
         'customer' => [
@@ -103,10 +103,10 @@ return [
             'model' => App\Employ::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'deliveries' => [
+            'driver' =>  'eloquent',
+            'model' =>  App\Delivery::class,
+        ],
     ],
 
     /*
@@ -141,6 +141,12 @@ return [
 
         'sellers' => [
             'provider' => 'sellers',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'deliveries' => [
+            'provider' => 'deliveries',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

@@ -601,3 +601,40 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 
     /*Route::get('login', 'testController@login')->name('login');*/
 });
+
+Route::group(['namespace' => 'Admin-delivery', 'prefix' => 'admin-delivery', 'as' => 'admin-delivery.'], function () {
+
+   Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'as' => 'auth.'], function () {
+    Route::get('login', [App\Http\Controllers\delivery\deliveryController::class,'logindel'])->name('logindel');
+    Route::post('/login',[App\Http\Controllers\delivery\deliveryController::class,'login'])->name('login');
+    Route::get('logout', [App\Http\Controllers\delivery\deliveryController::class,'logout'])->name('logout');
+   });
+    Route::get('/dashboard', [App\Http\Controllers\delivery\deliveryController::class,'dashboard'])->name('dashboard');
+
+    Route::group(['prefix' => 'delivery-man', 'as' => 'delivery-man.'], function () {
+    Route::get('add', [App\Http\Controllers\delivery\DeliveryManController::class, 'index'])->name('add');
+    Route::post('store', [App\Http\Controllers\delivery\DeliveryManController::class, 'store'])->name('store');
+    Route::get('list',[App\Http\Controllers\delivery\DeliveryManController::class, 'list'])->name('list');
+    Route::get('preview/{id}', [App\Http\Controllers\delivery\DeliveryManController::class, 'preview'])->name('preview');
+    Route::get('edit/{id}', [App\Http\Controllers\delivery\DeliveryManController::class, 'edit'])->name('edit');
+    Route::post('update/{id}', [App\Http\Controllers\delivery\DeliveryManController::class,'update'])->name('update');
+    Route::delete('delete/{id}', [App\Http\Controllers\delivery\DeliveryManController::class, 'delete'])->name('delete');
+    Route::post('search', [App\Http\Controllers\delivery\DeliveryManController::class, 'search'])->name('search');
+    Route::post('status-update', [App\Http\Controllers\delivery\DeliveryManController::class, 'status'])->name('status-update');
+});
+      //order management
+    Route::group(['prefix' => 'orders', 'as' => 'orders.',], function () {
+    Route::get('list/{status}', [App\Http\Controllers\delivery\OrderController::class, 'list'])->name('list');
+    Route::get('details/{id}', [App\Http\Controllers\delivery\OrderController::class, 'details'])->name('details');
+    Route::post('status', [App\Http\Controllers\delivery\OrderController::class, 'status'])->name('status');
+    Route::post('payment-status', [App\Http\Controllers\delivery\OrderController::class, 'payment_status'])->name('payment-status');
+    Route::post('productStatus', [App\Http\Controllers\delivery\OrderController::class, 'productStatus'])->name('productStatus');
+    Route::get('generate-invoice/{id}', [App\Http\Controllers\delivery\OrderController::class, 'generate_invoice'])->name('generate-invoice')->withoutMiddleware(['module:order_management']);
+    Route::get('inhouse-order-filter', [App\Http\Controllers\delivery\OrderController::class, 'inhouse_order_filter'])->name('inhouse-order-filter');
+
+    Route::post('update-deliver-info',[App\Http\Controllers\delivery\OrderController::class, 'update_deliver_info'])->name('update-deliver-info');
+    Route::get('add-delivery-man/{order_id}/{d_man_id}', [App\Http\Controllers\delivery\OrderController::class, 'add_delivery_man'])->name('add-delivery-man');
+     Route::get('export-order-data/{status}', [App\Http\Controllers\delivery\OrderController::class, 'bulk_export_data'])->name('order-bulk-export');
+    });
+   });
+

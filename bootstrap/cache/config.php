@@ -120,10 +120,10 @@
         'driver' => 'session',
         'provider' => 'sellers',
       ),
-      'employ' => 
+      'delivery' => 
       array (
         'driver' => 'session',
-        'provider' => 'employs',
+        'provider' => 'deliveries',
       ),
       'customer' => 
       array (
@@ -158,6 +158,11 @@
         'driver' => 'eloquent',
         'model' => 'App\\Employ',
       ),
+      'deliveries' => 
+      array (
+        'driver' => 'eloquent',
+        'model' => 'App\\Delivery',
+      ),
     ),
     'passwords' => 
     array (
@@ -178,6 +183,13 @@
       'sellers' => 
       array (
         'provider' => 'sellers',
+        'table' => 'password_resets',
+        'expire' => 60,
+        'throttle' => 60,
+      ),
+      'deliveries' => 
+      array (
+        'provider' => 'deliveries',
         'table' => 'password_resets',
         'expire' => 60,
         'throttle' => 60,

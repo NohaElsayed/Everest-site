@@ -36,8 +36,7 @@ return view('seller-views.users.show_users',compact('data'))
 */
 public function create()
 {
-$roles = Role::pluck('name','name')->all();
-
+    $roles = Role::pluck('name','name')->all();
 return view('seller-views.users.Add_user',compact('roles'));
 
 }
@@ -67,10 +66,9 @@ $user->email = $request->email ;
 $user->status = 'approved';
 $user->password = bcrypt($request->password);
 //if(auth('seller')->user()->roles_name == 'seller'){
-
- return $user->added = auth('seller')->user()->id;
+$user->added = auth('seller')->user()->id;
  //}
- $user->added = auth('seller')->user()->id;
+ //$user->added = auth('seller')->user()->id;
 $user-> save();
 $user->assignRole($request->roles_name);
 Toastr::success('Employee added successfully!');
@@ -114,7 +112,7 @@ $this->validate($request, [
 'f_name' => 'required',
 'l_name' => 'required',
 'email' => 'required|email|unique:employs,email,'.$id,
- 'password' => 'same:confirm-password',
+'password' => 'same:confirm-password',
 'roles' => 'required'
 ]);
 $input = $request->all();
@@ -140,6 +138,6 @@ public function destroy(Request $request)
 {
     Seller::find($request->user_id)->delete();
     Toastr::success('Employee Deleted successfully!');
-return redirect()->route('sellers.users.index');
+    return redirect()->route('sellers.users.index');
 }
 }
