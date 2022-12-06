@@ -150,15 +150,11 @@ footer button {
 .social-link {
   background-color: var(--white);
   color: var(--black);
-  padding: 12px;
+  padding: 5px;
   border-radius: 50%;
   transition: var(--transition-1);
 }
 
-.social-link:is(:hover, :focus) {
-  background-color: var(--portland-orange);
-  color: var(--white);
-}
 
 .footer-list-title {
   color: var(--white);

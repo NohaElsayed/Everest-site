@@ -112,7 +112,7 @@ $role = Role::find($id);
 $role->name = $request->input('name');
 $role->save();
 $role->syncPermissions($request->input('permission'));
-return redirect()->route('roles.index')
+return redirect()->route('seller.roles.index')
 ->with('success','Role updated successfully');
 }
 /**
@@ -124,7 +124,7 @@ return redirect()->route('roles.index')
 public function destroy($id)
 {
 DB::table("roles")->where('id',$id)->delete();
-return redirect()->route('roles.index')
+return redirect()->route('seller.roles.index')
 ->with('success','Role deleted successfully');
 }
 }

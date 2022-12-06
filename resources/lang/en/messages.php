@@ -1625,4 +1625,6 @@
   'Frist Name' => 'Frist Name',
   'erorre' => 'Erorre',
   'Roles' => 'Roles',
+  'Admin Delivery' => 'Admin Delivery',
+  'sign_in Admin Delivery' => 'Sign in Admin Delivery',
 );

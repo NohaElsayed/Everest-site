@@ -1170,7 +1170,7 @@ $q->active();
             <div class="row">
                 {{-- Deal of the day/Recommended Product --}}
                 <div class="col-xl-3 col-md-4 pb-4 mt-3 pl-0 pr-0">
-                    <div class="deal_of_the_day" style="background: {{$web_config['primary_color']}};height: 784px;">
+                    <div class="deal_of_the_day" style="background: {{$web_config['primary_color']}};height: 820px;">
                         @if(isset($deal_of_the_day) && isset($deal_of_the_day->product))
                         <div class="d-flex justify-content-center align-items-center" style="width: 70%;margin:auto;">
                             <h1 class="align-items-center" style="color: white">

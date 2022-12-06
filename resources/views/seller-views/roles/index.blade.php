@@ -38,6 +38,7 @@
                         <tbody>
                             @foreach ($roles as $key => $role)
                                 <tr>
+                                   @if ($role->name !== 'seller')
                                     <td>{{ ++$i }}</td>
                                     <td>{{ $role->name }}</td>
                                     <td>
@@ -45,13 +46,12 @@
                                             <a class="btn btn-success btn-sm" style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};"
                                                 href="{{ route('seller.roles.show', $role->id) }}">{{ \App\CPU\translate('View') }} </a>
                                         {{-- @endcan --}}
-                                        
                                         {{-- @can('تعديل صلاحية') --}}
                                             <a class="btn btn-primary btn-sm"
                                                 href="{{ route('seller.roles.edit', $role->id) }}">{{ \App\CPU\translate('Edit') }} </a>
                                         {{-- @endcan --}}
 
-                                        @if ($role->name !== 'seller')
+                                        {{-- @if ($role->name !== 'seller') --}}
                                             {{-- @can('حذف صلاحية') --}}
                                                 {!! Form::open(['method' => 'DELETE', 'route' => ['seller.roles.destroy',
                                                 $role->id], 'style' => 'display:inline']) !!}

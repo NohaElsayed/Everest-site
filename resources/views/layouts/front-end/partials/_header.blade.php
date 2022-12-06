@@ -597,10 +597,5 @@ function myFunction() {
 <script>
 
 
-// background: #2ebd30;
-//     color: #fff !important;
-//     margin: 5px;
-//     display: flex;
-//     align-items: center; padding: 6px;
 
 </script>
