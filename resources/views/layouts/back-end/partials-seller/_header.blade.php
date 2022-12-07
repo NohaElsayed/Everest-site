@@ -4,6 +4,7 @@
         <div class="navbar-nav-wrap">
             <div class="navbar-brand-wrapper">
                 <!-- Logo -->
+                @if (auth('seller'))
                 @php($shop=\App\Model\Shop::where(['seller_id'=>auth('seller')->id()])->first())
 
                 <a class="navbar-brand" href="{{route('seller.dashboard.index')}}" aria-label="">
@@ -23,6 +24,7 @@
                     @endif
 
                 </a>
+                @endif
                 <!-- End Logo -->
             </div>
 
@@ -150,11 +152,11 @@
                                      "type": "css-animation"
                                    }'>
                                 <div class="avatar avatar-sm avatar-circle">
-
+                                      @if(auth('seller')->user())
                                     <img class="avatar-img"
                                          onerror="this.src='{{asset('public/assets/back-end/img/160x160/img1.jpg')}}'"
                                          src="{{asset('storage/app/public/seller/')}}/{{auth('seller')->user()->image}}"
-                                         alt="Image Description">
+                                         alt="Image Description">@endif
                                     <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                                 </div>
                             </a>
@@ -165,28 +167,36 @@
                                 <div class="dropdown-item-text">
                                     <div class="media align-items-center text-break">
                                         <div class="avatar avatar-sm avatar-circle mr-2">
-
+                                     @if(auth('seller')->user())
                                             <img class="avatar-img"
                                                  onerror="this.src='{{asset('public/assets/back-end/img/160x160/img1.jpg')}}'"
                                                  src="{{asset('storage/app/public/seller/')}}/{{auth('seller')->user()->image}}"
                                                  alt="Image Description">
+                                                 @endif
                                         </div>
                                         <div class="media-body">
+                                              @if(auth('seller')->user())
                                             <span class="card-title h5">{{auth('seller')->user()->f_name}}</span>
 
                                             <span class="card-text">{{auth('seller')->user()->email}}</span>
+                                            @elseif(auth('employ')->user())
+                                            <span class="card-title h5">{{auth('employ')->user()->name}}</span>
+
+                                            <span class="card-text">{{auth('employ')->user()->email}}</span>
+                                            
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="dropdown-divider"></div>
-
+                               @if(auth('seller')->user())
                                 <a class="dropdown-item"
                                    href="{{route('seller.profile.update',auth('seller')->user()->id)}}">
                                     <span class="text-truncate pr-2"
                                           title="Settings">{{\App\CPU\translate('Settings')}}</span>
                                 </a>
-
+                                @endif
                                 <div class="dropdown-divider"></div>
 
                                 <a class="dropdown-item" href="javascript:" onclick="Swal.fire({

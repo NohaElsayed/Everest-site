@@ -12,8 +12,11 @@ class ReviewsController extends Controller
 {
     public function list(Request $request) {
 //search
+if(auth('seller')->user()->added != null){
+    $sellerId= auth('seller')->user()->added;}
+    else{
         $sellerId = auth('seller')->id();
-
+    }
         $query_param = [];
         $search = $request['search'];
         if ($request->has('search'))

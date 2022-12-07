@@ -649,22 +649,22 @@
     </script>
 
     <script>
-        $(".lang_link").click(function(e) {
-            e.preventDefault();
-            $(".lang_link").removeClass('active');
-            $(".lang_form").addClass('d-none');
-            $(this).addClass('active');
+    //    $(".lang_link").click(function(e) {
+      //      e.preventDefault();
+        //    $(".lang_link").removeClass('active');
+         //   $(".lang_form").addClass('d-none');
+         //   $(this).addClass('active');
 
-            let form_id = this.id;
-            let lang = form_id.split("-")[0];
-            console.log(lang);
-            $("#" + lang + "-form").removeClass('d-none');
-            if (lang == '{{ $default_lang }}') {
-                $(".rest-part").removeClass('d-none');
-            } else {
-                $(".rest-part").addClass('d-none');
-            }
-        })
+         //   let form_id = this.id;
+         //   let lang = form_id.split("-")[0];
+         //   console.log(lang);
+         //   $("#" + lang + "-form").removeClass('d-none');
+         //   if (lang == '{{ $default_lang }}') {
+            //    $(".rest-part").removeClass('d-none');
+          //  } else {
+            //    $(".rest-part").addClass('d-none');
+          //  }
+      //  })
     </script>
 
     {{-- ck editor --}}

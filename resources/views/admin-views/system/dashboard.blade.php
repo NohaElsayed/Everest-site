@@ -50,9 +50,9 @@
                         <p>{{ \App\CPU\translate('Welcome_message')}}.</p>
                     </div>
                     <div style="height: 25px">
-                        <label class="badge badge-soft-success">
+                        {{-- <label class="badge badge-soft-success">
                             {{\App\CPU\translate('Software version')}} : {{ env('SOFTWARE_VERSION') }}
-                        </label>
+                        </label> --}}
                     </div>
                 </div>
             </div>

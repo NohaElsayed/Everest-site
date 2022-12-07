@@ -16,7 +16,7 @@ class SellerMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (auth('seller')->check() && auth('seller')->user()->status == 'approved') {
+        if (auth('seller') || auth('employ')->check() && auth('seller')->user()->status == 'approved') {
             return $next($request);
         }
         auth()->guard('seller')->logout();

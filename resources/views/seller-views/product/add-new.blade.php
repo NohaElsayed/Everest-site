@@ -28,7 +28,7 @@
                       id="product_form"
                       onsubmit="check()">>
                     @csrf
-                    <div class="card">
+                      <div class="card">
                         <div class="card-header">
                             @php($language = \App\Model\BusinessSetting::where('type', 'pnc_language')->first())
                             @php($language = $language->value ?? null)
@@ -56,15 +56,14 @@
                                             ({{ strtoupper($lang) }})
                                         </label>
                                         <input type="text" {{ $lang == $default_lang ? 'required' : '' }} name="name[]"
-                                            id="{{ $lang }}_name" class="form-control" placeholder="New Product"
-                                            required>
+                                            id="{{ $lang }}_name" class="form-control" placeholder="New Product">
                                     </div>
                                     <input type="hidden" name="lang[]" value="{{ $lang }}">
                                     <div class="form-group pt-4">
                                         <label class="input-label"
                                             for="{{ $lang }}_description">{{ \App\CPU\translate('description') }}
                                             ({{ strtoupper($lang) }})</label>
-                                        <textarea name="description[]" class="editor textarea" cols="30" rows="10" required>{{ old('details') }}</textarea>
+                                        <textarea name="description[]" class="editor textarea" cols="30" rows="10">{{ old('details') }}</textarea>
                                     </div>
                                 </div>
                             @endforeach
@@ -86,7 +85,7 @@
                                             <option value="{{ old('category_id') }}" selected disabled>
                                                 ---{{ \App\CPU\translate('Select') }}---</option>
                                             @foreach ($cat as $c)
-                                                <option value="{{ $c['id'] }}"
+                                                <option value="{{ $c['id'] }}" class="{{Session::get('direction') === "rtl" ? 'pr-3' : 'pl-3'}}"
                                                     {{ old('name') == $c['id'] ? 'selected' : '' }}>
                                                     {{ $c['name'] }}
                                                 </option>
@@ -597,7 +596,7 @@
     </script>
 
     <script>
-        function check() {
+         function check() {
             Swal.fire({
                 title: '{{ \App\CPU\translate('Are you sure') }}?',
                 text: '',
@@ -624,6 +623,8 @@
                     contentType: false,
                     processData: false,
                     success: function(data) {
+                        // console.log(data.errors);
+                        // return false;
                         if (data.errors) {
                             for (var i = 0; i < data.errors.length; i++) {
                                 toastr.error(data.errors[i].message, {
@@ -633,10 +634,10 @@
                             }
                         } else {
                             toastr.success(
-                                '{{ \App\CPU\translate('product updated successfully!') }}', {
-                                    CloseButton: true,
-                                    ProgressBar: true
-                                });
+                            '{{ \App\CPU\translate('product added successfully') }}!', {
+                                CloseButton: true,
+                                ProgressBar: true
+                            });
                             $('#product_form').submit();
                         }
                     }
@@ -646,22 +647,22 @@
     </script>
 
     <script>
-        $(".lang_link").click(function(e) {
+         $(".lang_link").click(function(e) {
             e.preventDefault();
-            $(".lang_link").removeClass('active');
+             $(".lang_link").removeClass('active');
             $(".lang_form").addClass('d-none');
-            $(this).addClass('active');
+         //  $(this).addClass('active');
 
-            let form_id = this.id;
-            let lang = form_id.split("-")[0];
-            console.log(lang);
-            $("#" + lang + "-form").removeClass('d-none');
-            if (lang == '{{ $default_lang }}') {
-                $(".rest-part").removeClass('d-none');
+             let form_id = this.id;
+             let lang = form_id.split("-")[0];
+             console.log(lang);
+             $("#" + lang + "-form").removeClass('d-none');
+             if (lang == '{{ $default_lang }}') {
+                 $(".rest-part").removeClass('d-none');
             } else {
-                $(".rest-part").addClass('d-none');
+             $(".rest-part").addClass('d-none');
             }
-        })
+         })
     </script>
 
     {{-- ck editor --}}

@@ -114,7 +114,7 @@ class ServiceController extends Controller
             }
             Translation::insert($data);
             Toastr::success('Service added successfully!');
-            return redirect()->route('seller.service.list');
+            return redirect()->route('admin.service.list');
         }
     }
     public function view($id)

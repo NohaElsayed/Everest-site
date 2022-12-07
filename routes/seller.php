@@ -1,5 +1,6 @@
 <?php
-
+// use App\Http\Controllers\Seller\RoleController;
+// use App\Http\Controllers\Seller\EmployController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,12 +13,14 @@
  */
 
 use Illuminate\Support\Facades\Route;
-
 Route::group(['namespace' => 'Seller', 'prefix' => 'seller', 'as' => 'seller.'], function () {
     /*authentication*/
     Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'as' => 'auth.'], function () {
+        // Route::get('/loginemplo', 'LoginController@loginempl')->name('loginempl');
+        // Route::post('loginemp', 'LoginController@loginemp')->name('loginemp');
+
         Route::get('/code/captcha/{tmp}', 'LoginController@captcha')->name('default-captcha');
-        Route::get('login', 'LoginController@login')->name('login');
+        Route::get('/login', 'LoginController@login')->name('login');
         Route::post('login', 'LoginController@submit');
         Route::get('logout', 'LoginController@logout')->name('logout');
 
@@ -103,6 +106,18 @@ Route::group(['namespace' => 'Seller', 'prefix' => 'seller', 'as' => 'seller.'],
 
             Route::get('export-order-data/{status}', 'OrderController@bulk_export_data')->name('order-bulk-export');
         });
+
+            Route::resource('roles',RoleController::class);
+            Route::resource('users', EmployeController::class);
+
+        // Route::group(['prefix' => 'employe', 'as' => 'employe.'], function () {
+        //     Route::get('add-new', 'EmployeController@add_new')->name('add-new');
+        //     Route::post('add-new', 'EmployeController@store');
+        //     Route::get('list', 'EmployeController@list')->name('list');
+        //     Route::get('update/{id}', 'EmployeController@edit')->name('update');
+        //     Route::post('update/{id}', 'EmployeController@update');
+        //     Route::get('status/{id}/{status}', 'EmployeController@status')->name('status');
+        // });
 
         //pos management
         Route::group(['prefix' => 'pos', 'as' => 'pos.'], function () {

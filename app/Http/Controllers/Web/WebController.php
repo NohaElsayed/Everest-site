@@ -43,8 +43,7 @@ use Gregwar\Captcha\PhraseBuilder;
 use Gregwar\Captcha\CaptchaBuilder;
 use App\CPU\CustomerManager;
 use App\CPU\Convert;
-use App\Model\CartDelivery;
-use App\Model\DeliveryMethod;
+
 class WebController extends Controller
 {
     public function maintenance_mode()
@@ -229,15 +228,6 @@ class WebController extends Controller
         $carts = Cart::whereIn('cart_group_id', $cart_group_ids)->get();
         foreach($carts as $cart)
         {
-            $cart_delivery = CartDelivery::where('cart_group_id', $cart->cart_group_id)->first();
-            if (!isset($cart_delivery)) 
-            {
-                Toastr::info(translate('select_delivery_method_first'));
-                return redirect('shop-cart');
-            }
-            $deliveryMethod = DeliveryMethod::where('id', $cart_delivery->delivery_method_id)->first();
-          
-           if($deliveryMethod->slug == 'delivery'){
             if ($shippingMethod == 'inhouse_shipping') {
                 $admin_shipping = ShippingType::where('seller_id',0)->first();
                 $shipping_type = isset($admin_shipping)==true?$admin_shipping->shipping_type:'order_wise';
@@ -258,9 +248,6 @@ class WebController extends Controller
                     return redirect('shop-cart');
                 }
             }
-
-        }
-
         }
 
 
@@ -281,14 +268,6 @@ class WebController extends Controller
         $carts = Cart::whereIn('cart_group_id', $cart_group_ids)->get();
         foreach($carts as $cart)
         {
-            $cart_delivery = CartDelivery::where('cart_group_id', $cart->cart_group_id)->first();
-            if (!isset($cart_delivery)) 
-            {
-                Toastr::info(translate('select_delivery_method_first'));
-                return redirect('shop-cart');
-            }
-            $deliveryMethod = DeliveryMethod::where('id', $cart_delivery->delivery_method_id)->first();
-            if($deliveryMethod->slug == 'delivery'){
             if ($shippingMethod == 'inhouse_shipping') {
                 $admin_shipping = ShippingType::where('seller_id',0)->first();
                 $shipping_type = isset($admin_shipping)==true?$admin_shipping->shipping_type:'order_wise';
@@ -309,9 +288,8 @@ class WebController extends Controller
                 }
             }
         }
-        }
 
-        if (( session()->has('address_id') || session()->has('store_ids') ) && count($cart_group_ids) > 0) {
+        if (session()->has('address_id') && count($cart_group_ids) > 0) {
             return view('web-views.checkout-payment');
         }
 
@@ -382,12 +360,9 @@ class WebController extends Controller
 
     public function shop_cart(Request $request)
     {
-        if (auth('customer')->check() && Cart::where(['customer_id' => auth('customer')->id()])->count() > 0) 
-        {
-
+        if (auth('customer')->check() && Cart::where(['customer_id' => auth('customer')->id()])->count() > 0) {
             return view('web-views.shop-cart');
         }
-
         Toastr::info(translate('no_items_in_basket'));
         return redirect('/');
     }
@@ -1037,7 +1012,6 @@ class WebController extends Controller
         if ($request->has('order_note')) {
             session::put('order_note', $request->order_note);
         }
-     
         return response()->json();
     }
     public function subscription(Request $request)

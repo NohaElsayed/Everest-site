@@ -14,8 +14,11 @@ class ChattingController extends Controller
 {
     public function chat()
     {
+        if(auth('seller')->user()->added != null){
+            $shop_id= auth('seller')->user()->added;}
+            else{
         $shop_id = Shop::where('seller_id', auth('seller')->id())->first()->id;
-
+            }
         $last_chat = Chatting::where('shop_id', $shop_id)
             ->orderBy('created_at', 'DESC')
             ->first();
@@ -43,11 +46,20 @@ class ChattingController extends Controller
 
     public function message_by_user(Request $request)
     {
+
+      if(auth('seller')->user()->added != null){
+            $shop_id= auth('seller')->user()->added;}
+            else{
         $shop_id = Shop::where('seller_id', auth('seller')->id())->first()->id;
+            }
+            if(auth('seller')->user()->added != null){
+                $last_chat= auth('seller')->user()->added;}
+                else{
         $last_chat = Chatting::where('seller_id', auth('seller')->id())
             ->where('user_id', $request->user_id)
             ->orderBy('created_at', 'DESC')
             ->first();
+                }
 
         $last_chat->seen_by_seller = 0;
         $last_chat->save();
@@ -69,8 +81,11 @@ class ChattingController extends Controller
             Toastr::warning('Type Something!');
             return response()->json(['message' =>'type something!']);
         } else {
+            if(auth('seller')->user()->added != null){
+                $shop_id= auth('seller')->user()->added;}
+                else{
             $shop_id = Shop::where('seller_id', auth('seller')->id())->first()->id;
-
+                }
             $message = $request->message;
             $time = now();
 
@@ -79,6 +94,7 @@ class ChattingController extends Controller
                 'seller_id'      => auth('seller')->id(),
                 'shop_id'        => $shop_id,
                 'message'        => $request->message,
+                'photo'        => $request->photo,
                 'sent_by_seller' => 1,
                 'seen_by_seller' => 0,
                 'created_at'     => now(),

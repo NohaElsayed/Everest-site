@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Title -->
-    <title>{{\App\CPU\translate('seller_login')}}</title>
-
+                            <title style="font-family: 'Cairo', sans-serif" class="mb-30">{{\App\CPU\translate('seller')}}</title>
+            
     <!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico">
 
@@ -65,20 +65,27 @@
                  onerror="this.src='{{asset('public/assets/back-end/img/400x400/img2.jpg')}}'"
                  style="width: 8rem;">
         </a>
-
         <div class="row justify-content-center">
             <div class="col-md-7 col-lg-5">
                 <!-- Card -->
                 <div class="card card-lg mb-5">
                     <div class="card-body">
+                      <center> 
+                    {{-- <h3> <a href="{{route('seller.auth.loginempl')}}">{{\App\CPU\translate('Employ sign_in')}}</a></h3> </center> --}}
                         <!-- Form -->
-                        <form id="form-id"  action="{{route('seller.auth.login')}}" method="post">
+                           <form id="form-id"  action="{{route('seller.auth.login')}}" method="post">
+                        {{-- @endif --}}
                             @csrf
 
                             <div class="text-center">
                                 <div class="mb-5">
                                     <h1 class="display-4">{{\App\CPU\translate('sign_in')}}</h1>
-                                    <center><h1 class="h4 text-gray-900 mb-4">{{\App\CPU\translate('welcome_back_to_seller_login')}}</h1>
+                                    <center> 
+                                    {{-- @if($type == 'employ')
+                            <h1 style="font-family: 'Cairo', sans-serif" class="mb-30">{{\App\CPU\translate('sign_in seller')}}</h1>
+                            @else
+                             <h1 style="font-family: 'Cairo', sans-serif" class="mb-30">{{\App\CPU\translate('sign_in Employe')}}</h1>
+                              @endif --}}
                                     </center>
                                 </div>
                                 

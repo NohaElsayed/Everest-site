@@ -162,13 +162,13 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">{{\App\CPU\translate('Close')}}</button>
-                            @if(auth('seller')->user()->account_no==null || auth('seller')->user()->bank_name==null)
+                            {{-- @if(auth('seller')->user()->account_no==null || auth('seller')->user()->bank_name==null || )
                                 <button type="button" class="btn btn-primary" onclick="call_duty()">
                                     {{\App\CPU\translate('Incomplete bank info')}}
                                 </button>
                             @else
                                 <button type="submit" class="btn btn-primary">{{\App\CPU\translate('Request')}}</button>
-                            @endif
+                            @endif --}}
                         </div>
                     </form>
                 </div>

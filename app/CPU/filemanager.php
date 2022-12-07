@@ -1,5 +1,4 @@
 <?php
-
 namespace App\CPU;
 
 class FileManagerLogic

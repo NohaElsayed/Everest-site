@@ -13,8 +13,23 @@ use Illuminate\Support\Facades\DB;
 class ShopController extends Controller
 {
     public function view()
-    {
-        $shop = Shop::where(['seller_id' => auth('seller')->id()])->first();
+    {  
+        if(auth('seller')->user()->added != null){
+        $seller= auth('seller')->user()->added;
+        $shop = Shop::where(['seller_id' =>$seller])->first();
+        if (isset($shop) == false) {
+            DB::table('shops')->insert([
+                'seller_id' => $seller,
+                'name' => auth('seller')->user()->f_name,
+                'address' => '',
+                'contact' => auth('seller')->user()->phone,
+                'image' => 'def.png',
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+    }else{
+        $shop = Shop::where(['seller_id' => auth('seller')->id()])->first();}
         if (isset($shop) == false) {
             DB::table('shops')->insert([
                 'seller_id' => auth('seller')->id(),
@@ -25,7 +40,11 @@ class ShopController extends Controller
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-            $shop = Shop::where(['seller_id' => auth('seller')->id()])->first();
+            if(auth('seller')->user()->added != null){
+                $seller= auth('seller')->user()->added;
+                $shop = Shop::where(['seller_id' => $seller])->first();
+            }else{
+            $shop = Shop::where(['seller_id' => auth('seller')->id()])->first();}
         }
 
         return view('seller-views.shop.shopInfo', compact('shop'));

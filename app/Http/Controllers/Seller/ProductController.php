@@ -6,6 +6,7 @@ use App\CPU\BackEndHelper;
 use App\CPU\Convert;
 use App\CPU\Helpers;
 use App\CPU\ImageManager;
+use App\Employ;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Seller\ProductRequest;
 use App\Model\Brand;
@@ -126,7 +127,12 @@ class ProductController extends Controller
         // }
 
         $product = new Product();
-        $product->user_id = auth('seller')->id();
+        if(auth('seller')->user()->added != null){
+        $seller= auth('seller')->user()->added;
+        $product->emp_id= auth('seller')->user()->id;
+        $product->user_id = $seller;
+        }else{
+        $product->user_id = auth('seller')->id();}
         $product->added_by = "seller";
         $product->name = $request->name[array_search('en', $request->lang)];
         $product->slug = Str::slug($request->name[array_search('en', $request->lang)], '-') . '-' . Str::random(6);
@@ -286,25 +292,41 @@ class ProductController extends Controller
 
     function list(Request $request)
     {
+        
         $query_param = [];
         $search = $request['search'];
         if ($request->has('search')) {
             $key = explode(' ', $request['search']);
+            if(auth('seller')->user()->added != null){
+                $product= auth('seller')->user()->added;
+             $products = Product::where(['added_by' => 'seller', 'user_id' => $product])
+             ->where(function ($q) use ($key) {
+                foreach ($key as $value) {
+                    $q->Where('name', 'like', "%{$value}%");
+                }
+            });
+              }else{
             $products = Product::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id()])
                 ->where(function ($q) use ($key) {
                     foreach ($key as $value) {
                         $q->Where('name', 'like', "%{$value}%");
                     }
                 });
+            }
             $query_param = ['search' => $request['search']];
         } else {
+          if(auth('seller')->user()->added != null){
+            $product= auth('seller')->user()->added;
+         $products = Product::where(['added_by' => 'seller', 'user_id' => $product]);
+          }else{
             $products = Product::where(['added_by' => 'seller', 'user_id' => \auth('seller')->id()]);
+          }
         }
+
         $products = $products->orderBy('id', 'DESC')->paginate(Helpers::pagination_limit())->appends($query_param);
 
         return view('seller-views.product.list', compact('products', 'search'));
     }
-
     public function stock_limit_list(Request $request, $type)
     {
         $stock_limit = Helpers::get_business_settings('stock_limit');

@@ -46,29 +46,49 @@
                             </ul>
                         </div>
 
+                        <div class="card">
+                        <div class="card-header">
+                            @php($language = \App\Model\BusinessSetting::where('type', 'pnc_language')->first())
+                            @php($language = $language->value ?? null)
+                            @php($default_lang = 'en')
+
+                            @php($default_lang = json_decode($language)[0])
+                            <ul class="nav nav-tabs mb-4">
+                                @foreach (json_decode($language) as $lang)
+                                    <li class="nav-item">
+                                        <a class="nav-link lang_link {{ $lang == $default_lang ? 'active' : '' }}"
+                                            href="#"
+                                            id="{{ $lang }}-link">{{ \App\CPU\Helpers::get_language_name($lang) . '(' . strtoupper($lang) . ')' }}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+
                         <div class="card-body">
                             @foreach (json_decode($language) as $lang)
                                 <div class="{{ $lang != $default_lang ? 'd-none' : '' }} lang_form"
-                                     id="{{ $lang }}-form">
+                                    id="{{ $lang }}-form">
                                     <div class="form-group">
                                         <label class="input-label"
-                                               for="{{ $lang }}_name">{{ \App\CPU\translate('name') }}
+                                            for="{{ $lang }}_name">{{ \App\CPU\translate('name') }}
                                             ({{ strtoupper($lang) }})
                                         </label>
                                         <input type="text" {{ $lang == $default_lang ? 'required' : '' }} name="name[]"
-                                               id="{{ $lang }}_name" class="form-control" placeholder="New Service"
-                                               required>
+                                            id="{{ $lang }}_name" class="form-control" placeholder="New Product">
                                     </div>
                                     <input type="hidden" name="lang[]" value="{{ $lang }}">
                                     <div class="form-group pt-4">
                                         <label class="input-label"
-                                               for="{{ $lang }}_description">{{ \App\CPU\translate('description') }}
+                                            for="{{ $lang }}_description">{{ \App\CPU\translate('description') }}
                                             ({{ strtoupper($lang) }})</label>
-                                        <textarea name="description[]" class="editor textarea" cols="30" rows="10" required>{{ old('details') }}</textarea>
+                                        <textarea name="description[]" class="editor textarea" cols="30" rows="10">{{ old('details') }}</textarea>
                                     </div>
                                 </div>
                             @endforeach
-                        </div>                    </div>
+                        </div>
+                    </div>
+          
+                         </div>
 
                     <div class="card mt-2 rest-part">
                         <div class="card-header">
@@ -554,21 +574,21 @@
     </script>
 
     <script>
-        $(".lang_link").click(function(e) {
-            e.preventDefault();
-            $(".lang_link").removeClass('active');
-            $(".lang_form").addClass('d-none');
+       $(".lang_link").click(function(e) {
+           e.preventDefault();
+          $(".lang_link").removeClass('active');
+           $(".lang_form").addClass('d-none');
             $(this).addClass('active');
 
-            let form_id = this.id;
+           let form_id = this.id;
             let lang = form_id.split("-")[0];
             console.log(lang);
             $("#" + lang + "-form").removeClass('d-none');
             if (lang == '{{ $default_lang }}') {
-                $(".rest-part").removeClass('d-none');
+               $(".rest-part").removeClass('d-none');
             } else {
                 $(".rest-part").addClass('d-none');
-            }
+           }
         })
     </script>
 

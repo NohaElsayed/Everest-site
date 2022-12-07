@@ -62,7 +62,7 @@
                     <li class="nav-item d-none d-sm-inline-block">
                         <div class="hs-unfold">
                             <div style="background:white;padding: 2px;border-radius: 5px;">
-                                @php( $local = session()->has('local')?session('local'):'en')
+                                  @php( $local = \App\CPU\Helpers::default_lang())
                                 @php($lang = \App\Model\BusinessSetting::where('type', 'language')->first())
                                 <div
                                     class="topbar-text dropdown disable-autohide {{Session::get('direction') === "rtl" ? 'ml-3' : 'm-1'}} text-capitalize">
@@ -173,6 +173,7 @@
                                  style="width: 16rem;">
                                 <div class="dropdown-item-text">
                                     <div class="media align-items-center text-break">
+                                    
                                         <div class="avatar avatar-sm avatar-circle mr-2">
                                             <img class="avatar-img"
                                                  onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"

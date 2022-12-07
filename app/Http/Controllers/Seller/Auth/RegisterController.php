@@ -10,6 +10,8 @@ use App\Model\Zone;
 use App\CentralLogics\CentraLs;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use App\Model\Category;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use App\SubscriptionSeller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
@@ -80,8 +82,7 @@ class RegisterController extends Controller
             $seller->l_name = $request->l_name;
           //  $seller->phone = $request->phone;
             $seller ->category_id = $request->category_id;
-           
-                   
+            $seller->assignRole('seller');
             $seller->email = $request->email;
             $seller->image = ImageManager::upload('seller/', 'png', $request->file('image'));
             $seller->password = bcrypt($request->password);

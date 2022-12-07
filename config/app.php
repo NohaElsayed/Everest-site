@@ -164,6 +164,7 @@ return [
         App\Providers\SocialLoginServiceProvider::class,
         Madnest\Madzipper\MadzipperServiceProvider::class,
         Grimzy\LaravelMysqlSpatial\SpatialServiceProvider::class,
+      //  Collective\Html\HtmlServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -236,6 +237,8 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Helper' => \App\CPU\Helpers::class,
         'CentraL' => \App\CentraLogics\CentraLs::class,
+        // 'Form' => Collective\Html\FormFacade::class,
+        // 'Html' => Collective\Html\HtmlFacade::class,
     ],
 
 ];
