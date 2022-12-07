@@ -441,7 +441,11 @@ ion-icon {
 
                     <ul class="navbar-nav mega-nav1  pr-2 pl-2 d-block">
                         <!--mobile-->
+<<<<<<< HEAD
                         {{-- <li class="nav-item dropdown drop-toggle">
+=======
+                        <li class="nav-item dropdown drop-toggle">
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
                             <a class="nav-link dropdown-toggle {{Session::get('direction') === "rtl" ? 'pr-0' : 'pl-0'}}"
                                 href="#" data-toggle="dropdown">
                                 <i
@@ -450,7 +454,11 @@ ion-icon {
                                     style="margin-{{Session::get('direction') === "rtl" ? 'right' : 'left'}}: 20px !important;">{{ \App\CPU\translate('categories')}}</span>
                             </a>
 
+<<<<<<< HEAD
                         </li> --}}
+=======
+                        </li>
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
                     </ul>
                     <!-- Primary menu-->
                     <ul class="navbar-nav" style="{{Session::get('direction') === "rtl" ? 'padding-right: 0px' : ''}}">
@@ -548,8 +556,12 @@ ion-icon {
                                 type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="navbar-tool-icon-box">
                                     <div class="navbar-tool-icon-box">
+<<<<<<< HEAD
                                         <a href="#" class="nav-item p-1 hv"> <i
                                     class="fa fa-user-circle {{Session::get('direction') === "rtl" ? 'ml-2' : 'mr-2'}}"></i></a>
+=======
+                                        <a href="#" class="nav-item p-1 hv">Login</a>
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
                                     </div>
                                 </div>
                             </a>

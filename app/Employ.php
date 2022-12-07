@@ -16,7 +16,11 @@ class Employ extends Authenticatable
 *
 * @var array
 */
+<<<<<<< HEAD
 protected $guard_name = 'employs';
+=======
+protected $guard_name = 'seller';
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
 protected $fillable = [
 'name', 'email', 'password','roles_name','Status','added'
 ];

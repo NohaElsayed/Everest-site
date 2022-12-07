@@ -152,10 +152,17 @@
                                      "type": "css-animation"
                                    }'>
                                 <div class="avatar avatar-sm avatar-circle">
+<<<<<<< HEAD
                                       @if(auth('employ')->user())
                                     <img class="avatar-img"
                                          onerror="this.src='{{asset('public/assets/back-end/img/160x160/img1.jpg')}}'"
                                          src="{{asset('storage/app/public/employ/')}}/{{auth('employ')->user()->photo}}"
+=======
+                                      @if(auth('seller')->user())
+                                    <img class="avatar-img"
+                                         onerror="this.src='{{asset('public/assets/back-end/img/160x160/img1.jpg')}}'"
+                                         src="{{asset('storage/app/public/seller/')}}/{{auth('seller')->user()->image}}"
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
                                          alt="Image Description">@endif
                                     <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                                 </div>
@@ -167,15 +174,23 @@
                                 <div class="dropdown-item-text">
                                     <div class="media align-items-center text-break">
                                         <div class="avatar avatar-sm avatar-circle mr-2">
+<<<<<<< HEAD
                                      @if(auth('employ')->user())
                                             <img class="avatar-img"
                                                  onerror="this.src='{{asset('public/assets/back-end/img/160x160/img1.jpg')}}'"
                                                  src="{{asset('storage/app/public/employ/')}}/{{auth('employ')->user()->photo}}"
+=======
+                                     @if(auth('seller')->user())
+                                            <img class="avatar-img"
+                                                 onerror="this.src='{{asset('public/assets/back-end/img/160x160/img1.jpg')}}'"
+                                                 src="{{asset('storage/app/public/seller/')}}/{{auth('seller')->user()->image}}"
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
                                                  alt="Image Description">
                                                  @endif
                                         </div>
                                         <div class="media-body">
                                             
+<<<<<<< HEAD
                                             {{-- <span class="card-title h5">{{auth('employ')->user()->f_name}}</span>
 
                                             <span class="card-text">{{auth('employ')->user()->email}}</span> --}}
@@ -184,18 +199,37 @@
 
                                             <span class="card-text">{{auth('employ')->user()->email}}</span>
                                             
+=======
+                                            {{-- <span class="card-title h5">{{auth('seller')->user()->f_name}}</span>
+
+                                            <span class="card-text">{{auth('seller')->user()->email}}</span>
+                                           
+                                            <span class="card-title h5">{{auth('delivery')->user()->name}}</span>
+
+                                            <span class="card-text">{{auth('delivery')->user()->email}}</span>
+                                             --}}
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
                                            
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="dropdown-divider"></div>
+<<<<<<< HEAD
                                @if(auth('employ')->user())
                                 {{-- <a class="dropdown-item"
                                    href="{{route('seller.profile.update',auth('employ')->user()->id)}}">
                                     <span class="text-truncate pr-2"
                                           title="Settings">{{\App\CPU\translate('Settings')}}</span>
                                 </a> --}}
+=======
+                               @if(auth('seller')->user())
+                                <a class="dropdown-item"
+                                   href="{{route('seller.profile.update',auth('seller')->user()->id)}}">
+                                    <span class="text-truncate pr-2"
+                                          title="Settings">{{\App\CPU\translate('Settings')}}</span>
+                                </a>
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
                                 @endif
                                 <div class="dropdown-divider"></div>
 
@@ -209,7 +243,11 @@
                                     denyButtonText: `Don't Logout`,
                                     }).then((result) => {
                                     if (result.value) {
+<<<<<<< HEAD
                                     location.href='{{route('admin-delivery.auth.logout')}}';
+=======
+                                    location.href='{{route('seller.auth.logout')}}';
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
                                     } else{
                                     Swal.fire('Canceled', '', 'info')
                                     }
@@ -274,7 +312,11 @@
                     </a>
                 </div>
 
+<<<<<<< HEAD
                 {{-- <div style="background:white;padding: 2px;border-radius: 5px;margin-top:10px;">
+=======
+                <div style="background:white;padding: 2px;border-radius: 5px;margin-top:10px;">
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
                     <a class="p-2"
                        href="{{route('seller.messages.chat')}}">
                         <i class="tio-email"></i>
@@ -284,15 +326,25 @@
                             <span class="">({{ $message }})</span>
                         @endif
                     </a>
+<<<<<<< HEAD
                 </div> --}}
            
                 {{-- <div style="background:white;padding: 2px;border-radius: 5px;margin-top:10px;">
+=======
+                </div>
+           
+                <div style="background:white;padding: 2px;border-radius: 5px;margin-top:10px;">
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
                     <a class="p-2"
                        href="{{route('seller.orders.list',['pending'])}}">
                         <i class="tio-shopping-cart-outlined"></i>
                         {{\App\CPU\translate('Order_list')}}
                     </a>
+<<<<<<< HEAD
                 </div> --}}
+=======
+                </div>
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
 
             </div>
         </div>

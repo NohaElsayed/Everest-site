@@ -1687,5 +1687,8 @@
   'issuer' => 'Issuer',
   'configuration_invalid' => 'Configuration invalid',
   'empty' => 'Empty',
+<<<<<<< HEAD
   'Permissions' => 'Permissions',
+=======
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
 );

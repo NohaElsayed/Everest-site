@@ -86,7 +86,11 @@
   #FOOTER
 \*-----------------------------------*/
 footer{
+<<<<<<< HEAD
     background: #edb007;
+=======
+    background: #212121;
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
     color: #fff !important;
     font-size: 20px;
     font-weight: bold;
@@ -516,7 +520,11 @@ footer button {
    
 </footer> -->
 
+<<<<<<< HEAD
 <footer class="footer" style="background: #edb007;">
+=======
+<footer class="footer" style="background: #373A41;">
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
     <div class="container">
     
         <div class="row">
@@ -526,7 +534,11 @@ footer button {
                
                 <div class="col-md-4 d-flex justify-content-start align-items-center footer-web-logo" >
                     <a class="d-inline-block mt-n1" href="{{route('home')}}">
+<<<<<<< HEAD
                         <img style="height: 100px!important; width: 500px;"
+=======
+                        <img style="height: 250px!important; width: 500px;"
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
                              src="{{asset("storage/app/public/company/")}}/{{ $web_config['footer_logo']->value }}"
                              onerror="this.src='{{asset('public/assets/front-end/img/image-place-holder.png')}}'"
                              alt="{{ $web_config['name']->value }}"/>

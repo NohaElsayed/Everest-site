@@ -13,13 +13,20 @@ class DeliverySeeder extends Seeder
      */
     public function run()
     {
+<<<<<<< HEAD
         DB::table('employs')->insert([
             'id' => 1,
             'name' => 'Admin',
+=======
+        DB::table('deliveries')->insert([
+            'id' => 1,
+            'name' => 'Master Admin',
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
             'email' => 'admin@admin.com',
             'photo' => 'def.png',
             'password' => bcrypt(12345678),
         ]);
+<<<<<<< HEAD
         DB::table('employs')->insert([
             'id' => 2,
             'name' => 'Manager',
@@ -27,6 +34,8 @@ class DeliverySeeder extends Seeder
             'photo' => 'def.png',
             'password' => bcrypt(12345678),
         ]);
+=======
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
 
     }
 }

@@ -59,11 +59,14 @@ return [
             'driver' => 'session',
             'provider' => 'deliveries',
         ],
+<<<<<<< HEAD
         'employ' => [
             'driver' => 'session',
             'provider' => 'employs',
         ],
 
+=======
+>>>>>>> a9f6677a4bd5b372b3be4c854229758cb0e41444
 
         'customer' => [
             'driver' => 'session',
